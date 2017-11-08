@@ -1,0 +1,5 @@
+{
+  "name": "Urban Applause",
+  "description": "Sample app built with React and the Lightning Design System",
+  "repository": "",
+  "addons": ["heroku-postgresql:hobby-dev"]
