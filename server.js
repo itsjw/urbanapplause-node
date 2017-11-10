@@ -3,8 +3,13 @@
 let express = require('express'),
     compression = require('compression'),
     works = require('./server/works'),
+    artists = require('./server/artists'),
     app = express();
 
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', 3000);
 
 app.use(compression());
@@ -28,6 +33,12 @@ app.all('*', function (req, res, next) {
 
 app.get('/works', works.findAll);
 app.get('/works/:id', works.findById);
+app.post('/newwork', works.submitNew);
+app.delete('/deletework/:id', works.deleteWork);
+
+app.get('/artists', artists.findAll);
+app.get('/artists/:id', artists.findById);
+
 
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

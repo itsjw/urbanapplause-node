@@ -7,19 +7,23 @@ const initialstate = {
 		hasreceiveddata: false,
 		submittingnew: false,
     states: {},
-    data: {ok: 'ok'} // this will contain firebase data
+    items: []
   },
   artists: {
 		hasreceiveddata: false,
 		submittingnew: false,
     states: {},
-    data: {ok: 'ok'} // this will contain firebase data
+    items: [],
+    selectedArtist: {
+      artist: {},
+      hasreceiveddata: false
+    }
   },
   userprofiles: {
 		hasreceiveddata: false,
 		submittingnew: false,
     states: {},
-    data: {ok: 'ok'} // this will contain firebase data
+    items: []
   },
 
 };

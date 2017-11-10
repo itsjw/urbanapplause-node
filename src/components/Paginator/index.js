@@ -10,7 +10,7 @@ class Paginator extends React.Component {
                 Left/Back
               </button>
 
-              <div className="pagination-list">{this.props.total} works • page {this.props.page}/{pages}</div>
+              <div className="pagination-list">{this.props.total} results • page {this.props.page}/{pages}</div>
             <button className={"pagination-next" + (this.props.page >= pages ? " slds-hide" : "")} onClick={this.props.onNext}>
               Right/Forward
             </button>

@@ -1,15 +1,24 @@
+
 import C from "../../constants";
-import initialState from "../initialstate";
+import initialState from "../initialState";
 var  _ = require("lodash");
 
 
 const worksReducer = (currentstate,action) => {
 	var newstate;
   switch(action.type){
+    case C.REQUEST_WORKS_DATA:
+      return Object.assign({}, currentstate, {
+        state: "requesting"
+      });
     case C.RECEIVE_WORKS_DATA:
 			return Object.assign({},currentstate,{
 				hasreceiveddata: true,
-				data: action.data
+        items: action.items,
+        page: action.page,
+        pageSize: action.pageSize,
+        total: action.total,
+        receivedAt: action.receivedAt
       });
     case C.AWAIT_NEW_WORK_RESPONSE:
 			return Object.assign({},currentstate,{

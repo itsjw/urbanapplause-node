@@ -31,7 +31,7 @@ let findAll = (req, res, next) => {
 
     let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;
 
-    let sql = "SELECT work.id, work.name, work.tags, work.image, artist.name as artist, city.name as city " +
+    let sql = "SELECT work.id, work.name, work.tags, work.image, date_posted, artist.name as artist, city.name as city " +
     "FROM ((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN city ON work.city_id = city.id) " + where +
                 " ORDER BY work.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
 
@@ -50,7 +50,7 @@ let findAll = (req, res, next) => {
 let findById = (req, res, next) => {
     let id = req.params.id;
 
-    let sql = "SELECT work.id, work.description, tags, image, artist.name as artist FROM work " +
+    let sql = "SELECT work.id, work.description, tags, image, date_posted, artist.name as artist FROM work " +
         "INNER JOIN artist on work.artist_id = artist.id " +
         "WHERE work.id = $1";
 
@@ -59,5 +59,30 @@ let findById = (req, res, next) => {
         .catch(next);
 };
 
+let submitNew = (req, res, next) => {
+  let artist_id = req.body.artist_id;
+  let image = req.body.image;
+  let description = req.body.description;
+  let city_id = 2;
+
+  let sql = "INSERT INTO work (description, artist_id, image, city_id, date_posted) VALUES ('" + description + "', " + artist_id + ", $$" + image + "$$, " + city_id + ", DEFAULT);"
+
+  db.query(sql)
+    .then((error) => console.log(error));
+
+}
+
+let deleteWork = (req, res, next) => {
+  let id = req.params.id;
+
+  let sql = "DELETE FROM work WHERE work.id = $1";
+
+  db.query(sql, [id])
+      .then(item => res.json())
+      .catch(next);
+
+}
+exports.deleteWork = deleteWork;
+exports.submitNew = submitNew;
 exports.findAll = findAll;
 exports.findById = findById;

@@ -7,6 +7,8 @@
 @import 'bulma/sass/components/dropdown';
 @import 'bulma/sass/components/pagination';
 @import 'bulma/sass/elements/form';
+@import 'bulma/sass/grid/columns';
+@import 'bulma/sass/components/modal';
 
 
 
@@ -74,7 +76,6 @@ html {
   margin-bottom: 20px;
 }
 
-.select-input {
+.add-new {
   width: 100%
 }
-

@@ -16,31 +16,23 @@ let findAll = (req, res, next) => {
 
     if (search) {
         values.push(escape(search));
-        whereParts.push("beer.name || beer.tags || brewery.name ~* $" + values.length);
-    }
-    if (min) {
-        values.push(parseFloat(min));
-        whereParts.push("beer.alcohol >= $" + values.length);
-    }
-    if (max) {
-        values.push(parseFloat(max));
-        whereParts.push("beer.alcohol <= $" + values.length);
+        whereParts.push("artist.name || artist.tags || artist.city  ~* $" + values.length);
     }
 
     let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
 
-    let countSql = "SELECT COUNT(*) from beer INNER JOIN brewery on beer.brewery_id = brewery.id " + where;
+    let countSql = "SELECT COUNT(*) from artist INNER JOIN city on artist.city_id = city.id " + where;
 
-    let sql = "SELECT beer.id, beer.name, alcohol, tags, image, brewery.name as brewery " +
-                "FROM beer INNER JOIN brewery on beer.brewery_id = brewery.id " + where +
-                " ORDER BY beer.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
+    let sql = "SELECT artist.id, artist.name, city.name as city " +
+                "FROM artist INNER JOIN city on artist.city_id = city.id " + where +
+                " ORDER BY artist.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
 
     db.query(countSql, values)
         .then(result => {
             let total = parseInt(result[0].count);
             db.query(sql, values.concat([pageSize, ((page - 1) * pageSize)]))
-                .then(products => {
-                    return res.json({"pageSize": pageSize, "page": page, "total": total, "products": products});
+                .then(items=> {
+                    return res.json({"pageSize": pageSize, "page": page, "total": total, "items": items});
                 })
                 .catch(next);
         })
@@ -49,15 +41,29 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
     let id = req.params.id;
-
-    let sql = "SELECT beer.id, beer.name, alcohol, tags, image, brewery.name as brewery FROM beer " +
-        "INNER JOIN brewery on beer.brewery_id = brewery.id " +
-        "WHERE beer.id = $1";
+  let sql = "SELECT artist.id, artist.name, artist.bio, website, email, experience, city.name as city FROM artist " +
+    "INNER JOIN city on artist.city_id = city.id " +
+    "WHERE artist.id = $1";
 
     db.query(sql, [id])
-        .then(product => res.json(product[0]))
+        .then(item => res.json(item[0]))
         .catch(next);
 };
 
-exports.findAll = findAll;
+
+let submitNew = (req, res, next) => {
+  let artist_id = req.body.artist_id;
+  let image = req.body.image;
+  let description = req.body.description;
+  let city_id = 2;
+
+  let sql = "INSERT INTO work (description, artist_id, image, city_id, date_posted) VALUES ('" + description + "', " + artist_id + ", $$" + image + "$$, " + city_id + ", DEFAULT);"
+
+  db.query(sql)
+    .then((error) => console.log(result));
+
+}
+exports.submitNew = submitNew;
+
 exports.findById = findById;
+exports.findAll = findAll;

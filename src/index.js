@@ -1,78 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import store from './store';
 
 import Header from './components/Header';
-import WorkList from './components/WorkList';
-import Paginator from './components/Paginator';
-import SearchBar from './components/SearchBar';
-import RangeSlider from './components/RangeSlider';
 
-import * as workService from './services/work-service';
+import WorkListContainer from './containers/WorkListContainer';
+import ArtistListContainer from './containers/ArtistListContainer';
+import ArtistProfileContainer from './containers/ArtistProfileContainer';
 
 import './sass/main.scss';
 
 class App extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            searchKey: "",
-            min: 0,
-            max: 30,
-            works: [],
-            total: 0,
-            page: 1
-        }
-    }
-    componentDidMount() {
-        this.findWorks();
-    }
-    searchKeyChangeHandler(searchKey) {
-        this.setState({searchKey: searchKey, page: 1}, this.findWorks);
-    }
-
-    rangeChangeHandler(values) {
-        this.setState({min: values[0], max: values[1], page: 1}, this.findWorks);
-    }
-
-    findWorks() {
-        workService.findAll({search: this.state.searchKey, min: this.state.min, max: this.state.max, page: this.state.page})
-        .then(data => {
-          console.log(data);
-                this.setState({
-                    works: data.items,
-                    page: data.page,
-                    pageSize: data.pageSize,
-                    total: data.total
-                });
-            });
-    }
-
-    nextPageHandler() {
-        let p = this.state.page + 1;
-        this.setState({page: p}, this.findWorks);
-    }
-
-    prevPageHandler() {
-        let p = this.state.page - 1;
-        this.setState({page: p}, this.findWorks);
-    }
-
-  render() {
-        return (
+      render() {
+    return (
+      <Provider store={store}>
+        <BrowserRouter>
             <div className="app-container">
               <Header text="Urban Applause"/>
-                <section className="section">
-                    <div className="">
-                      <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)}/>
-                    </div>
-                  </section>
-
-                <section className='section'>
-                  <Paginator page={this.state.page} pageSize={this.state.pageSize} total={this.state.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
-                </section>
-                <WorkList works={this.state.works} total={this.state.total} o/>
+              <Switch>
+                <Route exact path='/' render={() =>
+                    <Redirect to='/works'/>
+                   } />
+                 <Route path='/works' component={WorkListContainer}/>
+                 <Route exact path='/artists' component={ArtistListContainer}/>
+                 <Route path='/artists/:id' render={(match) => <ArtistProfileContainer id={match.match.params.id} />} />
+              </Switch>
             </div>
+          </BrowserRouter>
+      </Provider>
         );
     }
 };
