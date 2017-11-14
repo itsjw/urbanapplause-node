@@ -1,4 +1,4 @@
-import initialstate from "../initialstate";
+import initialstate from "../initialStore";
 
 import C from '../../constants';
 

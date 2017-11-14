@@ -16,15 +16,15 @@ let findAll = (req, res, next) => {
 
     if (search) {
         values.push(escape(search));
-        whereParts.push("artist.name || artist.tags || artist.city  ~* $" + values.length);
+        whereParts.push("artist.name ~* $" + values.length);
     }
 
     let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
 
-    let countSql = "SELECT COUNT(*) from artist INNER JOIN city on artist.city_id = city.id " + where;
+    let countSql = "SELECT COUNT(*) from artist " + where;
 
-    let sql = "SELECT artist.id, artist.name, city.name as city " +
-                "FROM artist INNER JOIN city on artist.city_id = city.id " + where +
+    let sql = "SELECT artist.id, artist.name " +
+                "FROM artist  " + where +
                 " ORDER BY artist.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
 
     db.query(countSql, values)
@@ -40,9 +40,8 @@ let findAll = (req, res, next) => {
 };
 
 let findById = (req, res, next) => {
-    let id = req.params.id;
-  let sql = "SELECT artist.id, artist.name, artist.bio, website, email, experience, city.name as city FROM artist " +
-    "INNER JOIN city on artist.city_id = city.id " +
+  let id = req.params.id;
+  let sql = "SELECT artist.id, artist.name, artist.bio, website, email, experience FROM artist " +
     "WHERE artist.id = $1";
 
     db.query(sql, [id])
@@ -52,15 +51,11 @@ let findById = (req, res, next) => {
 
 
 let submitNew = (req, res, next) => {
-  let artist_id = req.body.artist_id;
-  let image = req.body.image;
-  let description = req.body.description;
-  let city_id = 2;
-
-  let sql = "INSERT INTO work (description, artist_id, image, city_id, date_posted) VALUES ('" + description + "', " + artist_id + ", $$" + image + "$$, " + city_id + ", DEFAULT);"
+  let name = req.body.name;
+  let sql = "INSERT INTO artist (name) VALUES ('" + name + "');"
 
   db.query(sql)
-    .then((error) => console.log(result));
+    .then((error) => console.log(error));
 
 }
 exports.submitNew = submitNew;

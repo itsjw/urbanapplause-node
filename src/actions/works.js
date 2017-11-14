@@ -19,7 +19,6 @@ function receiveWorks(data) {
   }
 }
 function getWorks(values) {
-  console.log('CALLING GET WORKS');
   return function(dispatch){
     dispatch(requestWorks());
     let qs = "";
@@ -35,16 +34,25 @@ function getWorks(values) {
 }
 
 function submitNewWork(values) {
-
   let qs = "";
   qs = Object.keys(values).map(key => {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
-        }).join('&');
+    let value = values[key];
+    if (key=='place') {
+      value = JSON.stringify(values[key]);
+    }
+    return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+  }).join('&');
+  console.log('qs : ', qs);
 
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_WORK_RESPONSE});
     return request({url: baseURL + "/newwork", method: "POST", data: qs})
-      .then(data => dispatch({type:C.RECEIVE_NEW_WORK_RESPONSE, data: JSON.parse(data)}))
+      .then((res) =>
+        {
+          console.log('response data: ', res);
+          dispatch({type:C.RECEIVE_NEW_WORK_RESPONSE, data: JSON.parse(res)});
+          dispatch(getWorks());
+        })
   }
 }
 export let deleteWork = (id) => {

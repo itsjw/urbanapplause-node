@@ -12,6 +12,7 @@ var mapStateToProps = function(appState){
 var mapDispatchToProps = function(dispatch){
   return {
     getArtist: function(id){ dispatch(artistActions.findById(id)); },
+    getWorks: function(artist_id) {dispatch(workActions.findWorksForArtist(artist_id));}
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistProfile);

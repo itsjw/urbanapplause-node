@@ -36,10 +36,14 @@ function getArtists(values) {
 }
 
 function submitNewArtist(values) {
+  let qs = "";
+  qs = Object.keys(values).map(key => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
+        }).join('&');
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_ARTIST_RESPONSE});
     return request({url: baseURL + "/newartist", method: "POST", data: qs})
-      .then(data => dispatch({type:C.RECEIVE_NEW_ARTIST_RESPONSE, data: values}))
+      .then(data => dispatch({type:C.RECEIVE_NEW_ARTIST_RESPONSE, data: JSON.parse(data)}))
   }
 }
 
@@ -57,7 +61,6 @@ function requestArtist(id) {
 }
 
 function receiveArtist(data) {
-  console.log(data);
   return {
     type: C.RECEIVE_ARTIST_DATA,
     artist: data,

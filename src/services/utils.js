@@ -1,4 +1,4 @@
-export const getUploadsImUrl = (file) => {
+const getUploadsImUrl = (file) => {
   return new Promise((resolve, reject) => {
       if (!file || !file.type.match(/image.*/)) return;
         document.body.className = "uploading";
@@ -8,14 +8,13 @@ export const getUploadsImUrl = (file) => {
         xhr.open("POST", "http://uploads.im/api");
         xhr.onload = function() {
         var url = JSON.parse(xhr.responseText).data.img_url
-          console.log(url);
           resolve(url);
         }
         xhr.send(fd);
   })
 }
 
-export const getAddressComponents = (place) => {
+const getAddressComponents = (place) => {
   var address = {};
         place.address_components.forEach(function(c) {
             switch(c.types[0]){
@@ -43,7 +42,7 @@ export const getAddressComponents = (place) => {
   return address;
 }
 
-export const timeSince = (date) => {
+const timeSince = (date) => {
 
   var seconds = Math.floor((new Date() - date) / 1000);
 
@@ -71,8 +70,14 @@ export const timeSince = (date) => {
   return Math.floor(seconds) + " seconds";
 }
 
-export const memberSince = (date) => {
+const memberSince = (date) => {
   return new Date(date).getFullYear()
+}
+
+module.exports = {
+  getAddressComponents: getAddressComponents,
+  timeSince: timeSince,
+  getUploadsImUrl: getUploadsImUrl
 }
 
 

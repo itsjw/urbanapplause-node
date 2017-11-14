@@ -1,5 +1,7 @@
 "use strict";
 
+let utils = require('../src/services/utils');
+
 let db = require('./pghelper');
 
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -16,7 +18,7 @@ let findAll = (req, res, next) => {
 
     if (search) {
         values.push(escape(search));
-        whereParts.push("work.name || work.tags || artist.name ~* $" + values.length);
+        whereParts.push("work.description || artist.name ~* $" + values.length);
     }
     /*if (min) {
         values.push(parseFloat(min));
@@ -31,10 +33,9 @@ let findAll = (req, res, next) => {
 
     let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;
 
-    let sql = "SELECT work.id, work.name, work.tags, work.image, date_posted, artist.name as artist, city.name as city " +
-    "FROM ((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN city ON work.city_id = city.id) " + where +
-                " ORDER BY work.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
-
+    let sql = "SELECT work.id, work.image, date_posted, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat " +
+    "FROM ((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN location ON work.location_id = location.id) " + where +
+                " ORDER BY work.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
     db.query(countSql, values)
         .then(result => {
             let total = parseInt(result[0].count);
@@ -59,17 +60,50 @@ let findById = (req, res, next) => {
         .catch(next);
 };
 
-let submitNew = (req, res, next) => {
-  let artist_id = req.body.artist_id;
+const submitNew = (req, res, next) => {
+  const artist_id = req.body.artist_id;
+  const new_artist_name = req.body.new_artist_name;
+  if (artist_id==null||'null') {
+    if(new_artist_name) {
+      console.log('creating new artist ' + new_artist_name);
+      var newArtistSql = "INSERT INTO artist (name) VALUES ('" + new_artist_name + "') RETURNING artist.id;"
+    } else {
+      console.log('anonymous');
+    }
+  }
   let image = req.body.image;
   let description = req.body.description;
-  let city_id = 2;
 
-  let sql = "INSERT INTO work (description, artist_id, image, city_id, date_posted) VALUES ('" + description + "', " + artist_id + ", $$" + image + "$$, " + city_id + ", DEFAULT);"
+  let place = JSON.parse(req.body.place);
+  let lng = place.geometry.location.lng;
+  let lat = place.geometry.location.lat;
+  let formatted_address = place.formatted_address;
+  let city = utils.getAddressComponents(place).City.short_name;
 
-  db.query(sql)
-    .then((error) => console.log(error));
+  let locationSql = "INSERT INTO location (lng, lat, formatted_address, city) VALUES (" + lng + ", " + lat + ", '" + formatted_address + "', '" + city + "') RETURNING id;";
 
+  db.query(locationSql)
+    .then((id) => {
+      var sql = "INSERT INTO work (id, description, artist_id, image,  date_posted, location_id) VALUES (DEFAULT, '" + description + "', $1,  $$" + image + "$$, DEFAULT, " + id[0].id + ") RETURNING work.id;";
+      if(newArtistSql) {
+        console.log('ATTEMPTING TO CREATE NEW ARTIST...');
+        db.query(newArtistSql)
+          .then((item) => {
+            console.log('CREATED NEW ARTIST WITH ID ', item[0].id);
+            db.query(sql, [item[0].id])
+              .then((item) => {
+                console.log('CREATED NEW WORK WITH NEW ARTIST');
+              return res.json(item[0]);
+            });
+          });
+      } else {
+      db.query(sql, [artist_id])
+          .then((item) => {
+            console.log('CREATED NEW WORK WITH EXISTING OR NULL ARTIST');
+          return res.json(item[0]);
+        });
+      }
+    });
 }
 
 let deleteWork = (req, res, next) => {

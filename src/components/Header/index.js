@@ -14,7 +14,6 @@ class Header extends Component {
   }
   render() {
     return(
-      <div>
     <nav className="navbar is-transparent" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a href='/'>{this.props.text}</a>
@@ -46,8 +45,6 @@ class Header extends Component {
 
         </div>
       </nav>
-
-      </div>
     )
   }
 }

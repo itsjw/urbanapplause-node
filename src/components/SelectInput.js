@@ -12,35 +12,79 @@ class SelectInput extends Component {
       selectedOptionName: this.props.selectedOptionName||null,
       showMatches: false,
       matchList: [],
+      input_type: 'none selected'
     }
+  }
+  showOptions = () => {
+    if (this.state.textInput.length>0) {
+      this.setState({
+        showMatches: true
+      })
+    }
+  }
+  hideOptions = () => {
+    this.setState({
+      showMatches: false
+    });
   }
 
   onInputChange = (e) => {
     this.setState({
-      textInput: e.target.value,
-      selectedOptionId: null,
-      selectedOptionName: null,
-      showMatches: true,
+      textInput: e.target.value
     });
+    if (this.state.input_type==this.props.createOption) {
+      this.props.setValue(this.props.createOption, e.target.value);
+    } else {
+        this.setState({
+          input_type: 'none selected'
+        })
+    }
+    this.refreshOptionList(e.target.value);
+  }
+  refreshOptionList = (stringInput) => {
     var optionList = this.props.options;
     var matches = [];
     optionList.map((option, i) => {
-      if (option.name.toLowerCase().indexOf(e.target.value.toLowerCase())>-1) {
+      if (option.name.toLowerCase().indexOf(stringInput.toLowerCase())>-1) {
         matches.push(optionList[i]);
       }
     });
     this.setState({
       matchList: matches
     });
+
+  }
+  onSetCreatingClick = () => {
+    this.setState({
+      input_type: this.props.createOption,
+      selectedOptionId: null,
+      selectedOptionName: null
+    });
+    this.hideOptions();
+    this.props.setValue(this.props.createOption, this.state.textInput);
+    this.refs.input_box.focus();
+  }
+  onSetUnknownClick = () => {
+    this.setState({
+      input_type: this.props.unknownOption,
+      textInput: 'Anonymous',
+      selectedOptionId: null,
+      selectedOptionName: null
+    });
+    this.hideOptions();
+    this.props.setValue(this.props.unknownOption, '');
   }
 
   onKeyDown = (e) => {
     const {activeMatchIndex, matchList} = this.state;
-    const maxLength = Object.keys(this.state.matchList).length;
+    const maxLength = Object.keys(this.state.matchList).length+1;
 
     if (e.keyCode == 13) {
       e.preventDefault();
       if(activeMatchIndex == maxLength) {
+        this.onSetCreatingClick();
+      } else if (activeMatchIndex == maxLength-1) {
+        this.onSetUnknownClick();
       } else {
         Object.keys(matchList).map((key, i) => {
           if (i==activeMatchIndex) {
@@ -64,27 +108,30 @@ class SelectInput extends Component {
     }
   }
   selectMatch = (key) => {
+    console.log('match selected');
     this.setState({
+      input_type: this.props.selectOption,
       selectedOptionId: key,
-      selectedOptionName: this.state.matchList[key].name,
-      showMatches: false
+      textInput: this.state.matchList[key].name,
     });
-    this.props.onSelectMatch('artist_id', this.state.matchList[key].id);
+    this.props.setValue(this.props.selectOption, this.state.matchList[key].id);
   }
-  onCreateNewClick = () => {
-    this.setState({
-      showMatches: false,
-      isCreatingNew: true
-    })
-  }
-  onClickMatch = (key) => {
+
+  onMatchClick = (key) => {
     this.selectMatch(key);
   }
-  cancelCreatingNew = () => {
+  clearInputType = () => {
     this.setState({
-      isCreatingNew: false
-    })
+      input_type: 'none selected',
+      selectedOptionId: null,
+      selectedOptionName: null,
+      textInput: ''
+    });
+    this.props.setValue(null, null);
+    this.refs.input_box.focus();
+    this.refs.input_box.select();
   }
+
   render() {
     const matches = this.state.matchList;
     const result = Object.keys(matches).map((key, index) =>
@@ -92,7 +139,7 @@ class SelectInput extends Component {
           key={key}
           value={key}
           className={(this.state.activeMatchIndex==index)?'dropdown-item is-active':'dropdown-item'}
-          onClick={(e) => this.onClickMatch(key)}>
+          onClick={(e) => this.onMatchClick(key)}>
             {matches[key].name}
       </a>
 
@@ -100,12 +147,13 @@ class SelectInput extends Component {
      return(
       <div className="field">
           <label className="label">{this.props.label||''}</label>
-          <div className={(this.state.showMatches==true && this.state.textInput.length > 0)?"dropdown is-active select-input":"select-input"}>
+          <div className={(this.state.input_type=='none selected'&& this.state.textInput.length > 0)?"dropdown is-active select-input":"select-input"}>
             <div className='control'>
               <div className="dropdown-trigger select-input">
-                <input
+                {this.state.input_type} <span onClick={this.clearInputType}> X </span><input
                   className={`input ${this.state.selectedOptionId?'is-success':''} ${(this.props.errorText.length>0)?'is-danger':''}`}
                   type='text'
+                  ref='input_box'
                   value={this.state.selectedOptionName||this.state.textInput}
                   onChange={this.onInputChange}
                   onKeyDown={this.onKeyDown}
@@ -117,10 +165,16 @@ class SelectInput extends Component {
               <div className='dropdown-content'>
                 {result}
                 <hr className="dropdown-divider"/>
-                <a className={(this.state.activeMatchIndex==Object.keys(this.state.matchList).length)?'dropdown-item is-active':'dropdown-item'} onClick={this.onCreateNewClick}
+                <a className={(this.state.activeMatchIndex==Object.keys(this.state.matchList).length)?'dropdown-item is-active':'dropdown-item'} onClick={this.onSetUnknownClick}
 >
                    Unknown
+                 </a>
+                  <hr className="dropdown-divider"/>
+                <a className={(this.state.activeMatchIndex==Object.keys(this.state.matchList).length+1)?'dropdown-item is-active':'dropdown-item'} onClick={this.onSetCreatingClick}
+>
+                   Create New
                 </a>
+
               </div>
             </div>
         </div>

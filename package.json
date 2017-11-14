@@ -29,6 +29,7 @@
     "pg": "^7.4.0",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
+    "react-async-script-loader": "^0.3.0",
     "react-dom": "^16.0.0",
     "react-fa": "^5.0.0",
     "react-google-maps": "^9.0.1",

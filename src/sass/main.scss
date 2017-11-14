@@ -1,6 +1,7 @@
 
 @import 'bulma/sass/utilities/_all';
 @import 'bulma/sass/elements/button';
+@import 'bulma/sass/elements/icon';
 @import 'bulma/sass/components/navbar';
 @import 'bulma/sass/base/generic';
 @import 'bulma/sass/components/card';
@@ -9,31 +10,48 @@
 @import 'bulma/sass/elements/form';
 @import 'bulma/sass/grid/columns';
 @import 'bulma/sass/components/modal';
+@import 'bulma/sass/layout/footer';
 
 
 
 $site-title-font: "Arial Black", sans-serif;
 $bg-color-main: #e6e6e6;
 
-html {
-	padding-top: 2em;
+html, body{
   color: #4a4a4a;
   font-family: sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
   background-color: $bg-color-main;
+  height: 100%;
+  margin: 0
+
 }
+
 /*CONTAINER LAYOUT
  * ===============*/
 
 .app-container{
-    margin: 0 auto;
-    max-width: 800px;
+  height: 100%;
+}
+#wrapper {
+  min-height: 100%;
+  margin-bottom: -50px;
+  padding-bottom: 50px;
+}
+.wrapper {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.footer, .push {
+  height: 50px;
+  padding-top: 20px;
 }
 
 .section {
-  margin-bottom: 30px;
+  margin-top: 30px;
 }
 .navbar {
   .navbar-brand {
@@ -65,11 +83,14 @@ html {
 .card {
   .card-image {
     img {
-      min-width: 800px;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
     }
-    max-height: 500px;
-    overflow: hidden;
-    }
+    height: 500px;
+    overflow:hidden;
+  }
   .card-footer-item {
     cursor: pointer
   }
@@ -78,4 +99,10 @@ html {
 
 .add-new {
   width: 100%
+}
+
+.file-upload-preview {
+  width: 100%;
+  max-height: 300px;
+  overflow: hidden
 }

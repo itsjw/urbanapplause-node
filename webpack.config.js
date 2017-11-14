@@ -7,7 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: './public/index.html',
   filename: 'index.html',
-  inject: 'body'
+  inject: false
 });
 
 module.exports = {
@@ -26,7 +26,10 @@ module.exports = {
       { test: /\.scss$/, loader: ['style-loader', 'css-loader', 'sass-loader'], },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -38,7 +41,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [HtmlWebpackPluginConfig],
+  plugins: [HtmlWebpackPluginConfig, new ExtractTextPlugin('bundle.css')],
   devServer: {
     historyApiFallback: true,
     hot: true,
@@ -51,6 +54,11 @@ module.exports = {
         secure: false
       }
     }
+  },
+  resolve: {
+    alias: {
+      react: path.resolve('./node_modules/react'),
+    },
   }
 }
 

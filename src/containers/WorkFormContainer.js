@@ -28,6 +28,11 @@ class WorkFormContainer extends Component {
       isOpen: true
     })
   }
+  handleSubmit = (entry) => {
+    this.props.onSubmit(entry);
+    this.closeForm();
+    this.forceUpdate();
+  }
   render() {
     return(
       <div>
@@ -35,7 +40,7 @@ class WorkFormContainer extends Component {
         <div className={(this.state.isOpen==true)?"modal is-active":"modal"}>
           <div className="modal-background"></div>
           <div className="modal-content">
-            <WorkForm onCancel={this.closeForm} onSubmit={this.props.onSubmit} artistList={this.props.artists.items}/>
+            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items}/>
             </div>
           <button className="modal-close is-large" aria-label="close" onClick={this.closeForm}></button>
         </div>
@@ -53,7 +58,8 @@ var mapStateToProps = function(appState){
 var mapDispatchToProps = function(dispatch){
   return {
     onSubmit: function(work){ dispatch(workActions.submitNewWork(work)); },
-    getArtists: function(query){ dispatch(artistActions.getArtists(query)); }
+    getArtists: function(query){ dispatch(artistActions.getArtists(query)); },
+    getWorks: function(work){ dispatch(workActions.getWorks()); },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WorkFormContainer);

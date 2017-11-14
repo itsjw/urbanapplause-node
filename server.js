@@ -38,6 +38,8 @@ app.delete('/deletework/:id', works.deleteWork);
 
 app.get('/artists', artists.findAll);
 app.get('/artists/:id', artists.findById);
+app.post('/newartist', artists.submitNew);
+app.delete('/deleteartist/:id', works.deleteWork);
 
 
 app.listen(app.get('port'), function () {

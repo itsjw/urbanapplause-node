@@ -57,7 +57,7 @@ class ArtistListContainer extends Component {
               <section className="section">
                   <div className="columns">
                     <div className="column is-three-quarters">
-                      <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)}/>
+                      <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)} placeholder="Search for an artist by name"/>
                     </div>
                     <div className="column is-on-quarter">
                       <ArtistFormContainer/>

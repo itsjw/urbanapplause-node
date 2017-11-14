@@ -26,10 +26,7 @@ const deleteUserprofile = (qid) => {
     };
 }
 const submitUserprofileEdit = (qid, content) => {
- console.log(qid);
-  console.log(content);
   return function(dispatch,getState){
-    console.log('in function');
       /*var state = getState(),
 				username = state.auth.username,
         uid = state.auth.uid,*/

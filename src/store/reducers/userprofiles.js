@@ -1,5 +1,5 @@
 import C from "../../constants";
-import initialState from "../initialstate";
+import initialState from "../initialStore";
 var  _ = require("lodash");
 
 

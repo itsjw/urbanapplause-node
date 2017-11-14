@@ -5,6 +5,8 @@ import {Provider} from 'react-redux';
 import store from './store';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
+
 
 import WorkListContainer from './containers/WorkListContainer';
 import ArtistListContainer from './containers/ArtistListContainer';
@@ -14,22 +16,24 @@ import './sass/main.scss';
 
 class App extends React.Component {
 
-      render() {
+  render() {
     return (
       <Provider store={store}>
         <BrowserRouter>
-            <div className="app-container">
+          <div className="app-container">
+            <div className="wrapper" id="wrapper">
               <Header text="Urban Applause"/>
               <Switch>
                 <Route exact path='/' render={() =>
-                    <Redirect to='/works'/>
-                   } />
+                    (<Redirect to='/works'/>)
+                   }/>
                  <Route path='/works' component={WorkListContainer}/>
                  <Route exact path='/artists' component={ArtistListContainer}/>
                  <Route path='/artists/:id' render={(match) => <ArtistProfileContainer id={match.match.params.id} />} />
-              </Switch>
+               </Switch>
+             </div>
             </div>
-          </BrowserRouter>
+        </BrowserRouter>
       </Provider>
         );
     }

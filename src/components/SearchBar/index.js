@@ -19,7 +19,7 @@ class SearchBar extends React.Component {
             <div className='control is-expanded'>
               <input className="input"
                  type="search"
-                 placeholder="Enter a work description or artist name"
+                 placeholder={this.props.placeholder ||"Enter a work description or artist name"}
                  value={this.props.searchKey}
                  onChange={this.searchKeyChangeHandler.bind(this)}/>
             </div>

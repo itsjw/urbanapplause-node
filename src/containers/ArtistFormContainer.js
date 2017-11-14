@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import WorkForm from '../components/WorkForm';
-import workActions from '../actions/works';
+import ArtistForm from '../components/ArtistForm';
+import ArtistEditForm from '../components/ArtistEditForm';
 import artistActions from '../actions/artists';
 import {connect} from 'react-redux';
 
-class WorkFormContainer extends Component {
+class ArtistFormContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,32 +29,34 @@ class WorkFormContainer extends Component {
     })
   }
   render() {
+    if (this.props.type=='editing') {
+      return <ArtistEditForm artist={this.props.artist} onCancel={this.props.onCancel}/> } else {
     return(
       <div>
         <button className='button add-new' onClick={this.openForm}>Add New</button>
         <div className={(this.state.isOpen==true)?"modal is-active":"modal"}>
           <div className="modal-background"></div>
           <div className="modal-content">
-            <WorkForm onCancel={this.closeForm} onSubmit={this.props.onSubmit} artistList={this.props.artists.items}/>
+            <ArtistForm onCancel={this.closeForm} onSubmit={this.props.onSubmit} artistList={this.props.artists.items}/>
             </div>
           <button className="modal-close is-large" aria-label="close" onClick={this.closeForm}></button>
         </div>
       </div>
     )
+      }
   }
 }
 
 
 var mapStateToProps = function(appState){
   return {
-    works: appState.works,
-    artists: appState.artists
+    artists: appState.artists,
   }
 }
 var mapDispatchToProps = function(dispatch){
   return {
-    onSubmit: function(work){ dispatch(workActions.submitNewWork(work)); },
+    onSubmit: function(artist){ dispatch(artistActions.submitNewArtist(artist)); },
     getArtists: function(query){ dispatch(artistActions.getArtists(query)); }
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(WorkFormContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistFormContainer);
