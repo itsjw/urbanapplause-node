@@ -3,13 +3,15 @@ import WorkForm from '../components/WorkForm';
 import workActions from '../actions/works';
 import artistActions from '../actions/artists';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 class WorkFormContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
-      artistQuery: ''
+      artistQuery: '',
+      redirect: false
     }
   }
   componentDidMount() {
@@ -18,34 +20,22 @@ class WorkFormContainer extends Component {
   findArtists = () => {
     this.props.getArtists({name: this.state.artistQuery});
   }
-  closeForm = () => {
-    this.setState({
-      isOpen: false
-    })
-  }
-  openForm = () => {
-    this.setState({
-      isOpen: true
-    })
-  }
   handleSubmit = (entry) => {
     this.props.onSubmit(entry);
-    this.closeForm();
-    this.forceUpdate();
+    this.setState({
+      redirect: true
+    });
   }
   render() {
-    return(
-      <div>
-        <button className='button add-new' onClick={this.openForm}>Add New</button>
-        <div className={(this.state.isOpen==true)?"modal is-active":"modal"}>
-          <div className="modal-background"></div>
-          <div className="modal-content">
-            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items}/>
-            </div>
-          <button className="modal-close is-large" aria-label="close" onClick={this.closeForm}></button>
-        </div>
-      </div>
-    )
+    if (this.state.redirect==true) {
+      return (
+        <Redirect to='/works'/>
+      )
+    } else {
+      return(
+          <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items}/>
+      )
+    }
   }
 }
 

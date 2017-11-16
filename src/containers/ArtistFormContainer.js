@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import ArtistForm from '../components/ArtistForm';
+
 import ArtistEditForm from '../components/ArtistEditForm';
 import artistActions from '../actions/artists';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 class ArtistFormContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
-      artistQuery: ''
+      artistQuery: '',
+      redirect: false
     }
   }
   componentDidMount() {
@@ -18,32 +21,27 @@ class ArtistFormContainer extends Component {
   findArtists = () => {
     this.props.getArtists({name: this.state.artistQuery});
   }
-  closeForm = () => {
+  handleCancel = () => {
     this.setState({
-      isOpen: false
-    })
-  }
-  openForm = () => {
-    this.setState({
-      isOpen: true
+      redirect: true
     })
   }
   render() {
-    if (this.props.type=='editing') {
-      return <ArtistEditForm artist={this.props.artist} onCancel={this.props.onCancel}/> } else {
+    const redirectTarget = this.props.artist?'/artists/'+this.props.artist.id:'/artists';
+    if (this.state.redirect==true){
+      return (
+        <Redirect to={redirectTarget} />
+      )
+    }
+    else if (this.props.artist) {
+      return(
+        <ArtistEditForm artist={this.props.artist} onSubmit={this.props.onUpdate} onCancel={this.handleCancel}/>
+      )
+    } else {
     return(
-      <div>
-        <button className='button add-new' onClick={this.openForm}>Add New</button>
-        <div className={(this.state.isOpen==true)?"modal is-active":"modal"}>
-          <div className="modal-background"></div>
-          <div className="modal-content">
-            <ArtistForm onCancel={this.closeForm} onSubmit={this.props.onSubmit} artistList={this.props.artists.items}/>
-            </div>
-          <button className="modal-close is-large" aria-label="close" onClick={this.closeForm}></button>
-        </div>
-      </div>
+            <ArtistForm onCancel={this.handleCancel} onSubmit={this.props.onSubmit} artistList={this.props.artists.items}/>
     )
-      }
+    }
   }
 }
 
@@ -56,6 +54,8 @@ var mapStateToProps = function(appState){
 var mapDispatchToProps = function(dispatch){
   return {
     onSubmit: function(artist){ dispatch(artistActions.submitNewArtist(artist)); },
+
+    onUpdate: function(id, content){ dispatch(artistActions.submitArtistEdit(id, content)); },
     getArtists: function(query){ dispatch(artistActions.getArtists(query)); }
   }
 }

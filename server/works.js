@@ -12,7 +12,8 @@ let findAll = (req, res, next) => {
         page = req.query.page ? parseInt(req.query.page) : 1,
         search = req.query.search,
         min = req.query.min,
-        max = req.query.max,
+    max = req.query.max,
+    artist_id = req.query.artist_id,
         whereParts = [],
         values = [];
 
@@ -20,14 +21,6 @@ let findAll = (req, res, next) => {
         values.push(escape(search));
         whereParts.push("work.description || artist.name ~* $" + values.length);
     }
-    /*if (min) {
-        values.push(parseFloat(min));
-        whereParts.push("work.alcohol >= $" + values.length);
-    }
-    if (max) {
-        values.push(parseFloat(max));
-        whereParts.push("work.alcohol <= $" + values.length);
-    }*/
 
     let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
 
@@ -46,7 +39,7 @@ let findAll = (req, res, next) => {
                 .catch(next);
         })
         .catch(next);
-};
+  }
 
 let findById = (req, res, next) => {
     let id = req.params.id;

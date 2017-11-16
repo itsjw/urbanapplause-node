@@ -66,8 +66,7 @@ class WorkListContainer extends Component {
     return(
       <div>
         <section className="section">
-          <div className="columns">
-            <div className="column is-three-quarters">
+          <a className='add-new' href="/works/new">+ New Work</a>
               <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)}/>
               <div className='field has-addons'>
                 <p className='control' onClick={this.closeMap}>
@@ -87,11 +86,6 @@ class WorkListContainer extends Component {
                   </a>
                 </p>
               </div>
-            </div>
-            <div className="column is-on-quarter">
-              <WorkFormContainer/>
-                          </div>
-          </div>
                   </section>
 
                 <section className='section'>

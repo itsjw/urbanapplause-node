@@ -55,14 +55,9 @@ class ArtistListContainer extends Component {
           <Route exact path='/artists'>
             <div>
               <section className="section">
-                  <div className="columns">
-                    <div className="column is-three-quarters">
-                      <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)} placeholder="Search for an artist by name"/>
-                    </div>
-                    <div className="column is-on-quarter">
-                      <ArtistFormContainer/>
-                                  </div>
-                  </div>
+
+                <a className='add-new-link' href='/artists/new'>+ Add Artist</a>
+                <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)} placeholder="Search for an artist by name"/>
               </section>
 
               <section className='section'>

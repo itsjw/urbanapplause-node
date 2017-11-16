@@ -1,5 +1,6 @@
 export default opts => {
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+    console.log(opts.data);
         let xhr = new XMLHttpRequest();
       xhr.open(opts.method || "GET", opts.url, true);
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

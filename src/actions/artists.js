@@ -47,6 +47,22 @@ function submitNewArtist(values) {
   }
 }
 
+function submitArtistEdit(id, values) {
+  let qs = "";
+  qs = Object.keys(values).map(key => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
+        }).join('&');
+  return function(dispatch, getState){
+    dispatch({type: C.SUBMIT_ARTIST_EDIT, id});
+    return request({url: baseURL + "/updateartist/" + id, method: "PUT", data: qs})
+      .then(data => {
+        dispatch({type:C.FINISH_ARTIST_EDIT})})
+          .then(data => dispatch(findById(id)));
+  }
+}
+
+
+
 let findById = (id) => {
   return function(dispatch){
     dispatch(requestArtist(id));
@@ -83,21 +99,6 @@ const deleteArtist = (qid) => {
       fire.database().ref('artists').child(qid).remove();
     };
 }
-const submitArtistEdit = (qid, content) => {
-		return function(dispatch,getState){
-      /*var state = getState(),
-				username = state.auth.username,
-        uid = state.auth.uid,*/
-      var error = false; //utils.validateArtist(content);
-			if (error){
-				dispatch({type:C.DISPLAY_ERROR,error});
-      } else {
-        dispatch({type:C.SUBMIT_ARTIST_EDIT,qid});
-
-			}
-		}
-}
-
 
 
 export default {getArtists, findById, submitNewArtist, startArtistEdit, cancelArtistEdit, submitArtistEdit, deleteArtist};

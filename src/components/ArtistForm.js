@@ -22,6 +22,7 @@ class ArtistForm extends Component {
       city_id: 2
     }
     this.props.onSubmit(entry);
+    this.props.onCancel();
   }
 
   render() {

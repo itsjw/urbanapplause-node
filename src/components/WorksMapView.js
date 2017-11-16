@@ -45,7 +45,7 @@ class GoogleMap extends React.Component {
   render(){
     return (
       <div>
-        <div ref="map" style={{width: '100%', zIndex: '10', height: '200px'}}></div>
+        <div ref="map" style={{width: '100%', zIndex: '10', height: '400px'}}></div>
           { !this.state.map && <div className="center-md">Loading...</div> }
     </div>
     )
