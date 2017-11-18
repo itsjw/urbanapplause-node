@@ -33,16 +33,24 @@ app.all('*', function (req, res, next) {
         next();
     }
 });
+app.get('/api/test', function (req, res) {
+  res.send({
+    json: [
+      {
+        id: 1
+      }
+    ]
+  });
+});
+app.get('/api/works', works.findAll);
+app.get('/api/works/:id', works.findById);
+app.post('/api/newwork', works.submitNew);
+app.delete('/api/deletework/:id', works.deleteWork);
 
-app.get('/works', works.findAll);
-app.get('/works/:id', works.findById);
-app.post('/newwork', works.submitNew);
-app.delete('/deletework/:id', works.deleteWork);
-
-app.get('/artists', artists.findAll);
-app.get('/artists/:id', artists.findById);
-app.post('/newartist', artists.submitNew);
-app.put('/updateartist/:id', artists.updateById);
+app.get('/api/artists', artists.findAll);
+app.get('/api/artists/:id', artists.findById);
+app.post('/api/newartist', artists.submitNew);
+app.put('/api/updateartist/:id', artists.updateById);
 
 
 app.listen(app.get('port'), function () {

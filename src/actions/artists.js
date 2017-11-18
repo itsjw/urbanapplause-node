@@ -30,7 +30,7 @@ function getArtists(values) {
         }).join('&');
         qs = "?" + qs;
     }
-    return request({url: baseURL + "/artists" + qs})
+    return request({url: baseURL + "/api/artists" + qs})
       .then(data => dispatch(receiveArtists(JSON.parse(data))));
   }
 }
@@ -42,7 +42,7 @@ function submitNewArtist(values) {
         }).join('&');
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_ARTIST_RESPONSE});
-    return request({url: baseURL + "/newartist", method: "POST", data: qs})
+    return request({url: baseURL + "/api/newartist", method: "POST", data: qs})
       .then(data => dispatch({type:C.RECEIVE_NEW_ARTIST_RESPONSE, data: JSON.parse(data)}))
   }
 }
@@ -54,7 +54,7 @@ function submitArtistEdit(id, values) {
         }).join('&');
   return function(dispatch, getState){
     dispatch({type: C.SUBMIT_ARTIST_EDIT, id});
-    return request({url: baseURL + "/updateartist/" + id, method: "PUT", data: qs})
+    return request({url: baseURL + "/api/updateartist/" + id, method: "PUT", data: qs})
       .then(data => {
         dispatch({type:C.FINISH_ARTIST_EDIT})})
           .then(data => dispatch(findById(id)));
@@ -66,7 +66,7 @@ function submitArtistEdit(id, values) {
 let findById = (id) => {
   return function(dispatch){
     dispatch(requestArtist(id));
-    return request({url: baseURL + "/artists/" + id})
+    return request({url: baseURL + "/api/artists/" + id})
       .then(data => dispatch(receiveArtist(JSON.parse(data))));
   }
 }

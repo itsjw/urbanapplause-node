@@ -28,7 +28,7 @@ function getWorks(values) {
         }).join('&');
         qs = "?" + qs;
     }
-    return request({url: baseURL + "/works" + qs})
+    return request({url: baseURL + "/api/works" + qs})
       .then(data => dispatch(receiveWorks(JSON.parse(data))));
   }
 }
@@ -46,7 +46,7 @@ function submitNewWork(values) {
 
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_WORK_RESPONSE});
-    return request({url: baseURL + "/newwork", method: "POST", data: qs})
+    return request({url: baseURL + "/api/newwork", method: "POST", data: qs})
       .then((res) =>
         {
           console.log('response data: ', res);
@@ -58,13 +58,13 @@ function submitNewWork(values) {
 export let deleteWork = (id) => {
   var error = false;
 		return function(dispatch,getState){
-      return request({url: baseURL + "/deletework/" + id, method: "DELETE"})
+      return request({url: baseURL + "/api/deletework/" + id, method: "DELETE"})
         .then(data => dispatch(getWorks()));
     };
 }
 
 export let findById = () => {
-    return request({url: baseURL + "/works/" + id})
+  return request({url: baseURL + "/api/works/" + id})
         .then(data => data = JSON.parse(data))
 }
 
