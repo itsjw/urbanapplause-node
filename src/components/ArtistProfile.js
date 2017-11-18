@@ -8,9 +8,6 @@ class ArtistProfile extends Component {
       isEditing: false
     }
   }
-  componentDidMount() {
-    this.props.getArtist(this.props.id)
-  }
   openEditForm = () => {
     this.setState({
       isEditing: true

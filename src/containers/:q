@@ -35,7 +35,7 @@ class ArtistFormContainer extends Component {
     }
     else if (this.props.artist) {
       return(
-        <ArtistEditForm artist={this.props.artist} onSubmit={this.props.onUpdate} onCancel={this.props.onCancel}/>
+        <ArtistEditForm artist={this.props.artist} onSubmit={this.props.onUpdate} onCancel={this.handleCancel}/>
       )
     } else {
     return(

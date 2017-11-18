@@ -41,8 +41,8 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
   let id = req.params.id;
-  let sql = "SELECT artist.id, artist.name, artist.bio, website, email, experience FROM artist " +
-    "WHERE artist.id = $1";
+  console.log(id);
+  let sql = "select *, ( select array(SELECT w.id, w.image FROM work w WHERE w.artist_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from artist a WHERE a.id = $1 ;";
 
     db.query(sql, [id])
         .then(item => res.json(item[0]))
