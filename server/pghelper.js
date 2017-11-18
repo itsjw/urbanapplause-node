@@ -30,6 +30,6 @@ exports.query = function (sql, values, singleItem, dontLog) {
                         resolve(singleItem ? result.rows[0] : result.rows);
                     }
                 });
-        }
-    });
+        })
+    })
 };
