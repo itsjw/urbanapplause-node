@@ -3,7 +3,12 @@
 let db = require('./pghelper');
 
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
+let findAll0= (req, res, next) => {
+  let sql = "SELECT id, name, bio FROM artist; ";
+  db.query(sql)
+        .then(item => res.json(item[0]))
+        .catch(next);
+}
 let findAll = (req, res, next) => {
 
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
@@ -24,7 +29,7 @@ let findAll = (req, res, next) => {
     let countSql = "SELECT COUNT(*) from artist " + where;
 
     let sql = "SELECT artist.id, artist.name " +
-                "FROM artist  " + where +
+                "FROM public.artist  " + where +
                 " ORDER BY artist.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
 
     db.query(countSql, values)

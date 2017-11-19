@@ -15,11 +15,13 @@ app.set('port', process.env.PORT || 3000);
 app.use(compression());
 
 app.use('/', express.static(__dirname + '/public'));
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 })
 
 // Adding CORS support
+
+
 app.all('*', function (req, res, next) {
     // Set CORS headers: allow all origins, methods, and headers: you may want to lock this down in a production environment
     res.header("Access-Control-Allow-Origin", "*");
@@ -51,7 +53,6 @@ app.get('/api/artists', artists.findAll);
 app.get('/api/artists/:id', artists.findById);
 app.post('/api/newartist', artists.submitNew);
 app.put('/api/updateartist/:id', artists.updateById);
-
 
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
