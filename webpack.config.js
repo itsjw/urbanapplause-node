@@ -17,6 +17,9 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  node: {
+    fs: 'empty'
+  },
   module: {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', exclude: /(node_modules)/, query: {

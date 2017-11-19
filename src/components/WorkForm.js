@@ -5,7 +5,7 @@ import SelectInput from './SelectInput';
 import {getUploadsImUrl} from '../services/utils';
 import GoogleMap from './GoogleMap';
 
-
+import cloudinary from 'cloudinary';
 class WorkForm extends Component {
   constructor(props) {
     super(props);
@@ -48,14 +48,13 @@ class WorkForm extends Component {
       image: '',
       fileUploadStatus: 'pending'
     })
-    var file = document.querySelector('input[type=file]').files[0];
-    getUploadsImUrl(file).then((url) => {
-      var errors = this.state.errors;
-      errors.fileUpload = false;
+     var file = document.querySelector('input[type=file]').files[0];
+     console.log(file);
+     cloudinary.uploader.upload(file, function(result) {
+       console.log(result.url);
       this.setState({
-        image: url,
+        image: result.url,
         fileUploadStatus: 'complete',
-        errors: errors
       });
     });
     var reader  = new FileReader();
