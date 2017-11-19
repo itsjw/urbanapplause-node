@@ -24,7 +24,7 @@ exports.query = function (sql, values, singleItem, dontLog) {
 
   return new Promise((resolve, reject) => {
           pool.connect(function(err, client, done) {
-                client.query(sql, values, function (err, result) {
+                pool.query(sql, values, function (err, result) {
                     if (err) {
                         reject(err);
                     } else {
