@@ -18,7 +18,12 @@ app.use('/', express.static(__dirname + '/public'));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 })
-
+app.get("/artists*", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+})
+app.get("/works*", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+})
 // Adding CORS support
 
 
@@ -36,10 +41,11 @@ app.all('*', function (req, res, next) {
     }
 });
 app.get('/api/test', function (req, res) {
+  console.log(process.env.DATABASE_URL);
   res.send({
     json: [
       {
-        id: 1
+        id: process.env.DATABASE_URL
       }
     ]
   });

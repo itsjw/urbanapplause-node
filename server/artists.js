@@ -3,14 +3,23 @@
 let db = require('./pghelper');
 
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-let findAll0= (req, res, next) => {
-  let sql = "SELECT id, name, bio FROM artist; ";
+let findAll0 = (req, res, next) => {
+  let sql = `ALTER TABLE artist ADD COLUMN email VARCHAR(350);`;
+
+let sql4 = `CREATE TABLE work (
+ id serial PRIMARY KEY,
+ artist_id integer REFERENCES artist (id),
+ description VARCHAR (500),
+ location_id integer REFERENCES location (id),
+  date_posted timestamp with time zone NOT NULL DEFAULT now(),
+  image text
+);`
+  let sql0 = "SELECT table_name FROM information_schema.tables WHERE table_schema='public';";
   db.query(sql)
-        .then(item => res.json(item[0]))
+        .then(item => res.json(item))
         .catch(next);
 }
 let findAll = (req, res, next) => {
-
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
         page = req.query.page ? parseInt(req.query.page) : 1,
         search = req.query.search,
@@ -46,8 +55,7 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
   let id = req.params.id;
-  console.log(id);
-  let sql = "select *, ( select array(SELECT w.id, w.image FROM work w WHERE w.artist_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from artist a WHERE a.id = $1 ;";
+  let sql = "select *, ( select array(SELECT w.id FROM work w WHERE w.artist_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from artist a WHERE a.id = $1 ;";
 
     db.query(sql, [id])
         .then(item => res.json(item[0]))

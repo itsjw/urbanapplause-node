@@ -21,7 +21,7 @@ class ArtistListContainer extends Component {
             page: 1
         }
     }
-    componentDidMount() {
+  componentDidMount() {
       this.findArtists();
     }
     searchKeyChangeHandler(searchKey) {
@@ -32,7 +32,7 @@ class ArtistListContainer extends Component {
         this.setState({min: values[0], max: values[1], page: 1}, this.findArtists);
     }
 
-    findArtists() {
+  findArtists() {
         this.props.getArtists({search: this.state.searchKey, min: this.state.min, max: this.state.max, page: this.state.page})
     }
 

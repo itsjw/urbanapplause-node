@@ -36,7 +36,7 @@ class Header extends Component {
                    <div className='navbar-content'><p className='has-text-link'>Artists</p></div>
                 </a>
                  <a className='navbar-item' href='/users'>
-                  <div className='navbar-content'>Users</div>
+                  <div className='navbar-content'>Userss</div>
                 </a>
 
               </div>
