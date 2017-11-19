@@ -7,6 +7,24 @@ let db = require('./pghelper');
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
 let findAll = (req, res, next) => {
+  let countSql0 = `
+  CREATE TABLE location (
+  id serial PRIMARY KEY,
+  lat double precision,
+  lng double precision,
+  formatted_address text,
+  city VARCHAR(200)
+  );
+
+  CREATE TABLE work (
+  id serial PRIMARY KEY,
+  description text,
+  date_posted timestamp with time zone NOT NULL DEFAULT now(),
+  image text,
+  location_id integer REFERENCES location (id)
+  );
+  `
+  let countSql2 = `ALTER TABLE work ADD COLUMN artist_id integer REFERENCES artist (id);`;
 
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
         page = req.query.page ? parseInt(req.query.page) : 1,

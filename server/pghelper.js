@@ -1,8 +1,5 @@
 "use strict";
 
-let config = require('./config'),
-    databaseURL = config.databaseURL;
-
 const { Pool, Client } = require('pg')
 
 const pool = new Pool({
@@ -11,7 +8,8 @@ const pool = new Pool({
     host: 'ec2-50-16-228-232.compute-1.amazonaws.com',
     database: 'd9a4q27eod4akk',
     password: '28500bf3f9c17432dc4ab4284aa9baee02ab07a560209b5a78a71b2074a91c87',
-    port: 5432
+  port: 5432,
+  ssl: true
 });
 
 exports.query = function (sql, values, singleItem, dontLog) {
