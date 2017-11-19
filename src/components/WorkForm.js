@@ -51,7 +51,7 @@ class WorkForm extends Component {
      var file = document.querySelector('input[type=file]').files[0];
      console.log(file);
      cloudinary.uploader.upload(file, function(result) {
-       console.log(result.url);
+       console.log(result);
       this.setState({
         image: result.url,
         fileUploadStatus: 'complete',
