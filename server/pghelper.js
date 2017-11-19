@@ -2,7 +2,7 @@
 
 const { Pool, Client } = require('pg')
 
-const pool = new Pool({
+const pool = new Client({
     url: process.env.DATABASE_URL,
     user: 'btkzzyyrfiixgb',
     host: 'ec2-50-16-228-232.compute-1.amazonaws.com',
