@@ -21963,7 +21963,7 @@ var _request2 = _interopRequireDefault(_request);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var baseURL = "http://localhost:3000";
+var baseURL = "https://urbanapplause.herokuapp.com";
 function requestWorks() {
   return {
     type: _constants2.default.REQUEST_WORKS_DATA
