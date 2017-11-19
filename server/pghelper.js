@@ -32,5 +32,5 @@ exports.query = function (sql, values, singleItem, dontLog) {
                     }
                 });
           })
-  )}
+  })
 };
