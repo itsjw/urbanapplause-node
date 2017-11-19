@@ -5,7 +5,7 @@ const getUploadsImUrl = (file) => {
         var fd = new FormData();
         fd.append("upload", file); // Append the file
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://uploads.im/api");
+        xhr.open("POST", "https://uploads.im/api");
         xhr.onload = function() {
         var url = JSON.parse(xhr.responseText).data.img_url
           resolve(url);
