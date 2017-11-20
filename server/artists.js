@@ -67,10 +67,9 @@ let updateById = (req, res, next) => {
   let id = req.params.id;
   let name = req.body.name;
   let bio = req.body.bio;
-  let experience = req.body.experience;
   let website = req.body.website;
   let email = req.body.email;
-  let sql = "UPDATE artist SET name='" + name + "', bio='" + bio + "', experience='" + experience + "', website='" + website + "', email='" + email + "' WHERE id=" + id + " RETURNING id; "
+  let sql = "UPDATE artist SET name='" + name + "', bio='" + bio + "', website='" + website + "', email='" + email + "' WHERE id=" + id + " RETURNING id; "
 
   db.query(sql)
     .then((error) => console.log(error));

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Icon} from 'react-fa';
 
 class SearchBar extends React.Component {
 
@@ -15,18 +16,21 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-          <div className="field has-addons">
-            <div className='control is-expanded'>
+          <div className="field ">
+            <div className='control is-expanded has-icons-left has-icons-right' style={{height: '48px'}}>
               <input className="input"
+                style={{height: '48px', zIndex: 2}}
                  type="search"
                  placeholder={this.props.placeholder ||"Enter a work description or artist name"}
                  value={this.props.searchKey}
                  onChange={this.searchKeyChangeHandler.bind(this)}/>
-            </div>
-            <div className='control'>
-               <button className="button is-primary" onClick={this.clearText.bind(this)}>
-                Clear
-              </button>
+              <span className="icon is-small is-left" style={{height: '48px'}}>
+                <Icon name="search"/>
+              </span>
+
+              <span class="icon is-small is-right" onClick={this.clearText} style={{height: '48px', cursor: 'pointer', zIndex: 3}}>
+                <Icon name='close' style={{cursor: 'pointer'}}/>
+            </span>
             </div>
           </div>
         );

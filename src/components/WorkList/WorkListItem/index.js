@@ -22,31 +22,17 @@ class PostPreview extends Component {
           </div>
 
           <div className='content'>
-            <p>{work.description}</p>
-          </div>
-        </div>
-        <div className='card-footer'>
-          <div className='card-footer-item '>
-            Posted {timeSince(new Date(work.date_posted))} ago
-          </div>
-          <div className='card-footer-item'>
-              <p className='control' onClick={this.handleDelete}>
-                  <a className={` button is-danger`}>
-                    <span className="icon is-small">
-                      <Icon name="trash"/>
-                    </span>
-                    <span>Trash</span>
-                  </a>
-                </p>
-                <p className='control' onClick={this.handleEdit}>
-                  <a className={` button is-success`}>
-                    <span className="icon is-small">
-                      <Icon name="edit"/>
-                    </span>
-                    <span>Edit</span>
-                  </a>
-                </p>
-
+            <p>{work.description}</p><hr />
+            <div className='columns'>
+              <div className='column'>
+                Posted {timeSince(new Date(work.date_posted))} ago
+              </div>
+              <div className='column is-narrow'>
+                      <span onClick={this.handleDelete} className="icon is-medium action-icon">
+                        <Icon name="trash"/>
+                      </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

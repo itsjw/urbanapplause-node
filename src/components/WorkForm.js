@@ -43,27 +43,35 @@ class WorkForm extends Component {
     newState[fieldName] = newValue;
     this.setState({newState});
   }
-   onFileChange = (e) => {
+  onFileChange = (e) => {
+    console.log('on file change');
     this.setState({
       image: '',
       fileUploadStatus: 'pending'
     })
-     var file = document.querySelector('input[type=file]').files[0];
-     console.log(file);
-     cloudinary.uploader.upload(file, function(result) {
-       console.log(result);
-      this.setState({
-        image: result.url,
-        fileUploadStatus: 'complete',
+    var file = document.querySelector('input[type=file]').files[0];
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      console.log(e.target);
+      cloudinary.config({
+        cloud_name: 'dt69uxouv',
+        api_key: '371182578119399',
+        api_secret: 'o-EMp3H21ZeD6faMa9TeY1fWUaU'
       });
+        cloudinary.uploader.upload(
+        e.target.result,
+        function(result) {
+         console.log(result.url);
+          this.setState({
+            image: result.url,
+            fileUploadStatus: 'complete',
+          });
+      }.bind(this));
+    }.bind(this);
+    reader.readAsDataURL(file);
+    this.setState({
+      isEditingImage: false
     });
-    var reader  = new FileReader();
-    reader.addEventListener("load", function () {
-
-    }, false)
-  this.setState({
-    isEditingImage: false
-  });
    }
   handleSubmit = () => {
     var entry = {

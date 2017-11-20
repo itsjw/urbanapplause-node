@@ -23,6 +23,7 @@ class ArtistForm extends Component {
     }
     this.props.onSubmit(entry);
     this.props.onCancel();
+    this.forceUpdate();
   }
 
   render() {

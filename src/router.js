@@ -8,7 +8,9 @@ import Footer from './components/Footer';
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 
 import ArtistProfilePage from './pages/ArtistProfilePage';
-
+import AboutPage from './pages/AboutPage';
+import ErrorPage from './pages/ErrorPage';
+import ContactPage from './pages/ContactPage';
 
 import WorkListContainer from './containers/WorkListContainer';
 import ArtistListContainer from './containers/ArtistListContainer';
@@ -30,9 +32,13 @@ export const router =
 
                  <Route exact path='/artists' component={ArtistListContainer}/>
                  <Route exact path='/artists/new' component={ArtistFormContainer}/>
-                 <Route path='/artists/:id' component={ArtistProfileContainer}/>
+                 <Route exact path='/artists/:id' component={ArtistProfileContainer}/>
+                 <Route exact path='/about' component={AboutPage}/>
+                 <Route exact path='/contact' component={ContactPage}/>
+                 <Route path='/' component={ErrorPage}/>
                </Switch>
              </div>
+            <Footer />
             </div>
         </BrowserRouter>)
 

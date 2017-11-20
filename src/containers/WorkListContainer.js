@@ -66,35 +66,47 @@ class WorkListContainer extends Component {
     return(
       <div>
         <section className="section">
-          <a className='add-new' href="/works/new">+ New Work</a>
+          <div className='columns'>
+
+            <div className='column'>
               <SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)}/>
+            </div>
+
+            <div className='column is-narrow'>
               <div className='field has-addons'>
-                <p className='control' onClick={this.closeMap}>
+                <span className='control' onClick={this.closeMap}>
                   <a className={`button is-primary ${(this.state.mapView==false)?"is-active":"is-outlined"}`}>
                     <span className="icon is-small">
                       <Icon name="list"/>
                     </span>
                     <span>List</span>
                   </a>
-                </p>
-                <p className='control' onClick={this.openMap}>
+                </span>
+                <span className='control' onClick={this.openMap} style={{height: '36px'}}>
                   <a className={`button is-primary ${(this.state.mapView==true)?"is-active":"is-outlined"}`}>
                     <span className="icon is-small">
                       <Icon name="map-marker"/>
                     </span>
                     <span>Map</span>
                   </a>
-                </p>
+                </span>
               </div>
-                  </section>
+            </div>
 
-                <section className='section'>
-                  <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
-                </section>
-                {(this.state.mapView==true)?
-                    <WorksMapView works={works.items}/>:
-                    <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />}
-                <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
+
+           <div className='column is-narrow'>
+              <a className='button is-primary' href="/works/new">+ New Work</a>
+            </div>
+          </div>
+        </section>
+
+        <section className='section'>
+          <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
+        </section>
+        {(this.state.mapView==true)?
+            <WorksMapView works={works.items}/>:
+            <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />}
+        <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
 
       </div>
     )

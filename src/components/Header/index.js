@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from '../../media/ua-logo.png';
 
 class Header extends Component {
   constructor(props) {
@@ -15,8 +16,10 @@ class Header extends Component {
   render() {
     return(
     <nav className="navbar is-transparent" role="navigation" aria-label="main navigation">
-        <div className="navbar-brand">
-          <a href='/'>{this.props.text}</a>
+      <div className="navbar-brand">
+
+          <img src={logo}/>
+          <a href='/' className='navbar-item'>{this.props.text}</a>
           <button onClick={this.toggleHamburger} className={this.state.isHamburgerActive?"button navbar-burger is-active":"button navbar-burger"}>
             <span></span>
             <span></span>
@@ -35,8 +38,8 @@ class Header extends Component {
                  <a className='navbar-item' href='/artists'>
                    <div className='navbar-content'><p className='has-text-link'>Artists</p></div>
                 </a>
-                 <a className='navbar-item' href='/users'>
-                  <div className='navbar-content'>Userss</div>
+                 <a className='navbar-item' href='/about'>
+                  <div className='navbar-content'>About</div>
                 </a>
 
               </div>
