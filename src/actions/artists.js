@@ -43,7 +43,11 @@ function submitNewArtist(values) {
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_ARTIST_RESPONSE});
     return request({url: baseURL + "/api/newartist", method: "POST", data: qs})
-      .then(data => dispatch({type:C.RECEIVE_NEW_ARTIST_RESPONSE, data: JSON.parse(data)}))
+      .then((data) =>
+        {
+          dispatch({type:C.RECEIVE_NEW_ARTIST_RESPONSE, data: JSON.parse(data)})
+          dispatch(getArtists());
+        })
   }
 }
 
@@ -54,10 +58,12 @@ function submitArtistEdit(id, values) {
         }).join('&');
   return function(dispatch, getState){
     dispatch({type: C.SUBMIT_ARTIST_EDIT, id});
+    dispatch(findById(id));
     return request({url: baseURL + "/api/updateartist/" + id, method: "PUT", data: qs})
-      .then(data => {
+      .then((data) => {
+
+        dispatch(findById(id));
         dispatch({type:C.FINISH_ARTIST_EDIT})})
-          .then(data => dispatch(findById(id)));
   }
 }
 

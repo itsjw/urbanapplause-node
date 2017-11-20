@@ -26,6 +26,9 @@ class ArtistFormContainer extends Component {
       redirect: true
     })
   }
+  handleUpdate = (id, content) => {
+    this.props.onUpdate(id, content);
+  }
   render() {
     const redirectTarget = this.props.artist?'/artists/'+this.props.artist.id:'/artists';
     if (this.state.redirect==true){
@@ -35,7 +38,7 @@ class ArtistFormContainer extends Component {
     }
     else if (this.props.artist) {
       return(
-        <ArtistEditForm artist={this.props.artist} onSubmit={this.props.onUpdate} onCancel={this.props.onCancel}/>
+        <ArtistEditForm artist={this.props.artist} onSubmit={this.handleUpdate} onCancel={this.props.onCancel}/>
       )
     } else {
     return(

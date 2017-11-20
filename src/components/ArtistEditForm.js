@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextInput from './TextInput';
-
+import Redirect from 'react-router-dom';
 
 class ArtistEditForm extends Component {
   constructor(props) {
@@ -31,6 +31,7 @@ class ArtistEditForm extends Component {
     console.log(entry);
     this.props.onSubmit(this.props.artist.id, entry);
     this.props.onCancel();
+    return <Redirect to={`/artist${this.props.artist.id}`} />
   }
 
   render() {
@@ -57,37 +58,7 @@ class ArtistEditForm extends Component {
           errorMsg={this.state.errors.description}
         />
 
-       <TextInput
-          label='Experience'
-          type='textarea'
-          ref='experience'
-          name='experience'
-          value={artist.experience}
-          onChange={this.onInputChange}
-          errorMsg={this.state.errors.experience}
-        />
-      <TextInput
-          label='Website'
-          type='text'
-          ref='website'
-          name='website'
-          value={artist.website}
-          onChange={this.onInputChange}
-          errorMsg={this.state.errors.website}
-        />
-
-       <TextInput
-          label='Email'
-          type='text'
-          ref='email'
-          name='email'
-          value={artist.email}
-          onChange={this.onInputChange}
-          errorMsg={this.state.errors.email}
-        />
-
-
-        <button className='button is-primary' onClick={this.handleSubmit}>Submit</button>
+      <button className='button is-primary' onClick={this.handleSubmit}>Submit</button>
         <button className='button' onClick={this.props.onCancel}>Cancel</button>
       </div>
         )

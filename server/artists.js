@@ -35,11 +35,10 @@ let findAll = (req, res, next) => {
 
     let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
 
-    let countSql = "SELECT COUNT(*) from artist " + where;
-
-    let sql = "SELECT artist.id, artist.name " +
-                "FROM public.artist  " + where +
-                " ORDER BY artist.name LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
+  let countSql = "SELECT COUNT(*) from artist " + where;
+  let sql = "SELECT * " +
+                "FROM artist  " + where +
+" ORDER BY artist.name LIMIT $" + (values.length + 1) + " OFFSET $" + + (values.length + 2);
 
     db.query(countSql, values)
         .then(result => {
@@ -80,7 +79,8 @@ let submitNew = (req, res, next) => {
   let sql = "INSERT INTO artist (name) VALUES ('" + name + "');"
 
   db.query(sql)
-    .then((error) => console.log(error));
+    .then(item => res.json())
+    .catch(next);
 
 }
 exports.submitNew = submitNew;
