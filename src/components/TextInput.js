@@ -17,7 +17,7 @@ class TextInput extends Component {
             title={title||''}
             onChange={this.handleChange}
             placeholder={placeholder||''}
-            className={(errorMsg==false)?'input':'input is-danger '+className}/>;
+            className={(errorMsg==false)?'input':'input '+className}/>;
 
     if (type=='textarea') {
       inputComponent=

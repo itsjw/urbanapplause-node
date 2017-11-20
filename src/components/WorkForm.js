@@ -84,11 +84,11 @@ class WorkForm extends Component {
       case null:
         console.log('must select artist option');
         return;
-      case 'leave':
+      case 'Unknown':
         entry.anonymous = true;
-      case 'create':
+      case 'New':
         entry.new_artist_name = this.state.artist.value;
-      case 'select':
+      case 'Artist Selected':
         entry.artist_id = this.state.artist.value;
     }
     console.log(entry);
@@ -108,7 +108,6 @@ class WorkForm extends Component {
             title='Choose an image'
             label="Choose a photo..."
             onChange={this.onFileChange}
-            errorMsg={this.state.errors.file}
             imgUrl={this.state.image}
             fileUpload={this.state.fileUploadStatus}
           />
@@ -116,10 +115,9 @@ class WorkForm extends Component {
         <SelectInput
             label='Artist'
             options={this.state.options}
-            errorText=''
-            selectOption='select'
-            createOption='create'
-            unknownOption='leave'
+            selectOption='Artist Selected'
+            createOption='New'
+            unknownOption='Unknown'
             value={this.state.artistInput}
             onSelectMatch={this.onInputChange}
             setValue={this.onSelectArtist}
@@ -135,7 +133,6 @@ class WorkForm extends Component {
           ref='description'
           value={this.state.description}
           onChange={this.onInputChange}
-          errorMsg={this.state.errors.description}
         />
         Location:
         <GoogleMap

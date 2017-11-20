@@ -8,6 +8,9 @@
 @import 'bulma/sass/components/dropdown';
 @import 'bulma/sass/components/pagination';
 @import 'bulma/sass/elements/form';
+@import 'bulma/sass/elements/other';
+
+@import 'bulma/sass/elements/tag';
 @import 'bulma/sass/grid/columns';
 @import 'bulma/sass/components/modal';
 @import 'bulma/sass/layout/footer';
@@ -27,6 +30,9 @@ html, body{
   height: 100%;
   margin: 0
 
+}
+.delete {
+  margin-left: 5px;
 }
 
 /*CONTAINER LAYOUT

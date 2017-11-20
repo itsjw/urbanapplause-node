@@ -26,6 +26,11 @@ class WorkFormContainer extends Component {
       redirect: true
     });
   }
+  closeForm = () => {
+    this.setState({
+      redirect: true
+    });
+  }
   render() {
     if (this.state.redirect==true) {
       return (

@@ -146,12 +146,21 @@ class SelectInput extends Component {
       )
      return(
       <div className="field">
-          <label className="label">{this.props.label||''}</label>
+        <label className="label">
+          {this.props.label||''}<br/>
+          {(this.state.input_type=='none selected')?
+              <span className='tag is-danger'>{this.state.input_type}</span>:
+              <span className='tag is-success'>
+                {this.state.input_type}
+                <span className="delete" onClick={this.clearInputType}></span>
+              </span>
+          }
+        </label>
           <div className={(this.state.input_type=='none selected'&& this.state.textInput.length > 0)?"dropdown is-active select-input":"select-input"}>
             <div className='control'>
               <div className="dropdown-trigger select-input">
-                {this.state.input_type} <span onClick={this.clearInputType}> X </span><input
-                  className={`input ${this.state.selectedOptionId?'is-success':''} ${(this.props.errorText.length>0)?'is-danger':''}`}
+                <input
+                  className={`input`}
                   type='text'
                   ref='input_box'
                   value={this.state.selectedOptionName||this.state.textInput}

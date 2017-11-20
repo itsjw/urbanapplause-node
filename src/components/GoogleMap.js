@@ -12,7 +12,7 @@ class GoogleMap extends React.Component {
     if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
       if (isScriptLoadSucceed) {
         var map  = new google.maps.Map(this.refs.map, {
-          center: {lat: 10.794234, lng: 106.706541},
+          center: {lat: 43.6532, lng: -79.3832},
           zoom: 12
         });
         if (navigator.geolocation) {
@@ -23,11 +23,6 @@ class GoogleMap extends React.Component {
             };
 
             map.setCenter(pos);
-            const marker = new google.maps.Marker({
-              position: pos,
-              map: map,
-              title: 'Hello World!'
-            });
           }, () => {
             console.log('navigator disabled');
           });

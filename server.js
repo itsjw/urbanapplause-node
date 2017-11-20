@@ -24,6 +24,12 @@ app.get("/artists*", (req, res) => {
 app.get("/works*", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 })
+app.get("/about*", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+})
+app.get("/contact*", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+})
 // Adding CORS support
 
 
