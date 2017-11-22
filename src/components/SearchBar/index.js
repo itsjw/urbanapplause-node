@@ -9,7 +9,7 @@ class SearchBar extends React.Component {
         this.props.onChange(searchKey);
     }
 
-    clearText() {
+  clearText = () => {
         this.setState({searchKey: ""});
         this.props.onChange("");
     }
@@ -27,10 +27,9 @@ class SearchBar extends React.Component {
               <span className="icon is-small is-left" style={{height: '48px'}}>
                 <Icon name="search"/>
               </span>
-
-              <span class="icon is-small is-right" onClick={this.clearText} style={{height: '48px', cursor: 'pointer', zIndex: 3}}>
-                <Icon name='close' style={{cursor: 'pointer'}}/>
-            </span>
+              <span style={{height: '48px', cursor: 'pointer', position:'absolute', top: '0', right: '0', verticalAlign: 'middle', padding: '15px', zIndex: '5'}} onClick={this.clearText} >
+                <a className='delete' style={{cursor: 'pointer'}} onClick={this.clearText}  />
+              </span>
             </div>
           </div>
         );
