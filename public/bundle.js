@@ -45160,7 +45160,7 @@ var _temp = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45180,58 +45180,63 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SearchBar = function (_React$Component) {
-    _inherits(SearchBar, _React$Component);
+  _inherits(SearchBar, _React$Component);
 
-    function SearchBar() {
-        _classCallCheck(this, SearchBar);
+  function SearchBar() {
+    var _ref;
 
-        return _possibleConstructorReturn(this, (SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).apply(this, arguments));
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, SearchBar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _createClass(SearchBar, [{
-        key: 'searchKeyChangeHandler',
-        value: function searchKeyChangeHandler(event) {
-            var searchKey = event.target.value;
-            this.setState({ searchKey: searchKey });
-            this.props.onChange(searchKey);
-        }
-    }, {
-        key: 'clearText',
-        value: function clearText() {
-            this.setState({ searchKey: "" });
-            this.props.onChange("");
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'field ' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'control is-expanded has-icons-left has-icons-right', style: { height: '48px' } },
-                    _react2.default.createElement('input', { className: 'input',
-                        style: { height: '48px', zIndex: 2 },
-                        type: 'search',
-                        placeholder: this.props.placeholder || "Enter a work description or artist name",
-                        value: this.props.searchKey,
-                        onChange: this.searchKeyChangeHandler.bind(this) }),
-                    _react2.default.createElement(
-                        'span',
-                        { className: 'icon is-small is-left', style: { height: '48px' } },
-                        _react2.default.createElement(_reactFa.Icon, { name: 'search' })
-                    ),
-                    _react2.default.createElement(
-                        'span',
-                        { 'class': 'icon is-small is-right', onClick: this.clearText, style: { height: '48px', cursor: 'pointer', zIndex: 3 } },
-                        _react2.default.createElement(_reactFa.Icon, { name: 'close', style: { cursor: 'pointer' } })
-                    )
-                )
-            );
-        }
-    }]);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).call.apply(_ref, [this].concat(args))), _this), _this.clearText = function () {
+      _this.setState({ searchKey: "" });
+      _this.props.onChange("");
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
 
-    return SearchBar;
+  _createClass(SearchBar, [{
+    key: 'searchKeyChangeHandler',
+    value: function searchKeyChangeHandler(event) {
+      var searchKey = event.target.value;
+      this.setState({ searchKey: searchKey });
+      this.props.onChange(searchKey);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'field ' },
+        _react2.default.createElement(
+          'div',
+          { className: 'control is-expanded has-icons-left has-icons-right', style: { height: '48px' } },
+          _react2.default.createElement('input', { className: 'input',
+            style: { height: '48px', zIndex: 2 },
+            type: 'search',
+            placeholder: this.props.placeholder || "Enter a work description or artist name",
+            value: this.props.searchKey,
+            onChange: this.searchKeyChangeHandler.bind(this) }),
+          _react2.default.createElement(
+            'span',
+            { className: 'icon is-small is-left', style: { height: '48px' } },
+            _react2.default.createElement(_reactFa.Icon, { name: 'search' })
+          ),
+          _react2.default.createElement(
+            'span',
+            { style: { height: '48px', cursor: 'pointer', position: 'absolute', top: '0', right: '0', verticalAlign: 'middle', padding: '15px', zIndex: '5' }, onClick: this.clearText },
+            _react2.default.createElement('a', { className: 'delete', style: { cursor: 'pointer' }, onClick: this.clearText })
+          )
+        )
+      );
+    }
+  }]);
+
+  return SearchBar;
 }(_react2.default.Component);
 
 ;
@@ -45243,14 +45248,14 @@ exports.default = _default;
 
 ;
 
-var _temp = function () {
-    if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-        return;
-    }
+var _temp2 = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
 
-    __REACT_HOT_LOADER__.register(SearchBar, 'SearchBar', '/Users/flannery/Projects/ua-node2/src/components/SearchBar/index.js');
+  __REACT_HOT_LOADER__.register(SearchBar, 'SearchBar', '/Users/flannery/Projects/ua-node2/src/components/SearchBar/index.js');
 
-    __REACT_HOT_LOADER__.register(_default, 'default', '/Users/flannery/Projects/ua-node2/src/components/SearchBar/index.js');
+  __REACT_HOT_LOADER__.register(_default, 'default', '/Users/flannery/Projects/ua-node2/src/components/SearchBar/index.js');
 }();
 
 ;
