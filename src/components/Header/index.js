@@ -18,8 +18,11 @@ class Header extends Component {
     <nav className="navbar is-transparent" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
 
-          <img src={logo}/>
-          <a href='/' className='navbar-item'>{this.props.text}</a>
+        <a href='/' className='navbar-item'>
+          <img src={logo} style={{marginRight: '10px'}}/>
+          {this.props.text}
+        </a>
+
           <button onClick={this.toggleHamburger} className={this.state.isHamburgerActive?"button navbar-burger is-active":"button navbar-burger"}>
             <span></span>
             <span></span>

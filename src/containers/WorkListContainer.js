@@ -19,7 +19,7 @@ class WorkListContainer extends Component {
           works: [],
           total: 0,
           page: 1,
-          mapView:true
+          mapView:false
         };
     }
     componentDidMount() {
