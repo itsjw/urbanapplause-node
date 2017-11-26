@@ -27,7 +27,6 @@ class AboutPage extends Component {
 </p>
 
        <h2 id='upcoming-features' className='subtitle is-2'>Upcoming Features</h2>
-       <p>
          <strong>Up Next</strong>
          <ul>
            <li>User accounts</li>
@@ -37,8 +36,6 @@ class AboutPage extends Component {
            <li> ilter works within a time range</li>
            <li>Filter works for a city</li>
         </ul>
-      </p>
-      <p>
         <strong>Eventually</strong>
         <ul>
           <li>Create "verified artist accounts" that have been claimed and are managed by the artist themselves. </li>
@@ -49,9 +46,7 @@ class AboutPage extends Component {
       </ul>
           <a href='#top'>Back to top<span className='icon is-medium'><Icon name='arrow-up'/></span></a>
 
-      </p>
       <h2 id='technology-stack' className='subtitle is-2'>Technology Stack</h2>
-       <p>
          <ul>
            <li><a href='https://reactjs.org/'>ReactJS</a> (Javascript Framework)</li>
            <li><a href='https://redux.js.org/'>Redux</a> (Javascript State Manager)</li>
@@ -62,11 +57,6 @@ class AboutPage extends Component {
            <li><a href='https://cloudinary.com/'>Cloudinary</a> (Image hosting and CDN service)</li>
          </ul>
           <a href='#top'>Back to top<span className='icon is-medium'><Icon name='arrow-up'/></span></a>
-
-      </p>
-
-
-
       </div>
     )
   }
