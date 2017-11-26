@@ -57,13 +57,8 @@ function submitArtistEdit(id, values) {
             return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
         }).join('&');
   return function(dispatch, getState){
-    dispatch({type: C.SUBMIT_ARTIST_EDIT, id});
-    dispatch(findById(id));
-    return request({url: baseURL + "/api/updateartist/" + id, method: "PUT", data: qs})
-      .then((data) => {
-
-        dispatch(findById(id));
-        dispatch({type:C.FINISH_ARTIST_EDIT})})
+    dispatch({type: C.SUBMIT_ARTIST_EDIT, id: id, values: values});
+    return request({url: baseURL + "/api/updateartist/" + id, method: "PUT", data: qs});
   }
 }
 

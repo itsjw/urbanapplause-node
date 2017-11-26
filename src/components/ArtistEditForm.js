@@ -28,10 +28,8 @@ class ArtistEditForm extends Component {
       website: this.state.website,
       email: this.state.email
     }
-    console.log(entry);
     this.props.onSubmit(this.props.artist.id, entry);
     this.props.onCancel();
-    return <Redirect to={`/artist${this.props.artist.id}`} />
   }
 
   render() {

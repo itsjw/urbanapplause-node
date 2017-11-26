@@ -51,11 +51,15 @@ const artistsReducer = (currentstate,action) => {
 			newstate = _.cloneDeep(currentstate);
 			delete newstate.states[action.qid];
 			return newstate;
-		case C.SUBMIT_ARTIST_EDIT:
-			newstate = _.cloneDeep(currentstate);
-			newstate.states[action.qid] = C.SUBMITTING_ARTIST;
-			return newstate;
-
+    case C.SUBMIT_ARTIST_EDIT:
+      var selectedArtist = currentstate.selectedArtist.artist;
+      Object.keys(action.values).map((key, i) => {
+        selectedArtist[key] = action.values[key];
+          return;
+        });
+      return Object.assign({},currentstate,{
+				selectedArtist: {artist: selectedArtist}
+			});
     default:
       return currentstate || initialState.artists;
 	}

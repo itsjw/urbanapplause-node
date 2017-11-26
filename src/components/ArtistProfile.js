@@ -19,21 +19,9 @@ class ArtistProfile extends Component {
     });
   }
   render() {
-    if (this.props.artist) {
-      const {artist} = this.props;
-      if (this.state.isEditing == true) {
-        return (<ArtistFormContainer type='editing' artist={artist} onCancel={this.closeEditForm} />);
-      } else {
-        return(
-          <div>
-            <ArtistInfo artist={artist}/>
-            <button className='button is-success' onClick={this.openEditForm}>Edit</button>
-          </div>
-        )
-      }
-    } else {
-      return (<span>Loading</span>);
-    }
+    return(
+      <ArtistInfo artist={this.props.artist}/>
+    );
   }
 }
 

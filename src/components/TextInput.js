@@ -25,9 +25,8 @@ class TextInput extends Component {
           ref={refName}
           id={idName}
           className={type}
-          onChange={this.handleChange}>
-        {value}
-      </textarea>
+          onChange={this.handleChange}
+          defaultValue={value}/>
     }
 
     return(

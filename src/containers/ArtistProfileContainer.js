@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import ArtistProfile from '../components/ArtistProfile';
+import ArtistInfo from '../components/ArtistInfo';
+
+import ArtistEditForm from '../components/ArtistEditForm';
 import artistActions from '../actions/artists';
 import {connect} from 'react-redux';
 
@@ -12,7 +14,6 @@ class ArtistProfileContainer  extends Component {
   }
   componentDidMount(){
     this.props.getArtist(this.props.match.params.id);
-    console.log(this.props.artist);
   }
   closeForm = () => {
     this.setState({
@@ -25,13 +26,24 @@ class ArtistProfileContainer  extends Component {
       isEditing: true
     });
   }
+  handleUpdate = (id, content) => {
+    this.props.onUpdate(id, content);
+  }
   render() {
     const id = this.props.match.params.id;
-    return (
-      <div>
-        <ArtistProfile artist={this.props.artist}/>
-      </div>
-    )
+    if (this.state.isEditing) {
+      return(
+        <div>
+          <ArtistEditForm artist={this.props.artist} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
+        </div>);
+    } else {
+      return (
+        <div>
+          <ArtistInfo artist={this.props.artist}/>
+          <button className='button' onClick={this.openForm}>Edit</button>
+        </div>
+      )
+    }
   }
 }
 
@@ -43,7 +55,8 @@ var mapStateToProps = function(appState){
 var mapDispatchToProps = function(dispatch){
   return {
     getArtist: function(id){ dispatch(artistActions.findById(id)); },
-    getWorks: function(artist_id) {dispatch(workActions.findWorksForArtist(artist_id));}
+    getWorks: function(artist_id) {dispatch(workActions.findWorksForArtist(artist_id));},
+    onUpdate: function(id, content){ dispatch(artistActions.submitArtistEdit(id, content)); },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ArtistProfileContainer);
