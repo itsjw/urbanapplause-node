@@ -1,5 +1,6 @@
 import React from 'react'
 import scriptLoader from 'react-async-script-loader'
+import {timeSince} from '../services/utils';
 
 class GoogleMap extends React.Component {
   constructor(props){
@@ -8,12 +9,19 @@ class GoogleMap extends React.Component {
       map: null
     };
   }
-  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
-    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
-      if (isScriptLoadSucceed) {
-        var map  = new google.maps.Map(this.refs.map, {
-          center: {lat: 10.794234, lng: 106.706541},
-          zoom: 12
+  componentDidUpdate(prevProps, prevState) {
+
+   if (prevProps.works!== this.props.works) {
+
+   this.loadMap();
+
+   this.forceUpdate()
+
+   }
+
+  }
+  loadMap() {
+      var map  = new google.maps.Map(this.refs.map, {
         });
 
         var bounds = new google.maps.LatLngBounds();
@@ -28,15 +36,45 @@ class GoogleMap extends React.Component {
               map: map,
               title: 'Hello World!'
             });
+            var contentString = `
+              <div className='map-popup'>
+                <h2 className='title is-6'>
+                  ${work.artist}
+                </h2>
+                                <h3 className='subtitle is-7'>${work.formatted_address}</h3>
+              <p>
+                  Posted ${timeSince(new Date(work.date_posted))} ago
+                </p>
 
+
+                <div
+                  className='thumbnail-container'>
+                  <img style="width: 200px;" className='image' src='${work.image}'/></div>
+                              </div>`;
+
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+
+
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
+            });
             bounds.extend(pos);
           });
 
-        map.fitBounds(bounds);
+    map.fitBounds(bounds);
+    map.setZoom(12);
         this.setState({
             map: map
           });
-      } else {
+
+  }
+  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
+    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
+      if (isScriptLoadSucceed) {
+        this.loadMap();
+        } else {
       }
 
     }

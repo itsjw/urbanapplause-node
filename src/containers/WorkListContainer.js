@@ -19,7 +19,7 @@ class WorkListContainer extends Component {
           works: [],
           total: 0,
           page: 1,
-          mapView: false
+          mapView:true
         };
     }
     componentDidMount() {
@@ -104,7 +104,7 @@ class WorkListContainer extends Component {
           <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
         </section>
         {(this.state.mapView==true)?
-            <WorksMapView works={works.items}/>:
+            <WorksMapView works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />:
             <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />}
         <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
 

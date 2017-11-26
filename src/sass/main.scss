@@ -20,7 +20,7 @@
 $site-title-font: "Arial Black", sans-serif;
 $bg-color-main: #e6e6e6;
 
-html, body{
+html, body {
   color: #4a4a4a;
   font-family: sans-serif;
   font-size: 1rem;
@@ -57,7 +57,6 @@ html, body{
   margin-top: 30px;
 }
 
-
 .text-centered-wrapper {
   text-align: center;
 }
@@ -76,7 +75,6 @@ html, body{
     img {
       height: 40px;
     }
-
   }
   background-color: $bg-color-main;
   margin-bottom: 30px;
@@ -124,4 +122,18 @@ html, body{
   width: 100%;
   max-height: 300px;
   overflow: hidden
+}
+
+.thumbnail-container {
+  overflow: hidden;
+  border: 1px solid;
+}
+.thumbnail {
+  width: 100%;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+
 }

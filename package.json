@@ -7,12 +7,14 @@
     "start": "webpack --progress --colors",
     "dev-server": "nodemon ./server.js localhost 3000",
     "dev-client": "webpack-dev-server --hot --inline --port 8000",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "test": "mocha --reporter spec testSetup.js \"src/components/*.spec.js\""
   },
   "engines": {
     "node": "6.10.2"
   },
   "dependencies": {
+    "auth0-js": "^8.11.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "bulma": "^0.6.0",
@@ -51,8 +53,13 @@
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.2",
     "css-loader": "^0.28.7",
+    "enzyme": "^3.2.0",
+    "expect": "^21.2.1",
     "img-loader": "^2.0.0",
+    "jsdom": "^11.4.0",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
+    "react-addons-test-utils": "^15.6.2",
     "react-hot-loader": "^3.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
