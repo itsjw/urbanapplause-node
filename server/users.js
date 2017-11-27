@@ -74,7 +74,7 @@ let submitNew = (req, res, next) => {
 
   let id = req.body.id;
   let email = req.body.email;
-  let sql = "INSERT INTO users (id, email) VALUES ('" + id + "', '" + email + "') ON DUPLICATE KEY UPDATE 'email' = '" + email +"';";
+  let sql = "INSERT INTO users (id, email) VALUES ('" + id + "', '" + email + "') ON CONFLICT DO NOTHING;";
  console.log(sql);
   db.query(sql)
     .then(item => res.json())
