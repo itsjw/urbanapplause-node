@@ -14,6 +14,7 @@ class UserProfileContainer  extends Component {
     }
   }
   componentDidMount() {
+    console.log('PARAM: ', this.props.match.params.id);
     this.props.getUser(this.props.match.params.id);
   }
 

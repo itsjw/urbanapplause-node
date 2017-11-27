@@ -62,9 +62,8 @@ let findById = (req, res, next) => {
 
 let updateById = (req, res, next) => {
   let id = req.params.id;
-  let username = req.body.username;
   let bio = req.body.bio;
-  let sql = "UPDATE user SET name='" + name + "', bio='" + bio + "', website='" + website + "', email='" + email + "' WHERE id=" + id + " RETURNING id; "
+  let sql = "UPDATE user SET bio='" + bio + "' WHERE id=" + id + " RETURNING id; "
 
   db.query(sql)
     .then((error) => console.log(error));
