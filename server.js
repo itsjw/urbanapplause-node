@@ -69,7 +69,7 @@ app.put('/api/updateartist/:id', artists.updateById);
 
 app.get('/api/users', users.findAll);
 app.get('/api/users/:id', users.findById);
-app.put('/api/newuser', users.findAll);
+app.post('/api/newuser', users.submitNew);
 app.put('/api/updateuser/:id', users.updateById);
 
 app.listen(app.get('port'), function () {
