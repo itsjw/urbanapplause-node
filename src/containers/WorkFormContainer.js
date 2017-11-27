@@ -40,7 +40,7 @@ class WorkFormContainer extends Component {
     } else {
       if (this.props.auth.currently=="LOGGED_IN") {
         return(
-            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items}/>
+            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items} user_id={this.props.auth.uid}/>
           )
       } else {
         return (

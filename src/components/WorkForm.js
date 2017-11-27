@@ -78,7 +78,8 @@ class WorkForm extends Component {
       image: this.state.image,
       description: this.state.description,
       place: this.state.place,
-      city_id: this.state.city_id
+      city_id: this.state.city_id,
+      user_id: this.props.user_id
     }
     switch(this.state.artist.action) {
       case null:

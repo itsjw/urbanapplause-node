@@ -7,24 +7,6 @@ let db = require('./pghelper');
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
 let findAll = (req, res, next) => {
-  let countSql0 = `
-  CREATE TABLE location (
-  id serial PRIMARY KEY,
-  lat double precision,
-  lng double precision,
-  formatted_address text,
-  city VARCHAR(200)
-  );
-
-  CREATE TABLE work (
-  id serial PRIMARY KEY,
-  description text,
-  date_posted timestamp with time zone NOT NULL DEFAULT now(),
-  image text,
-  location_id integer REFERENCES location (id)
-  );
-  `
-  let countSql2 = `ALTER TABLE work ADD COLUMN artist_id integer REFERENCES artist (id);`;
 
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
         page = req.query.page ? parseInt(req.query.page) : 1,
@@ -84,7 +66,7 @@ const submitNew = (req, res, next) => {
   }
   let image = req.body.image;
   let description = req.body.description;
-
+  let user_id = req.body.user_id;
   let place = JSON.parse(req.body.place);
   let lng = place.geometry.location.lng;
   let lat = place.geometry.location.lat;
@@ -95,7 +77,7 @@ const submitNew = (req, res, next) => {
 
   db.query(locationSql)
     .then((id) => {
-      var sql = "INSERT INTO work (id, description, artist_id, image,  date_posted, location_id) VALUES (DEFAULT, '" + description + "', $1,  $$" + image + "$$, DEFAULT, " + id[0].id + ") RETURNING work.id;";
+      var sql = "INSERT INTO work (id, description, artist_id, image,  date_posted, location_id, user_id) VALUES (DEFAULT, '" + description + "', $1,  $$" + image + "$$, DEFAULT, " + id[0].id + ", '" + user_id + "') RETURNING work.id;";
       if(newArtistSql) {
         console.log('ATTEMPTING TO CREATE NEW ARTIST...');
         db.query(newArtistSql)

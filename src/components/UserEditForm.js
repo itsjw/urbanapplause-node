@@ -31,7 +31,7 @@ class UserEditForm extends Component {
       <div>
        <TextInput
           label='Username'
-          type='textarea'
+          type='text'
           ref='username'
           name='username'
           value={user.username}
