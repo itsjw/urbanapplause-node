@@ -94,9 +94,10 @@ class WorkListContainer extends Component {
             </div>
 
 
-           <div className='column is-narrow'>
+            {(this.props.auth.currently=="LOGGED_IN")?
+      <div className='column is-narrow'>
               <a className='button is-primary' href="/works/new">+ New Work</a>
-            </div>
+            </div>:''}
           </div>
         </section>
 
@@ -114,7 +115,8 @@ class WorkListContainer extends Component {
 }
 var mapStateToProps = function(appState){
   return {
-    works: appState.works
+    works: appState.works,
+    auth: appState.auth
   }
 }
 var mapDispatchToProps = function(dispatch){

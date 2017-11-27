@@ -9,7 +9,7 @@ class UserListItem extends Component {
         <div className="card-content">
           <div className="media">
             <div className="media-content">
-              <h3 className="title is-4"><a href={`/users/${user.id}`}> {user.email} </a></h3>
+              <h3 className="title is-4"><a href={`/users/${user.id}`}> {user.username} </a></h3>
             </div>
           </div>
 

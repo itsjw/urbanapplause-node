@@ -25,7 +25,7 @@ class PostPreview extends Component {
             <p>{work.description}</p><hr />
             <div className='columns'>
               <div className='column'>
-                Posted {timeSince(new Date(work.date_posted))} ago
+                Posted {timeSince(new Date(work.date_posted))} ago by <a href={`/users/${work.user_id}`}>{work.username}</a>
               </div>
               <div className='column is-narrow'>
                       <span onClick={this.handleDelete} className="icon is-medium action-icon">

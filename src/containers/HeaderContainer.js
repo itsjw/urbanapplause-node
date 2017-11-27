@@ -52,8 +52,8 @@ class HeaderContainer extends Component {
                  <NavLink className='navbar-item' to='/artists' activeClassName='is-active'>
                    <div className='navbar-content'>Artists</div>
                 </NavLink>
-                 <NavLink className='navbar-item' to='/about' activeClassName='is-active'>
-                  <div className='navbar-content'>About</div>
+                 <NavLink className='navbar-item' to='/users' activeClassName='is-active'>
+                  <div className='navbar-content'>Users</div>
                 </NavLink>
               </div>
             </div>

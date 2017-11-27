@@ -45,7 +45,7 @@ class WorkFormContainer extends Component {
       } else {
         return (
           <div>
-            <span>Log in to add a work</span>
+            <span>Log in to add a work<br/></span>
             <button className='button' onClick={this.props.handleSignIn}>Sign In</button>
           </div>
         )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Icon} from 'react-fa';
+import {NavLink} from 'react-router-dom';
 
 class AuthPanel extends Component {
   shouldComponentUpdate(nextProps) {
@@ -22,14 +23,14 @@ class AuthPanel extends Component {
                 {this.props.username}
               </a>
               <div className='navbar-dropdown is-boxed'>
-                <a className='navbar-item' href={`/users/${this.props.uid}`}>
+                <NavLink className='navbar-item' to={`/users/${this.props.uid}`} activeClassName='is-active'>
                   <div className='navbar-content'>
 
                     Profile
                   </div>
-                </a>
+                </NavLink>
                 <a className='navbar-item' onClick={this.props.onLogOut}>
-                  <div className='navbar-content'>Logout</div>
+                  <div className='navbar-content'><button className='button is-danger'>Logout</button></div>
                 </a>
               </div>
             </div>

@@ -8,7 +8,7 @@ const handleSignIn = () => {
     dispatch({type: C.ATTEMPTING_LOGIN});
     signIn().then((info) => {
       dispatch(loginUser(info));
-      userActions.submitNewUser({id: info.user.uid, email: info.user.email});
+      userActions.submitNewUser({id: info.user.uid, email: info.user.email, username: info.additionalUserInfo.profile.given_name});
       localStorage.setItem('auth', JSON.stringify(info));
     });
     return;

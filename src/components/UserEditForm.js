@@ -20,6 +20,7 @@ class UserEditForm extends Component {
   handleSubmit = () => {
     var entry = {
       bio: this.state.bio,
+      username: this.state.username
     }
     this.props.onSubmit(this.props.user.id, entry);
     this.props.onCancel();
