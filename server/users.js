@@ -71,11 +71,14 @@ let updateById = (req, res, next) => {
 }
 
 let submitNew = (req, res, next) => {
-  let sql0 = "ALTER TABLE users ALTER COLUMN id TYPE VARCHAR(1000);"
+  let sql0 = "DROP TABLE users;"
   db.query(sql0)
     .then(item => res.json())
     .catch(next);
-
+  let sql2 = "CREATE TABLE users ( id VARCHAR(1000) PRIMARY KEY, email VARCHAR(350), bio TEXT, date_joined timestamp with time zone NOT NULL DEFAULT now());"
+  db.query(sql2)
+    .then(item => res.json())
+    .catch(next);
   let sql1 = "INSERT INTO users (id) VALUES (2);";
   db.query(sql1)
     .then(item => res.json())
