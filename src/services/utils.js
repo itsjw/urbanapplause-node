@@ -14,6 +14,15 @@ const getUploadsImUrl = (file) => {
   })
 }
 
+const getMonthName = (date) => {
+  var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+  return monthNames[date.getMonth()];
+}
+
+
 const getAddressComponents = (place) => {
   var address = {};
         place.address_components.forEach(function(c) {
@@ -77,7 +86,8 @@ const memberSince = (date) => {
 module.exports = {
   getAddressComponents: getAddressComponents,
   timeSince: timeSince,
-  getUploadsImUrl: getUploadsImUrl
+  getUploadsImUrl: getUploadsImUrl,
+  getMonthName: getMonthName
 }
 
 
