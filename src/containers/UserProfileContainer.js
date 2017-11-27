@@ -39,11 +39,13 @@ class UserProfileContainer  extends Component {
         <div>
           <h1 className='title'>Welcome, {this.props.auth.given_name}!</h1>
           {(this.state.isEditing==false)?
-              <UserInfo user={this.props.user} />:
+              <div>
+                <UserInfo user={this.props.user} />
+                <button className='button' onClick={this.openForm}>Edit</button>
+              </div>:
               <UserEditForm user={this.props.user} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
               }
 
-          <button className='button' onClick={this.openForm}>Edit</button>
         </div>
       )
     } else {
