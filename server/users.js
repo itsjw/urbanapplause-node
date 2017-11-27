@@ -71,7 +71,7 @@ let updateById = (req, res, next) => {
 }
 
 let submitNew = (req, res, next) => {
-  let sql0 = "ALTER TABLE users ALTER COLUMN id [SET DATA] TYPE serial PRIMARY KEY, ADD COLUMN email VARCHAR(350);"
+  let sql0 = "ALTER TABLE users ALTER COLUMN id TYPE serial, ADD COLUMN email VARCHAR(350);"
   db.query(sql0)
     .then(item => res.json())
     .catch(next);
