@@ -1,7 +1,8 @@
 const initialstate = {
-	auth: {
-		username: null,
-		uid: null
+  auth: {
+    currently: null,
+		email: null,
+    uid: null
 	},
 	works: {
 		hasreceiveddata: false,

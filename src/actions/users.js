@@ -36,7 +36,6 @@ function getUsers(values) {
 }
 
 function submitNewUser(values) {
-  console.log('submit new user', values);
   let qs = "";
   qs = Object.keys(values).map(key => {
             return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
@@ -46,7 +45,7 @@ function submitNewUser(values) {
     return request({url: baseURL + "/api/newuser", method: "POST", data: qs})
       .then((data) =>
         {
-          dispatch({type:C.RECEIVE_NEW_USER_RESPONSE, data: JSON.parse(data)})
+          dispatch({type:C.RECEIVE_NEW_USER_RESPONSE, data: data})
           dispatch(getUsers());
         })
   }
@@ -65,7 +64,8 @@ function submitUserEdit(id, values) {
 
 
 
-let findById = (id) => {
+function findById(id) {
+  console.log('find id for', id);
   return function(dispatch){
     dispatch(requestUser(id));
     return request({url: baseURL + "/api/users/" + id})

@@ -1,63 +1,48 @@
-import {database as fire, googleProvider} from '../firebaseConfig';
-var C = require("../constants")
-var auth = fire.auth()
-var userprofilesRef = fire.database().ref('userprofiles').orderByKey().limitToLast(100);
+import C from '../constants';
+import {signIn} from '../services/firebaseAuth';
+import userActions from './users';
 
-import userprofileActions from './userprofiles';
-
-const createUserWithEmailAndPassword = (user) => {
-    return fire.auth().createUserWithEmailAndPassword(user.email, user.password);
+const handleSignIn = () => {
+  console.log('attempting signin')
+  return function(dispatch) {
+    dispatch({type: C.ATTEMPTING_LOGIN});
+    signIn().then((info) => {
+      dispatch(loginUser(info));
+      userActions.submitNewUser({id: info.user.uid, email: info.user.email});
+      localStorage.setItem('auth', JSON.stringify(info));
+    });
+    return;
   }
-
-const signInWithEmailAndPassword = (user) => {
-    return fire.auth().signInWithEmailAndPassword(user.email, user.password);
 }
-
-
-const startListeningToAuth = () => {
-	return function(dispatch,getState){
-    fire.auth().onAuthStateChanged(function(user) {
-      if (user) {
-          dispatch({
-              type: C.LOGIN_USER,
-              uid: user.uid,
-            email: user.email
-          });
-       userprofilesRef.on("value",function(snapshot){
-         if (!(snapshot.val()[user.uid])) {
-           dispatch(userprofileActions.submitUserprofileEdit(user.uid, {firstName: user.email, email: user.email, description: '', dateJoined: Date.now()}));
-         }
-       });
-
-
-
-      } else {
-        dispatch({type:C.LOGOUT});
-      }
-
-    }
-)};
-}
-
-
-const attemptGoogleLogin = () => {
-  return function(dispatch,getState){
-    dispatch({type:C.ATTEMPTING_LOGIN});
-    fire.auth().signInWithPopup(googleProvider).then(function(result) {}).catch(function(error) {
-					dispatch({type:C.DISPLAY_ERROR,error:"Login failed! "+error});
-					dispatch({type:C.LOGOUT});
-				});
+const loginUser = (info) => {
+  return {
+      type: C.LOGIN_USER,
+      uid: info.user.uid,
+      given_name: info.additionalUserInfo.profile.given_name,
+      profile: info.additionalUserInfo.profile,
+      credentials: info.credential
   }
 }
 
-
-const logoutUser = () => {
-
-    return function(dispatch,getState){
-      dispatch({type:C.LOGOUT}); // don't really need to do this, but nice to get immediate feedback
-      fire.auth().signOut();
+const handleLogOut = () => {
+    localStorage.clear();
+  return({
+      type: C.LOGOUT,
+      profile: null,
+      credentials: null,
+      email: "guest"
+    });
+    return <Redirect to="/"/>;
+  }
+const checkLocalAuthState = () => {
+  return function(dispatch){
+    const auth = localStorage.getItem('auth');
+    if (auth) {
+      dispatch(loginUser(JSON.parse(auth)));
     }
-}
+    return;
+  }
+ }
 
 
-export default {createUserWithEmailAndPassword, signInWithEmailAndPassword, startListeningToAuth,attemptGoogleLogin, logoutUser};
+export default {handleSignIn, handleLogOut, checkLocalAuthState};

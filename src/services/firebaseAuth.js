@@ -15,14 +15,13 @@ provider.setCustomParameters({
   'login_hint': 'user@example.com'
 });
 
-function signIn(callback)  {
-firebase.auth().signInWithPopup(provider).then(function(result) {
+function signIn()  {
+return firebase.auth().signInWithPopup(provider).then(function(result) {
   // This gives you a Google Access Token. You can use it to access the Google API.
   var token = result.credential.accessToken;
   // The signed-in user info.
   var user = result.user;
-  callback(result);
-  return;
+  return result;
   // ...
 }).catch(function(error) {
   // Handle Errors here.

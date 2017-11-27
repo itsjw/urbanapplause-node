@@ -7,9 +7,13 @@ const usersReducer = (currentstate,action) => {
 	var newstate;
   switch(action.type){
     case C.RECEIVE_USERS_DATA:
-			return Object.assign({},currentstate,{
+      return Object.assign({},currentstate,{
 				hasreceiveddata: true,
-				data: action.data
+        items: action.items,
+        page: action.page,
+        pageSize: action.pageSize,
+        total: action.total,
+        receivedAt: action.receivedAt
       });
     case C.AWAIT_NEW_USER_RESPONSE:
 			return Object.assign({},currentstate,{

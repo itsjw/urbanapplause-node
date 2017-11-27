@@ -1,5 +1,4 @@
 import initialstate from "../initialStore";
-
 import C from '../../constants';
 
 const authReducer = (currentstate,action) => {
@@ -8,19 +7,23 @@ const authReducer = (currentstate,action) => {
 			return {
 				currently: C.AWAITING_AUTH_RESPONSE,
 				email: "guest",
-				uid: null
+        uid: null,
 			};
 		case C.LOGOUT:
 			return {
 				currently: C.ANONYMOUS,
 				email: "guest",
-				uid: null
+        uid: null,
+        proile: null
 			};
 		case C.LOGIN_USER:
 			return {
 				currently: C.LOGGED_IN,
 				email: action.email,
-				uid: action.uid
+        uid: action.uid,
+        given_name: action.given_name,
+        profile: action.profile,
+        credentials: action.credentials
 			};
     default:
       return currentstate || initialstate.auth;

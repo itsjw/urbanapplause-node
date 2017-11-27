@@ -52,7 +52,7 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
   let id = req.params.id;
-  let sql = "select *, ( select array(SELECT w.id FROM work w WHERE w.user_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from user a WHERE a.id = $1 ;";
+  let sql = "select *, ( select array(SELECT w.id FROM work w WHERE w.user_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from user WHERE id = $1 ;";
 
     db.query(sql, [id])
         .then(item => res.json(item[0]))

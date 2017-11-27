@@ -13,9 +13,10 @@ class UserProfileContainer  extends Component {
       isEditing: false
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     this.props.getUser(this.props.match.params.id);
   }
+
   closeForm = () => {
     this.setState({
       isEditing: false
@@ -32,16 +33,23 @@ class UserProfileContainer  extends Component {
   }
   render() {
     const id = this.props.match.params.id;
-    if (this.state.isEditing) {
-      return(
+    if (this.props.auth.currently=='LOGGED_IN' && this.props.auth.uid==id){
+      return (
         <div>
-          <UserEditForm user={this.props.user} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
-        </div>);
+          <h1 className='title'>Welcome, {this.props.auth.given_name}!</h1>
+          {(this.state.isEditing==false)?
+              <UserInfo user={this.props.user} />:
+              <UserEditForm user={this.props.user} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
+              }
+
+          <button className='button' onClick={this.openForm}>Edit</button>
+        </div>
+      )
     } else {
       return (
         <div>
+          <h1 className='title'>{this.props.user.username}</h1>
           <UserInfo user={this.props.user}/>
-          <button className='button' onClick={this.openForm}>Edit</button>
         </div>
       )
     }
@@ -51,6 +59,7 @@ class UserProfileContainer  extends Component {
 var mapStateToProps = function(appState){
   return {
     user: appState.users.selectedUser.user,
+    auth: appState.auth,
   }
 }
 var mapDispatchToProps = function(dispatch){
