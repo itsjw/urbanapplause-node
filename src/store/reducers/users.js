@@ -15,6 +15,13 @@ const usersReducer = (currentstate,action) => {
         total: action.total,
         receivedAt: action.receivedAt
       });
+    case C.RECEIVE_USER_DATA:
+      return Object.assign({},currentstate,{
+        selectedUser: {
+          hasrreceiveddata: action.didReceiveData,
+          user: action.user,
+          receivedAt: action.receivedAt}
+      });
     case C.AWAIT_NEW_USER_RESPONSE:
 			return Object.assign({},currentstate,{
 				submittingnew: true
