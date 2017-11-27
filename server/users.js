@@ -72,7 +72,6 @@ let updateById = (req, res, next) => {
 
 let submitNew = (req, res, next) => {
   let sql1 = "INSERT INTO users (id) VALUES (1);";
- console.log(sql);
   db.query(sql1)
     .then(item => res.json())
     .catch(next);
