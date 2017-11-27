@@ -26,7 +26,7 @@ let findAll = (req, res, next) => {
 
     let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;
 
-    let sql = "SELECT work.id, work.image, date_posted, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, users.username as username " +
+    let sql = "SELECT work.id, work.image, date_posted, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
     "FROM (((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN location ON work.location_id = location.id) INNER JOIN users ON work.user_id = users.id) " + where +
                 " ORDER BY work.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
     db.query(countSql, values)
