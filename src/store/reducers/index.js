@@ -2,13 +2,13 @@ import {combineReducers} from 'redux';
 import authReducer from './auth';
 import worksReducer from './works';
 import artistsReducer from './artists';
-import userprofilesReducer from './userprofiles';
+import usersReducer from './users';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   works: worksReducer,
   artists: artistsReducer,
-  userprofiles: userprofilesReducer
+  users: usersReducer
 });
 
 export default rootReducer;

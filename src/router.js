@@ -17,6 +17,7 @@ import ArtistListContainer from './containers/ArtistListContainer';
 import WorkFormContainer from './containers/WorkFormContainer';
 import ArtistFormContainer from './containers/ArtistFormContainer';
 import ArtistProfileContainer from './containers/ArtistProfileContainer';
+import UserProfileContainer from './containers/UserProfileContainer';
 
 export const router =
   (<BrowserRouter>
@@ -30,6 +31,7 @@ export const router =
                  <Route exact path='/works' component={WorkListContainer}/>
                  <Route exact path='/works/new' component={WorkFormContainer}/>
 
+                 <Route exact path='/profile' component={UserProfileContainer}/>
                  <Route exact path='/artists' component={ArtistListContainer}/>
                  <Route exact path='/artists/new' component={ArtistFormContainer}/>
                  <Route exact path='/artists/:id' component={ArtistProfileContainer}/>

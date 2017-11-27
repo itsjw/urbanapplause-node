@@ -4,6 +4,7 @@ let express = require('express'),
     compression = require('compression'),
     works = require('./server/works'),
     artists = require('./server/artists'),
+    users = require('./server/users'),
     app = express();
 
 var bodyParser = require('body-parser');
@@ -65,6 +66,11 @@ app.get('/api/artists', artists.findAll);
 app.get('/api/artists/:id', artists.findById);
 app.post('/api/newartist', artists.submitNew);
 app.put('/api/updateartist/:id', artists.updateById);
+
+app.get('/api/users', users.findAll);
+app.get('/api/users/:id', users.findById);
+app.put('/api/newuser', users.findAll);
+app.put('/api/updateuser/:id', users.updateById);
 
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

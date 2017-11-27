@@ -3,38 +3,38 @@ import initialState from "../initialStore";
 var  _ = require("lodash");
 
 
-const userprofilesReducer = (currentstate,action) => {
+const usersReducer = (currentstate,action) => {
 	var newstate;
   switch(action.type){
-    case C.RECEIVE_USERPROFILES_DATA:
+    case C.RECEIVE_USERS_DATA:
 			return Object.assign({},currentstate,{
 				hasreceiveddata: true,
 				data: action.data
       });
-    case C.AWAIT_NEW_USERPROFILE_RESPONSE:
+    case C.AWAIT_NEW_USER_RESPONSE:
 			return Object.assign({},currentstate,{
 				submittingnew: true
 			});
-		case C.RECEIVE_NEW_USERPROFILE_RESPONSE:
+		case C.RECEIVE_NEW_USER_RESPONSE:
 			return Object.assign({},currentstate,{
 				submittingnew: false
 			});
-		case C.START_USERPROFILE_EDIT:
+		case C.START_USER_EDIT:
 			newstate = _.cloneDeep(currentstate);
-			newstate.states[action.qid] = C.EDITING_USERPROFILE;
+			newstate.states[action.qid] = C.EDITING_USER;
 			return newstate;
-		case C.FINISH_USERPROFILE_EDIT:
+		case C.FINISH_USER_EDIT:
 			newstate = _.cloneDeep(currentstate);
 			delete newstate.states[action.qid];
 			return newstate;
-		case C.SUBMIT_USERPROFILE_EDIT:
+		case C.SUBMIT_USER_EDIT:
 			newstate = _.cloneDeep(currentstate);
-			newstate.states[action.qid] = C.SUBMITTING_USERPROFILE;
+			newstate.states[action.qid] = C.SUBMITTING_USER;
 			return newstate;
 
     default:
-      return currentstate || initialState.userprofiles;
+      return currentstate || initialState.users;
 	}
 };
 
-export default userprofilesReducer;
+export default usersReducer;

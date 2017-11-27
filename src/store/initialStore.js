@@ -19,11 +19,15 @@ const initialstate = {
       hasreceiveddata: false
     }
   },
-  userprofiles: {
+  users: {
 		hasreceiveddata: false,
 		submittingnew: false,
     states: {},
-    items: []
+    items: [],
+    selectedUser: {
+      user: {},
+      hasreceiveddata: false
+    }
   },
 
 };
