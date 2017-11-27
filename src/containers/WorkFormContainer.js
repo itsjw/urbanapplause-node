@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import WorkForm from '../components/WorkForm';
 import workActions from '../actions/works';
 import artistActions from '../actions/artists';
+import authActions from '../actions/auth';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
@@ -37,9 +38,18 @@ class WorkFormContainer extends Component {
         <Redirect to='/works'/>
       )
     } else {
-      return(
-          <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items}/>
-      )
+      if (this.props.auth.currently=="LOGGED_IN") {
+        return(
+            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items}/>
+          )
+      } else {
+        return (
+          <div>
+            <span>Log in to add a work</span>
+            <button className='button' onClick={this.props.handleSignIn}>Sign In</button>
+          </div>
+        )
+      }
     }
   }
 }
@@ -47,7 +57,8 @@ class WorkFormContainer extends Component {
 
 var mapStateToProps = function(appState){
   return {
-    artists: appState.artists
+    artists: appState.artists,
+    auth: appState.auth
   }
 }
 var mapDispatchToProps = function(dispatch){
@@ -55,6 +66,7 @@ var mapDispatchToProps = function(dispatch){
     onSubmit: function(work){ dispatch(workActions.submitNewWork(work)); },
     getArtists: function(query){ dispatch(artistActions.getArtists(query)); },
     getWorks: function(work){ dispatch(workActions.getWorks()); },
+    handleSignIn: function(){ dispatch(authActions.handleSignIn()); },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WorkFormContainer);

@@ -37,12 +37,16 @@ const usersReducer = (currentstate,action) => {
 		case C.FINISH_USER_EDIT:
 			newstate = _.cloneDeep(currentstate);
 			delete newstate.states[action.qid];
-			return newstate;
-		case C.SUBMIT_USER_EDIT:
-			newstate = _.cloneDeep(currentstate);
-			newstate.states[action.qid] = C.SUBMITTING_USER;
-			return newstate;
-
+      return newstate;
+  case C.SUBMIT_USER_EDIT:
+      var selectedUser = currentstate.selectedUser.user;
+      Object.keys(action.values).map((key, i) => {
+        selectedUser[key] = action.values[key];
+          return;
+        });
+      return Object.assign({},currentstate,{
+				selectedUser: {user: selectedUser}
+			});
     default:
       return currentstate || initialState.users;
 	}

@@ -31,6 +31,7 @@ class UserProfileContainer  extends Component {
   }
   handleUpdate = (id, content) => {
     this.props.onUpdate(id, content);
+    this.forceUpdate();
   }
   render() {
     const id = this.props.match.params.id;

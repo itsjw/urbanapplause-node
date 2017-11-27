@@ -7,6 +7,7 @@ class UserEditForm extends Component {
     super(props);
     this.state = {
       bio: this.props.user.bio ||'',
+      username: this.props.user.username||'',
       errors: {}
     }
   }
@@ -28,7 +29,15 @@ class UserEditForm extends Component {
     const user = this.state;
     return (
       <div>
-
+       <TextInput
+          label='Username'
+          type='textarea'
+          ref='username'
+          name='username'
+          value={user.username}
+          onChange={this.onInputChange}
+          errorMsg={this.state.errors.description}
+        />
        <TextInput
           label='Bio'
           type='textarea'
