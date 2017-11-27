@@ -71,7 +71,11 @@ let updateById = (req, res, next) => {
 }
 
 let submitNew = (req, res, next) => {
-
+  let sql = "INSERT INTO users (id) VALUES (1);";
+ console.log(sql);
+  db.query(sql)
+    .then(item => res.json())
+    .catch(next);
   let id = req.body.id;
   let email = req.body.email;
   let sql = "INSERT INTO users (id, email) VALUES ('" + id + "', '" + email + "') ON CONFLICT DO NOTHING;";
