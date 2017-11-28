@@ -54,6 +54,7 @@ let findById = (req, res, next) => {
 };
 
 const submitNew = (req, res, next) => {
+  console.log(req.body);
   var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
   if (artist_id==null||'null') {
@@ -61,7 +62,7 @@ const submitNew = (req, res, next) => {
       console.log('creating new artist ' + new_artist_name);
       var newArtistSql = "INSERT INTO artist (name) VALUES ('" + new_artist_name + "') RETURNING artist.id;"
     } else {
-      artist_id = null;
+      artist_id = 0;
     }
   }
   let image = req.body.image;
