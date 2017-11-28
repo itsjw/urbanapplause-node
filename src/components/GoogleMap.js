@@ -8,50 +8,67 @@ class GoogleMap extends React.Component {
       map: null
     };
   }
+  placeMarker = (position, map) => {
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map
+    });
+    map.panTo(position);
+  }
   componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
     if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
       if (isScriptLoadSucceed) {
+
         var map  = new google.maps.Map(this.refs.map, {
           center: {lat: 43.6532, lng: -79.3832},
           zoom: 12
         });
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position) => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
 
-            map.setCenter(pos);
-          }, () => {
-            console.log('navigator disabled');
-          });
-
-        } else {
-          // Browser doesn't support Geolocation
-          console.log('navigator disabled');
-        }
-      // Create the search box and link it to the UI element.
         var input = this.refs[this.props.searchBoxRef];
         var searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-        // Bias the SearchBox results towards current map's viewport.
+        const handleLocationChange = function(place){this.props.onLocationChange(place)}.bind(this);
+
+        var markers = [];
+        var geocoder = new google.maps.Geocoder();
+
+        google.maps.event.addListener(map, 'click', function(event) {
+          geocoder.geocode({
+            'latLng': event.latLng
+          }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[0]) {
+                const place = results[0];
+                handleLocationChange(place);
+                markers.forEach(function(marker) {
+                  marker.setMap(null);
+                });
+                markers.push(new google.maps.Marker({
+                  map: map,
+                  title: place.name,
+                  position: place.geometry.location
+                }));
+              }
+            }
+          });
+        });
+
+
+        //LISTENERS
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
         });
+        map.addListener('click', function(e) {
+          console.log(e);
+                   });
 
-        var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        const handleLocationChange = function(place){this.props.onLocationChange(place)}.bind(this);
+
         searchBox.addListener('places_changed', function() {
           var places = searchBox.getPlaces();
-
           if (places.length == 0) {
             return;
           }
-
           // Clear out the old markers.
           markers.forEach(function(marker) {
             marker.setMap(null);
@@ -66,18 +83,10 @@ class GoogleMap extends React.Component {
               return;
             }
             handleLocationChange(place);
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
 
             // Create a marker for each place.
             markers.push(new google.maps.Marker({
               map: map,
-              icon: icon,
               title: place.name,
               position: place.geometry.location
             }));
@@ -88,13 +97,9 @@ class GoogleMap extends React.Component {
             } else {
               bounds.extend(place.geometry.location);
             }
-          });
+            });
           map.fitBounds(bounds);
         });
-        this.setState({
-            map: map
-          });
-
       }
 
       else this.props.onError()
@@ -104,13 +109,12 @@ class GoogleMap extends React.Component {
 
   render(){
     return (
-      <div style={{}}>
+      <div>
         <div className='control'>
-            <input ref='locationInput' className="input controls" type="text" placeholder="Search Box" style={{width: '60%'}} />
-          </div>
+          <input ref='locationInput' className="controls input" type="text" placeholder="Search for a location" style={{width: '60%'}} />
+        </div>
 
-                <div ref="map" style={{width: '100%', zIndex: '10', height: '400px',paddingLeft: 'calc(0.625em - 1px)', paddingRight: 'calc(0.625em - 1px)' }}></div>
-          { !this.state.map && <div className="center-md">Loading...</div> }
+        <div ref="map" style={{width: '100%', zIndex: '10', height: '400px',paddingLeft: 'calc(0.625em - 1px)', paddingRight: 'calc(0.625em - 1px)' }}></div>
     </div>
     )
   }

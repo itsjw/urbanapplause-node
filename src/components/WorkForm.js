@@ -14,7 +14,7 @@ class WorkForm extends Component {
       description: this.props.description ||'',
       image: this.props.image || '',
       city_id: 2,
-      fileUploadStatus: (this.props.image?'complete':null),
+      fileUploadStatus: null,
       errors: {},
       place: null,
       options: [
@@ -44,7 +44,6 @@ class WorkForm extends Component {
     this.setState({newState});
   }
   onFileChange = (e) => {
-    console.log('on file change');
     this.setState({
       image: '',
       fileUploadStatus: 'pending'
@@ -81,9 +80,12 @@ class WorkForm extends Component {
       city_id: this.state.city_id,
       user_id: this.props.user_id
     }
+    if (this.state.artist ==null) {
+      alert('Please select a valid option for the artist field');
+      return;
+    }
     switch(this.state.artist.action) {
       case null:
-        console.log('must select artist option');
         return;
       case 'Unknown':
         entry.anonymous = true;
@@ -91,6 +93,10 @@ class WorkForm extends Component {
         entry.new_artist_name = this.state.artist.value;
       case 'Artist Selected':
         entry.artist_id = this.state.artist.value;
+    }
+    if (entry.place==null) {
+      alert('Please choose a location for this work');
+      return;
     }
     console.log(entry);
     this.props.onSubmit(entry);
@@ -110,7 +116,7 @@ class WorkForm extends Component {
             label="Choose a photo..."
             onChange={this.onFileChange}
             imgUrl={this.state.image}
-            fileUpload={this.state.fileUploadStatus}
+            fileUploadStatus={this.state.fileUploadStatus}
           />
 
         <SelectInput
@@ -135,10 +141,17 @@ class WorkForm extends Component {
           value={this.state.description}
           onChange={this.onInputChange}
         />
+
         <div className='field' >
-          <div className='label'>
-            Location
-          </div>
+          <label className='label'>
+            Location<br/>
+            {this.state.place?
+              (<span className='tag is-success'>
+                {this.state.place.formatted_address}
+              </span>):
+              <span className='tag is-danger'>No location selected.</span>
+            }
+          </label>
 
           <GoogleMap
             onLocationChange={this.handleLocationChange}

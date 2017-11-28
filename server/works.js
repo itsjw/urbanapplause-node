@@ -21,7 +21,10 @@ let findAll = (req, res, next) => {
         values.push(escape(search));
         whereParts.push("work.description || artist.name ~* $" + values.length);
     }
-
+  if (artist_id) {
+    values.push(escape(artist_id));
+    whereParts.push("artist_id = $1");
+  }
     let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
 
     let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;

@@ -3,6 +3,8 @@ import ArtistInfo from '../components/ArtistInfo';
 
 import ArtistEditForm from '../components/ArtistEditForm';
 import artistActions from '../actions/artists';
+import workActions from '../actions/works';
+import WorkList from '../components/WorkList';
 import {connect} from 'react-redux';
 
 class ArtistProfileContainer  extends Component {
@@ -13,7 +15,9 @@ class ArtistProfileContainer  extends Component {
     }
   }
   componentDidMount(){
-    this.props.getArtist(this.props.match.params.id);
+    const artist_id = this.props.match.params.id;
+    this.props.getArtist(artist_id);
+    this.props.getWorks(artist_id);
   }
   closeForm = () => {
     this.setState({
@@ -41,6 +45,8 @@ class ArtistProfileContainer  extends Component {
         <div>
           <ArtistInfo artist={this.props.artist}/>
           <button className='button' onClick={this.openForm}>Edit</button>
+          <h3 className='title is-3'>Works by </h3>
+          <WorkList works={this.props.works.items} total={this.props.works.total} onDeleteWork={this.props.deleteWork} />
         </div>
       )
     }
@@ -50,12 +56,16 @@ class ArtistProfileContainer  extends Component {
 var mapStateToProps = function(appState){
   return {
     artist: appState.artists.selectedArtist.artist,
+    works: appState.works,
   }
 }
 var mapDispatchToProps = function(dispatch){
   return {
+
     getArtist: function(id){ dispatch(artistActions.findById(id)); },
-    getWorks: function(artist_id) {dispatch(workActions.findWorksForArtist(artist_id));},
+    getWorks: function(artist_id) {dispatch(workActions.getWorks({artist_id: artist_id}));},
+
+    deleteWork: function(work_id) {dispatch(workActions.deleteWork(work_id));},
     onUpdate: function(id, content){ dispatch(artistActions.submitArtistEdit(id, content)); },
   }
 }
