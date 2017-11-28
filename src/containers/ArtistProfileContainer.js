@@ -45,8 +45,8 @@ class ArtistProfileContainer  extends Component {
         <div>
           <ArtistInfo artist={this.props.artist}/>
           <button className='button' onClick={this.openForm}>Edit</button>
-          <h3 className='title is-3'>Works by </h3>
-          <WorkList works={this.props.works.items} total={this.props.works.total} onDeleteWork={this.props.deleteWork} />
+          <h3 className='title is-3'>Works by {this.props.artist.name}</h3>
+          {(this.props.works.items.length>0)?<WorkList works={this.props.works.items} total={this.props.works.total} onDeleteWork={this.props.deleteWork} />:"No works posted for this artist"}
         </div>
       )
     }
