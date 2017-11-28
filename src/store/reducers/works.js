@@ -20,6 +20,23 @@ const worksReducer = (currentstate,action) => {
         total: action.total,
         receivedAt: action.receivedAt
       });
+
+    case C.REQUEST_WORK_DATA:
+      return Object.assign({}, currentstate, {
+        selectedWork: {
+          work: {},
+          hasreceiveddata: false,
+        },
+      });
+    case C.RECEIVE_WORK_DATA:
+			return Object.assign({},currentstate,{
+        selectedWork: {
+          work: action.work,
+				  hasreceiveddata: true,
+          receivedAt: action.receivedAt
+        }
+      });
+
     case C.AWAIT_NEW_WORK_RESPONSE:
 			return Object.assign({},currentstate,{
 				submittingnew: true

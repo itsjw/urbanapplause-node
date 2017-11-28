@@ -16,13 +16,19 @@ class PostPreview extends Component {
         <div className="card-content">
           <div className="media">
             <div className="media-content">
-              <h3 className="title is-4"><a href={`/artists/${work.artist_id}`}>{work.artist}</a> in {work.city}</h3>
-              <span className='subtitle is-5'>{work.formatted_address}</span>
+              <h3 className="title is-4" style={{marginBottom: '0px'}}>
+                {(work.artist_id==0)?
+                  'Unknown Artist ':
+                  <a href={`/artists/${work.artist_id}`}>{work.artist} </a>}
+                  in {work.city}
+                </h3>
+              <small className='subtitle is-5'><span className='icon'><Icon name='map-marker'/> </span>{work.formatted_address}</small>
             </div>
           </div>
 
           <div className='content'>
-            <p>{work.description}</p><hr />
+            <p>{work.description}</p>
+            <a href={`/works/${work.id}`} className='buton is-info'>View Details</a><hr />
             <div className='columns'>
               <div className='column'>
                 Posted {timeSince(new Date(work.date_posted))} ago by <a href={`/users/${work.user_id}`}>{work.username}</a>

@@ -32,7 +32,7 @@ class GoogleMap extends React.Component {
           console.log('navigator disabled');
         }
       // Create the search box and link it to the UI element.
-        var input = this.refs.locationInput;
+        var input = this.refs[this.props.searchBoxRef];
         var searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -104,9 +104,12 @@ class GoogleMap extends React.Component {
 
   render(){
     return (
-      <div>
-        <input ref='locationInput' className="controls" type="text" placeholder="Search Box"/>
-        <div ref="map" style={{width: '100%', zIndex: '10', height: '200px'}}></div>
+      <div style={{}}>
+        <div className='control'>
+            <input ref='locationInput' className="input controls" type="text" placeholder="Search Box" style={{width: '60%'}} />
+          </div>
+
+                <div ref="map" style={{width: '100%', zIndex: '10', height: '400px',paddingLeft: 'calc(0.625em - 1px)', paddingRight: 'calc(0.625em - 1px)' }}></div>
           { !this.state.map && <div className="center-md">Loading...</div> }
     </div>
     )

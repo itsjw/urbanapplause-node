@@ -135,10 +135,16 @@ class WorkForm extends Component {
           value={this.state.description}
           onChange={this.onInputChange}
         />
-        Location:
-        <GoogleMap
-          onLocationChange={this.handleLocationChange}
-        />
+        <div className='field' >
+          <div className='label'>
+            Location
+          </div>
+
+          <GoogleMap
+            onLocationChange={this.handleLocationChange}
+            searchBoxRef="locationInput"
+          />
+        </div>
         <button className='button is-primary' onClick={this.handleSubmit}>Submit</button>
         <button className='button' onClick={this.props.onCancel}>Cancel</button>
       </div>

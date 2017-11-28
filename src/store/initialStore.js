@@ -8,7 +8,11 @@ const initialstate = {
 		hasreceiveddata: false,
 		submittingnew: false,
     states: {},
-    items: []
+    items: [],
+    selectedWork: {
+      work: {},
+      hasreceiveddata: false
+    }
   },
   artists: {
 		hasreceiveddata: false,

@@ -12,6 +12,7 @@ import ErrorPage from './pages/ErrorPage';
 import ContactPage from './pages/ContactPage';
 
 import WorkListContainer from './containers/WorkListContainer';
+import WorkDetailContainer from './containers/WorkDetailContainer';
 import ArtistListContainer from './containers/ArtistListContainer';
 import WorkFormContainer from './containers/WorkFormContainer';
 import ArtistFormContainer from './containers/ArtistFormContainer';
@@ -29,6 +30,7 @@ export const router =
                     (<Redirect to='/works'/>)
                    }/>
                  <Route exact path='/works' component={WorkListContainer}/>
+                 <Route exact path='/works/:id' component={WorkDetailContainer}/>
                  <Route exact path='/works/new' component={WorkFormContainer}/>
 
                  <Route exact path='/users' component={UserListContainer}/>

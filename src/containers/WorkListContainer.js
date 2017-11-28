@@ -19,17 +19,16 @@ class WorkListContainer extends Component {
           works: [],
           total: 0,
           page: 1,
-          mapView:false
+          mapView: false
         };
     }
     componentDidMount() {
       this.findWorks();
     }
-  searchKeyChangeHandler(searchKey) {
-    console.log(searchKey);
-        this.setState({searchKey: searchKey, page: 1}, this.findWorks);
+    searchKeyChangeHandler(searchKey) {
+      console.log(searchKey);
+      this.setState({searchKey: searchKey, page: 1}, this.findWorks);
     }
-
     rangeChangeHandler(values) {
         this.setState({min: values[0], max: values[1], page: 1}, this.findWorks);
     }

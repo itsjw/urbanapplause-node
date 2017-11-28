@@ -1,7 +1,7 @@
 import C from '../constants';
 import request from '../services/request';
+let baseURL = C.SERVER_URL;
 
-let baseURL = "https://urbanapplause.herokuapp.com";
 function requestUsers(values) {
   return {
     type: C.REQUEST_USERS_DATA,

@@ -1,6 +1,7 @@
 import C from '../constants';
 import request from '../services/request';
-let baseURL = "https://urbanapplause.herokuapp.com";
+let baseURL = C.SERVER_URL;
+
 function requestWorks() {
   return {
     type: C.REQUEST_WORKS_DATA,
@@ -62,9 +63,26 @@ export let deleteWork = (id) => {
     };
 }
 
-export let findById = () => {
-  return request({url: baseURL + "/api/works/" + id})
-        .then(data => data = JSON.parse(data))
+let findById = (id) => {
+  return function(dispatch){
+    dispatch(requestWork(id));
+    return request({url: baseURL + "/api/works/" + id})
+      .then(data => dispatch(receiveWork(JSON.parse(data))));
+  }
+}
+function requestWork(id) {
+  return {
+    type: C.REQUEST_WORK_DATA,
+  }
+}
+
+function receiveWork(data) {
+  return {
+    type: C.RECEIVE_WORK_DATA,
+    work: data,
+    didReceiveData: true,
+    receivedAt: Date.now()
+  }
 }
 
 const startWorkEdit = (qid) => {
@@ -92,4 +110,4 @@ const submitWorkEdit = (qid, content) => {
 
 
 
-export default {getWorks, submitNewWork, startWorkEdit, cancelWorkEdit, submitWorkEdit, deleteWork};
+export default {getWorks, submitNewWork, findById, startWorkEdit, cancelWorkEdit, submitWorkEdit, deleteWork};
