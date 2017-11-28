@@ -54,14 +54,14 @@ let findById = (req, res, next) => {
 };
 
 const submitNew = (req, res, next) => {
-  const artist_id = req.body.artist_id;
+  var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
   if (artist_id==null||'null') {
     if(new_artist_name) {
       console.log('creating new artist ' + new_artist_name);
       var newArtistSql = "INSERT INTO artist (name) VALUES ('" + new_artist_name + "') RETURNING artist.id;"
     } else {
-      console.log('anonymous');
+      artist_id = null;
     }
   }
   let image = req.body.image;
@@ -79,7 +79,6 @@ const submitNew = (req, res, next) => {
     .then((id) => {
       var sql = "INSERT INTO work (id, description, artist_id, image,  date_posted, location_id, user_id) VALUES (DEFAULT, '" + description + "', $1,  $$" + image + "$$, DEFAULT, " + id[0].id + ", '" + user_id + "') RETURNING work.id;";
       if(newArtistSql) {
-        console.log('ATTEMPTING TO CREATE NEW ARTIST...');
         db.query(newArtistSql)
           .then((item) => {
             console.log('CREATED NEW ARTIST WITH ID ', item[0].id);

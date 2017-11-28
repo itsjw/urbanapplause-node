@@ -36,6 +36,7 @@ function getUsers(values) {
 }
 
 function submitNewUser(values) {
+  console.log('submitting new user', values);
   let qs = "";
   qs = Object.keys(values).map(key => {
             return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);

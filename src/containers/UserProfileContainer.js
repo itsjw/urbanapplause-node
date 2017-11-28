@@ -13,6 +13,12 @@ class UserProfileContainer  extends Component {
       isEditing: false
     }
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.match.params.id != this.props.match.params.id) {
+      console.log('REALLY SHOULD UPDATE');
+    this.props.getUser(nextProps.match.params.id);
+    }
+  }
   componentDidMount() {
     console.log('PARAM: ', this.props.match.params.id);
     this.props.getUser(this.props.match.params.id);
@@ -41,10 +47,10 @@ class UserProfileContainer  extends Component {
           <h1 className='title'>Welcome, {this.props.auth.given_name}!</h1>
           {(this.state.isEditing==false)?
               <div>
-                <UserInfo user={this.props.user} />
+                <UserInfo uid={this.props.match.params.id} user={this.props.user} />
                 <button className='button' onClick={this.openForm}>Edit</button>
               </div>:
-              <UserEditForm user={this.props.user} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
+              <UserEditForm uid={this.props.match.params.id} user={this.props.user} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
               }
 
         </div>
