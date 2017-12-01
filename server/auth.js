@@ -1,5 +1,5 @@
 "use strict";
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jwt-simple');
 var moment = require('moment');
 let db = require('./pghelper');
