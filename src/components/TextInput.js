@@ -5,19 +5,26 @@ class TextInput extends Component {
     this.props.onChange(this.props.name, e.target.value);
   }
   render() {
-    const {label, refName, name, idName, className, type, title, value, defaultValue, onChange, errorMsg, validationMsg, placeholder, disabled} = this.props;
-    const isError = (errorMsg==true)?true:null;
+    const {label, refName, name, idName, className, type, title, value, defaultValue, onChange, errorMsg, validationMsg, placeholder, disabled, icon} = this.props;
+    var didError = null;
+    var isValidated = null;
+    if(errorMsg && errorMsg.length>0){
+      didError= true;
+    }
+    if (validationMsg && validationMsg.length>0){
+      isValidated = true;
+    }
     var inputComponent =
           <input
             type={type}
-            ref={refName}
+            ref={refName||''}
             id={idName}
             value={value}
             name={name}
             title={title||''}
             onChange={this.handleChange}
             placeholder={placeholder||''}
-            className={(errorMsg==false)?'input':'input '+className}/>;
+            className={`input ${didError?'is-danger':''} ${isValidated?'is-success':''} ${className}`}/>;
 
     if (type=='textarea') {
       inputComponent=
@@ -30,18 +37,26 @@ class TextInput extends Component {
     }
 
     return(
-      <div className="field ">
+      <div className="field is-narrow">
         {label?
         <label className='label ' htmlFor={refName}>{label} </label>
         :''}
-        <div className='control is-expanded'>
+        <div className={`control ${(didError||isValidated)?'has-icons-right':''} ${icon?'has-icons-left':''}`}>
           {inputComponent}
+          {icon?(
+            <span className="icon is-small is-left">
+
+            <i className={`fa fa-${icon}`}></i>
+          </span>):''
+          }
+          {(didError||isValidated)?
+          (<span className="icon is-small is-right">
+            <i className={`fa fa-${didError?'warning':'check'}`}></i>
+          </span>):''
+          }
         </div>
-        <div className='help'>
-          <span className='input-field-error-msg'>{errorMsg || ''}</span>
-          <span className='input-field-validated-msg'>{validationMsg||''}</span>
-          <br />
-      </div>
+
+            {(errorMsg)?<p className="help is-danger">{errorMsg}</p>:''}
     </div>
     )
   }

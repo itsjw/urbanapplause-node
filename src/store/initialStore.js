@@ -1,8 +1,10 @@
 const initialstate = {
   auth: {
+    registrationStatus: 'ready',
+    registrationErrors: [],
     currently: null,
-		email: null,
-    uid: null
+    user: {},
+    expires: null
 	},
 	works: {
 		hasreceiveddata: false,

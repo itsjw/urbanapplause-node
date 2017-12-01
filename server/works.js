@@ -1,10 +1,8 @@
 "use strict";
-
 let utils = require('../src/services/utils');
-
 let db = require('./pghelper');
-
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
 
 let findAll = (req, res, next) => {
 
@@ -54,6 +52,7 @@ let findById = (req, res, next) => {
         .then(item => res.json(item[0]))
         .catch(next);
 };
+
 
 const submitNew = (req, res, next) => {
   console.log(req.body);

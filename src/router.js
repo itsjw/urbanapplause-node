@@ -3,7 +3,10 @@ import React from 'react';
 import HeaderContainer from './containers/HeaderContainer';
 import Footer from './components/Footer';
 
-import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
+import {Router, Route, Redirect, Switch} from 'react-router-dom';
+
+import RegisterContainer from './containers/RegisterContainer';
+import LoginContainer from './containers/LoginContainer';
 
 import WorkListContainer from './containers/WorkListContainer';
 import WorkDetailContainer from './containers/WorkDetailContainer';
@@ -19,16 +22,23 @@ import AboutPage from './pages/AboutPage';
 import ErrorPage from './pages/ErrorPage';
 import ContactPage from './pages/ContactPage';
 
+import createHistory from 'history/createBrowserHistory';
+export const history = createHistory();
+
 export const router =
   (
-    <BrowserRouter>
+    <Router history={history}>
       <div className="app-container">
         <div className="wrapper container" id="wrapper">
-          <HeaderContainer/>
+
+            <Route path='/:currentRoute' component={HeaderContainer}/>
           <Switch>
             <Route exact path='/' render={() =>
                 (<Redirect to='/works'/>)
             }/>
+
+            <Route exact path='/register' component={RegisterContainer}/>
+            <Route exact path='/signin' component={LoginContainer}/>
 
             <Route exact path='/works' component={WorkListContainer}/>
              <Route exact path='/works/new' component={WorkFormContainer}/>
@@ -48,6 +58,6 @@ export const router =
          </div>
         <Footer />
         </div>
-      </BrowserRouter>
+      </Router>
     )
 

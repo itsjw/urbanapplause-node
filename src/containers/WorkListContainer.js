@@ -105,7 +105,7 @@ class WorkListContainer extends Component {
         </section>
         {(this.state.mapView==true)?
             <WorksMapView works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />:
-            <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />}
+            <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} hasreceiveddata={works.hasreceiveddata} />}
         <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
 
       </div>

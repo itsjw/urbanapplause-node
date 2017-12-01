@@ -4,7 +4,7 @@ import initialState from "../initialStore";
 var  _ = require("lodash");
 
 
-const worksReducer = (currentstate,action) => {
+const worksReducer = (currentstate, action) => {
 	var newstate;
   switch(action.type){
     case C.REQUEST_WORKS_DATA:

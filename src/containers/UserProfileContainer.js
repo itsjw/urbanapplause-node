@@ -1,8 +1,6 @@
 
 import React, { Component } from 'react';
 import UserInfo from '../components/UserInfo';
-
-import UserEditForm from '../components/UserEditForm';
 import userActions from '../actions/users';
 import {connect} from 'react-redux';
 
@@ -10,48 +8,65 @@ class UserProfileContainer  extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isEditing: false
+      activeTab: 'public'
     }
   }
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.match.params.id != this.props.match.params.id) {
-      console.log('REALLY SHOULD UPDATE');
     this.props.getUser(nextProps.match.params.id);
     }
   }
   componentDidMount() {
-    console.log('PARAM: ', this.props.match.params.id);
     this.props.getUser(this.props.match.params.id);
   }
-
-  closeForm = () => {
+  setActiveTab = (e) => {
     this.setState({
-      isEditing: false
+      activeTab: e.target.name
     });
-  }
-
-  openForm = () => {
-    this.setState({
-      isEditing: true
-    });
-  }
-  handleUpdate = (id, content) => {
-    this.props.onUpdate(id, content);
-    this.forceUpdate();
   }
   render() {
+    var tabContent = <UserInfo
+              uid={this.props.match.params.id}
+              user={this.props.user}
+              isEditable={true}
+              onUpdate={this.props.onUpdate}
+            />
+      if (this.state.activeTab =='applause'){
+        tabContent = <div>applause</div>
+      }
+      if (this.state.activeTab =='account'){
+        tabContent = <div> <h1 className='title is-3'>Account Info</h1></div>
+      }
+
     const id = this.props.match.params.id;
-    if (this.props.auth.currently=='LOGGED_IN' && this.props.auth.uid==id){
+    if (this.props.auth.currently=='LOGGED_IN' && this.props.auth.user.id==id){
       return (
         <div>
-          <h1 className='title'>Welcome, {this.props.auth.given_name}!</h1>
-          {(this.state.isEditing==false)?
-              <div>
-                <UserInfo uid={this.props.match.params.id} user={this.props.user} />
-                <button className='button' onClick={this.openForm}>Edit</button>
-              </div>:
-              <UserEditForm uid={this.props.match.params.id} user={this.props.user} onSubmit={this.handleUpdate} onCancel={this.closeForm}/>
-              }
+          <h1 className='title'>Welcome, {this.props.auth.user.username}!</h1>
+          <div className="tabs">
+            <ul style={{paddingLeft:'0'}}>
+              <li
+                className={(this.state.activeTab=='public')?'is-active':''}>
+                <a
+                  name='public'
+                  onClick={this.setActiveTab}>
+                  Public Profile
+                </a>
+              </li>
+              <li
+                className={(this.state.activeTab=='account')?'is-active':''}>
+                <a
+                  name='account'
+                  onClick={this.setActiveTab}>
+                  Account
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className='tab-content'>
+            {tabContent}
+          </div>
 
         </div>
       )

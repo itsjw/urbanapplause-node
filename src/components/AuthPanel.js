@@ -16,16 +16,15 @@ class AuthPanel extends Component {
       return(
         <div className='navbar-end'>
             <div className='navbar-item has-dropdown is-hoverable'>
-              <a className='navbar-link'>
+              <NavLink className='navbar-link'to={`/users/${this.props.uid}`}>
                 <span className="icon">
                     <Icon name="user"/>
                 </span>
                 {this.props.username}
-              </a>
+              </NavLink>
               <div className='navbar-dropdown is-boxed'>
                 <NavLink className='navbar-item' to={`/users/${this.props.uid}`} activeClassName='is-active'>
                   <div className='navbar-content'>
-
                     Profile
                   </div>
                 </NavLink>
@@ -38,8 +37,11 @@ class AuthPanel extends Component {
       )
     } else {
       return (
-      <div className='navbar-end'>
-        <a className="navbar-item " onClick={this.props.onSignIn}>Sign In</a>
+        <div className='navbar-end'>
+
+        <NavLink className="navbar-item " to={this.props.registerRoute} activeClassName='is-active'>Register</NavLink>
+        <NavLink className="navbar-item " to={this.props.signInRoute} activeClassName='is-active'>Sign In</NavLink>
+
       </div>
       )
     }

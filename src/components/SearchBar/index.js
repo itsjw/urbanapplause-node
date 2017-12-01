@@ -17,17 +17,16 @@ class SearchBar extends React.Component {
     render() {
         return (
           <div className="field ">
-            <div className='control is-expanded has-icons-left has-icons-right' style={{height: '48px'}}>
+            <div className='control is-expanded has-icons-left has-icons-right' >
               <input className="input"
-                style={{height: '48px', zIndex: 2}}
                  type="search"
                  placeholder={this.props.placeholder ||"Enter a work description or artist name"}
                  value={this.props.searchKey}
                  onChange={this.searchKeyChangeHandler.bind(this)}/>
-              <span className="icon is-small is-left" style={{height: '48px'}}>
+              <span className="icon is-small is-left" >
                 <Icon name="search"/>
               </span>
-              <span style={{height: '48px', cursor: 'pointer', position:'absolute', top: '0', right: '0', verticalAlign: 'middle', padding: '15px', zIndex: '5'}} onClick={this.clearText} >
+              <span style={{cursor: 'pointer', position:'absolute', top: '0', right: '0', height: '100%', paddingRight: '10px', zIndex: '5',paddingTop: '8px'}} onClick={this.clearText} >
                 <a className='delete' style={{cursor: 'pointer'}} onClick={this.clearText}  />
               </span>
             </div>

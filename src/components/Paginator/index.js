@@ -5,13 +5,12 @@ class Paginator extends React.Component {
 
   render() {
     const previousButton = (
-              <button className={"pagination-previous" + (this.props.page <= 1 ? " slds-hide" : "")} onClick={this.props.onPrevious}>
-                <span className='icon is-medium'><Icon name='arrow-left'/></span>
+              <button className={"pagination-previous icon is-medium" + (this.props.page <= 1 ? " slds-hide" : "")} onClick={this.props.onPrevious}>
+                <i className='fa fa-arrow-left'></i>
               </button>);
     const nextButton = (
-            <button className={"pagination-next" + (this.props.page >= pages ? " slds-hide" : "")} onClick={this.props.onNext}>
-                <span className='icon is-medium'><Icon name='arrow-right'/></span>
-            </button>);
+            <button className={"pagination-next icon is-medium" + (this.props.page >= pages ? " slds-hide" : "")} onClick={this.props.onNext}>
+              <i className='fa fa-arrow-right'></i>            </button>);
 
 
     let pages = Math.ceil(this.props.total/this.props.pageSize);

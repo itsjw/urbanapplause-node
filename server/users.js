@@ -7,8 +7,8 @@ let createSql = (req, res, next) => {
 
 let sql = `CREATE TABLE users (
   id serial PRIMARY KEY,
-  auth_id integer,
-  bio VARCHAR (500),
+  bio VARCHAR (1000),
+  hash_pass VARCHAR(500),
   location_id integer REFERENCES location (id),
   date_joined timestamp with time zone NOT NULL DEFAULT now(),
   image text

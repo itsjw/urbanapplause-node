@@ -12,7 +12,8 @@ class HeaderContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHamburgerActive: false
+      isHamburgerActive: false,
+      redirect: null
     }
   }
 
@@ -22,10 +23,20 @@ class HeaderContainer extends Component {
 
   toggleHamburger = () => {
     this.setState({
-     isHamburgerActive: !this.state.isHamburgerActive,
+     isHamburgerActive: !this.state.isHamburgerActive,isHamburgerActive
     });
   }
+  handleLogout = () => {
+    this.setState({
+      redirect: "/",
+    });
+    this.props.onLogout();
+  }
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect}/>
+    }
+    else {
     return(
     <nav className="navbar is-transparent" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -60,14 +71,16 @@ class HeaderContainer extends Component {
           </div>
           <AuthPanel
             isLoggedIn={(this.props.auth.currently=='LOGGED_IN')?true:false}
-            onSignIn={this.props.handleSignIn}
-            onLogOut={this.props.handleLogOut}
-            username={this.props.auth.given_name}
-            uid={this.props.auth.uid}
+            onLogOut={this.handleLogout}
+            signInRoute="/signin"
+            registerRoute="/register"
+            username={this.props.auth.user.username}
+            uid={this.props.auth.user.id}
           />
         </div>
     </nav>
     )
+    }
   }
 }
 
@@ -78,8 +91,7 @@ var mapStateToProps = function(appState){
 }
 var mapDispatchToProps = function(dispatch){
   return {
-    handleSignIn: function(){ dispatch(authActions.handleSignIn()); },
-    handleLogOut: function(){ dispatch(authActions.handleLogOut()); },
+    onLogout: function(){ dispatch(authActions.onLogout()); },
     checkLocalAuthState: function(){ dispatch(authActions.checkLocalAuthState()); }
   }
 }
