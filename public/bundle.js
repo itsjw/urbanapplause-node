@@ -83228,8 +83228,8 @@ var LoginContainer = function (_Component) {
 
     _this.state = {
       email: '',
-      username: 'flannerykj',
-      password: 'cheesecake'
+      username: '',
+      password: ''
     };
     return _this;
   }
