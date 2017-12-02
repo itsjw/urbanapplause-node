@@ -6296,65 +6296,27 @@ module.exports = emptyFunction;
 "use strict";
 
 
-module.exports = {
+var _module$exports;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+module.exports = (_module$exports = {
   //SERVER URLS
-  SERVER_URL0: "http://localhost:3000",
+  SERVER_URL1: "http://localhost:3000",
   SERVER_URL: "http://urbanapplause.com",
 
   // AUTH ACTIONS
   REGISTER_REQUEST: "REGISTER_REQUEST",
   REGISTER_SUCCESS: "REGISTER_SUCCESS",
   REGISTER_FAILURE: "REGISTER_FAILURE",
+  REGISTER_RESET: "REGISTER_RESET",
+  LOGIN_RESET: "LOGIN_RESET",
 
   LOGIN_REQUEST: "LOGIN_REQUEST",
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
-  LOGIN_FAILURE: "LOGIN_FAILURE",
+  LOGIN_FAILURE: "LOGIN_FAILURE"
 
-  REGISTER_RESET: "REGISTER_RESET",
-  ATTEMPTING_LOGIN: "ATTEMPTING_LOGIN",
-  LOGIN_USER: "LOGIN_USER",
-  LOGOUT: "LOGOUT",
-
-  // AUTH STATES
-  LOGGED_IN: "LOGGED_IN",
-  ANONYMOUS: "ANONYMOUS",
-  AWAITING_AUTH_RESPONSE: "AWAITING_AUTH_RESPONSE",
-
-  // WORK ACTIONS
-  REQUEST_WORKS_DATA: "REQUEST_WORKS_DATA",
-  RECEIVE_WORKS_DATA: "RECEIVE_WORKS_DATA",
-  REQUEST_WORK_DATA: "REQUEST_WORK_DATA",
-  RECEIVE_WORK_DATA: "RECEIVE_WORK_DATA",
-  AWAIT_NEW_WORK_RESPONSE: "AWAIT_NEW_WORK_RESPONSE",
-  RECEIVE_NEW_WORK_RESPONSE: "RECEIVE_NEW_WORK_RESPONSE",
-  START_WORK_EDIT: "START_WORK_EDIT",
-  FINISH_WORK_EDIT: "FINISH_WORK_EDIT",
-  SUBMIT_WORK_EDIT: "SUBMIT_WORK_EDIT",
-
-  // ARTIST ACTIONS
-  REQUEST_ARTISTS_DATA: "REQUEST_ARTISTS_DATA",
-  RECEIVE_ARTISTS_DATA: "RECEIVE_ARTISTS_DATA",
-
-  REQUEST_ARTIST_DATA: "REQUEST_ARTIST_DATA",
-  RECEIVE_ARTIST_DATA: "RECEIVE_ARTIST_DATA",
-  AWAIT_NEW_ARTIST_RESPONSE: "AWAIT_NEW_ARTIST_RESPONSE",
-  RECEIVE_NEW_ARTIST_RESPONSE: "RECEIVE_NEW_ARTIST_RESPONSE",
-  START_ARTIST_EDIT: "START_ARTIST_EDIT",
-  FINISH_ARTIST_EDIT: "FINISH_ARTIST_EDIT",
-  SUBMIT_ARTIST_EDIT: "SUBMIT_ARTIST_EDIT",
-
-  //USER ACTIONS
-  //
-  REQUEST_USERS_DATA: "REQUEST_USERS_DATA",
-  RECEIVE_USERS_DATA: "RECEIVE_USERS_DATA",
-  REQUEST_USER_DATA: "REQUEST_USER_DATA",
-  RECEIVE_USER_DATA: "RECEIVE_USER_DATA",
-  AWAIT_NEW_USER_RESPONSE: "AWAIT_NEW_USER_RESPONSE",
-  RECEIVE_NEW_USER_RESPONSE: "RECEIVE_NEW_USER_RESPONSE",
-  START_USER_EDIT: "START_USER_EDIT",
-  FINISH_USER_EDIT: "FINISH_USER_EDIT",
-  SUBMIT_USER_EDIT: "SUBMIT_USER_EDIT"
-};
+}, _defineProperty(_module$exports, "REGISTER_RESET", "REGISTER_RESET"), _defineProperty(_module$exports, "ATTEMPTING_LOGIN", "ATTEMPTING_LOGIN"), _defineProperty(_module$exports, "LOGIN_USER", "LOGIN_USER"), _defineProperty(_module$exports, "LOGOUT", "LOGOUT"), _defineProperty(_module$exports, "LOGGED_IN", "LOGGED_IN"), _defineProperty(_module$exports, "ANONYMOUS", "ANONYMOUS"), _defineProperty(_module$exports, "AWAITING_AUTH_RESPONSE", "AWAITING_AUTH_RESPONSE"), _defineProperty(_module$exports, "REQUEST_WORKS_DATA", "REQUEST_WORKS_DATA"), _defineProperty(_module$exports, "RECEIVE_WORKS_DATA", "RECEIVE_WORKS_DATA"), _defineProperty(_module$exports, "REQUEST_WORK_DATA", "REQUEST_WORK_DATA"), _defineProperty(_module$exports, "RECEIVE_WORK_DATA", "RECEIVE_WORK_DATA"), _defineProperty(_module$exports, "AWAIT_NEW_WORK_RESPONSE", "AWAIT_NEW_WORK_RESPONSE"), _defineProperty(_module$exports, "RECEIVE_NEW_WORK_RESPONSE", "RECEIVE_NEW_WORK_RESPONSE"), _defineProperty(_module$exports, "START_WORK_EDIT", "START_WORK_EDIT"), _defineProperty(_module$exports, "FINISH_WORK_EDIT", "FINISH_WORK_EDIT"), _defineProperty(_module$exports, "SUBMIT_WORK_EDIT", "SUBMIT_WORK_EDIT"), _defineProperty(_module$exports, "REQUEST_ARTISTS_DATA", "REQUEST_ARTISTS_DATA"), _defineProperty(_module$exports, "RECEIVE_ARTISTS_DATA", "RECEIVE_ARTISTS_DATA"), _defineProperty(_module$exports, "REQUEST_ARTIST_DATA", "REQUEST_ARTIST_DATA"), _defineProperty(_module$exports, "RECEIVE_ARTIST_DATA", "RECEIVE_ARTIST_DATA"), _defineProperty(_module$exports, "AWAIT_NEW_ARTIST_RESPONSE", "AWAIT_NEW_ARTIST_RESPONSE"), _defineProperty(_module$exports, "RECEIVE_NEW_ARTIST_RESPONSE", "RECEIVE_NEW_ARTIST_RESPONSE"), _defineProperty(_module$exports, "START_ARTIST_EDIT", "START_ARTIST_EDIT"), _defineProperty(_module$exports, "FINISH_ARTIST_EDIT", "FINISH_ARTIST_EDIT"), _defineProperty(_module$exports, "SUBMIT_ARTIST_EDIT", "SUBMIT_ARTIST_EDIT"), _defineProperty(_module$exports, "REQUEST_USERS_DATA", "REQUEST_USERS_DATA"), _defineProperty(_module$exports, "RECEIVE_USERS_DATA", "RECEIVE_USERS_DATA"), _defineProperty(_module$exports, "REQUEST_USER_DATA", "REQUEST_USER_DATA"), _defineProperty(_module$exports, "RECEIVE_USER_DATA", "RECEIVE_USER_DATA"), _defineProperty(_module$exports, "AWAIT_NEW_USER_RESPONSE", "AWAIT_NEW_USER_RESPONSE"), _defineProperty(_module$exports, "RECEIVE_NEW_USER_RESPONSE", "RECEIVE_NEW_USER_RESPONSE"), _defineProperty(_module$exports, "START_USER_EDIT", "START_USER_EDIT"), _defineProperty(_module$exports, "FINISH_USER_EDIT", "FINISH_USER_EDIT"), _defineProperty(_module$exports, "SUBMIT_USER_EDIT", "SUBMIT_USER_EDIT"), _module$exports);
 ;
 
 var _temp = function () {
@@ -21300,6 +21262,7 @@ var initialstate = {
   auth: {
     registrationStatus: 'ready',
     registrationErrors: [],
+    loginError: null,
     currently: null,
     user: {},
     expires: null
@@ -23378,10 +23341,11 @@ var onLogin = function onLogin(values) {
         localStorage.setItem('expires', data.expires);
         _router.history.push("/");
       } else {
-        dispatch({ type: _constants2.default.LOGIN_FAILURE, data: JSON.parse(res) });
+        dispatch({ type: _constants2.default.LOGIN_FAILURE, errorMsg: "Incorrect username or password" });
       }
+      return 'xdata';
     }).then(function (error) {
-      dispatch({ type: _constants2.default.LOGIN_FAILURE, data: JSON.parse(res) });
+      return error;
     });
   };
 };
@@ -23440,7 +23404,18 @@ var checkLocalAuthState = function checkLocalAuthState() {
   };
 };
 
-var _default = { onRegister: onRegister, onLogin: onLogin, onLogout: onLogout, checkLocalAuthState: checkLocalAuthState };
+var resetRegistrationStatus = function resetRegistrationStatus() {
+  return function (dispatch) {
+    dispatch({ type: _constants2.default.REGISTER_RESET });
+  };
+};
+var resetLoginStatus = function resetLoginStatus() {
+  return function (dispatch) {
+    dispatch({ type: _constants2.default.LOGIN_RESET });
+  };
+};
+
+var _default = { onRegister: onRegister, onLogin: onLogin, onLogout: onLogout, checkLocalAuthState: checkLocalAuthState, resetRegistrationStatus: resetRegistrationStatus, resetLoginStatus: resetLoginStatus };
 exports.default = _default;
 ;
 
@@ -23458,6 +23433,10 @@ var _temp = function () {
   __REACT_HOT_LOADER__.register(onLogout, 'onLogout', '/Users/flannery/Projects/ua-node2/src/actions/auth.js');
 
   __REACT_HOT_LOADER__.register(checkLocalAuthState, 'checkLocalAuthState', '/Users/flannery/Projects/ua-node2/src/actions/auth.js');
+
+  __REACT_HOT_LOADER__.register(resetRegistrationStatus, 'resetRegistrationStatus', '/Users/flannery/Projects/ua-node2/src/actions/auth.js');
+
+  __REACT_HOT_LOADER__.register(resetLoginStatus, 'resetLoginStatus', '/Users/flannery/Projects/ua-node2/src/actions/auth.js');
 
   __REACT_HOT_LOADER__.register(_default, 'default', '/Users/flannery/Projects/ua-node2/src/actions/auth.js');
 }();
@@ -46343,6 +46322,7 @@ var WorkFormContainer = function (_Component) {
     };
 
     _this.handleSubmit = function (entry) {
+      entry.token = _this.props.auth.token;
       _this.props.onSubmit(entry);
       _this.setState({
         redirect: true
@@ -46375,7 +46355,7 @@ var WorkFormContainer = function (_Component) {
         return _react2.default.createElement(_reactRouterDom.Redirect, { to: '/works' });
       } else {
         if (this.props.auth.currently == "LOGGED_IN") {
-          return _react2.default.createElement(_WorkForm2.default, { onCancel: this.closeForm, onSubmit: this.handleSubmit, artistList: this.props.artists.items, user_id: this.props.auth.uid });
+          return _react2.default.createElement(_WorkForm2.default, { onCancel: this.closeForm, onSubmit: this.handleSubmit, artistList: this.props.artists.items, user_id: this.props.auth.user.id });
         } else {
           return _react2.default.createElement(
             'div',
@@ -78785,26 +78765,38 @@ var authReducer = function authReducer(currentstate, action) {
         registrationStatus: 'failure',
         registrationErrors: action.data.errors
       });
+    case _constants2.default.REGISTER_RESET:
+      return Object.assign({}, currentstate, {
+        registrationStatus: 'ready'
+      });
+
     case _constants2.default.LOGIN_REQUEST:
       return Object.assign({}, currentstate, {
         currently: 'loading',
-        user: {}
+        user: {},
+        loginError: null
       });
     case _constants2.default.LOGIN_SUCCESS:
       return Object.assign({}, currentstate, {
         currently: "LOGGED_IN",
         user: action.data.user,
         token: action.data.token,
-        expires: action.data.expires
+        expires: action.data.expires,
+        loginError: null
       });
     case _constants2.default.LOGIN_FAILURE:
       return Object.assign({}, currentstate, {
         currently: _constants2.default.ANONYMOUS,
         token: null,
         user: {},
-        expires: null
+        expires: null,
+        loginError: action.errorMsg
       });
-
+    case _constants2.default.LOGIN_RESET:
+      return Object.assign({}, currentstate, {
+        currently: null,
+        loginError: null
+      });
     case _constants2.default.LOGOUT:
       return Object.assign({}, currentstate, {
         currently: _constants2.default.ANONYMOUS,
@@ -83223,23 +83215,59 @@ var LoginContainer = function (_Component) {
         username: _this.state.username,
         password: _this.state.password
       };
-      _this.props.onLogin(form).then(res = console.log(res));
+      _this.props.onLogin(form);
     };
 
     _this.state = {
       email: '',
       username: '',
-      password: ''
+      password: '',
+      errorMsg: ''
     };
     return _this;
   }
 
   _createClass(LoginContainer, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.props.auth.registrationStatus == 'success') {
+        this.setState({
+          registrationSuccess: "Registration successful"
+        });
+      }
+      this.props.resetRegistrationStatus();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.resetRegistrationStatus();
+      this.props.resetLoginStatus();
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var auth = this.props.auth;
       return _react2.default.createElement(
         'div',
         null,
+        this.state.registrationSuccess ? _react2.default.createElement(
+          'div',
+          { className: 'message is-success' },
+          _react2.default.createElement(
+            'div',
+            { className: 'message-body' },
+            this.state.registrationSuccess
+          )
+        ) : '',
+        auth.loginError ? _react2.default.createElement(
+          'div',
+          { className: 'message is-danger' },
+          _react2.default.createElement(
+            'div',
+            { className: 'message-body' },
+            auth.loginError
+          )
+        ) : '',
         _react2.default.createElement(
           'h1',
           null,
@@ -83284,6 +83312,13 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     onLogin: function onLogin(form) {
       dispatch(_auth2.default.onLogin(form));
+    },
+
+    resetRegistrationStatus: function resetRegistrationStatus() {
+      dispatch(_auth2.default.resetRegistrationStatus());
+    },
+    resetLoginStatus: function resetLoginStatus() {
+      dispatch(_auth2.default.resetLoginStatus());
     }
   };
 };

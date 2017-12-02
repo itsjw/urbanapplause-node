@@ -27,9 +27,7 @@ app.use(session({
   resave: true
 }));
 
-//Passport Init
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 //Express Validator
 app.use(expressValidator({
@@ -114,12 +112,12 @@ app.post('/api/login', auth.login);
 
 app.get('/api/works', works.findAll);
 app.get('/api/works/:id', works.findById);
-app.post('/api/newwork', [bodyParser(), jwtauth], works.submitNew);
+app.post('/api/newwork', jwtauth, works.submitNew);
 app.delete('/api/deletework/:id', works.deleteWork);
 
 app.get('/api/artists', artists.findAll);
 app.get('/api/artists/:id', artists.findById);
-app.post('/api/newartist', artists.submitNew);
+app.post('/api/newartist', jwtauth, artists.submitNew);
 app.put('/api/updateartist/:id', artists.updateById);
 
 app.get('/api/users', users.findAll);

@@ -2,6 +2,7 @@ const initialstate = {
   auth: {
     registrationStatus: 'ready',
     registrationErrors: [],
+    loginError: null,
     currently: null,
     user: {},
     expires: null

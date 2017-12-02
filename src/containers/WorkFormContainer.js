@@ -22,6 +22,7 @@ class WorkFormContainer extends Component {
     this.props.getArtists({name: this.state.artistQuery});
   }
   handleSubmit = (entry) => {
+    entry.token = this.props.auth.token;
     this.props.onSubmit(entry);
     this.setState({
       redirect: true
@@ -40,7 +41,7 @@ class WorkFormContainer extends Component {
     } else {
       if (this.props.auth.currently=="LOGGED_IN") {
         return(
-            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items} user_id={this.props.auth.uid}/>
+            <WorkForm onCancel={this.closeForm} onSubmit={this.handleSubmit} artistList={this.props.artists.items} user_id={this.props.auth.user.id}/>
           )
       } else {
         return (

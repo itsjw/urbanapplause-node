@@ -12,6 +12,10 @@ let login = (req, res, next) => {
   let sql = "SELECT id, email, username, hash_pass from users where username = '" + username + "';";
     db.query(sql)
     .then(result => {
+      if (result.length ==0) {
+        res.json({error: 'user does not exist'})
+        return;
+      }
       console.log(result);
       bcrypt.compare(password, result[0].hash_pass, function(err, resp){
         if (resp==true) {
@@ -33,7 +37,7 @@ let login = (req, res, next) => {
           });
         } else {
           res.json({
-            data: "Invalid Credentials"
+            error: "Invalid Credentials"
           });
         }
 
@@ -66,7 +70,7 @@ let register = (req, res, next) => {
     res.json({sucessful: false, errors: errors});
   } else {
     var salt = bcrypt.genSaltSync(10);
-    bcrypt.hash(password, salt, function(err, hash){
+    bcrypt.hash(password, salt, null, function(err, hash){
       let sql = "INSERT INTO users (email, username, hash_pass) VALUES ('" + email + "', '" + username + "', '" + hash + "');";
       db.query(sql)
         .then(item => res.json({sucessful: true}))

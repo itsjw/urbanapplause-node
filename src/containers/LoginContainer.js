@@ -10,8 +10,18 @@ class LoginContainer extends Component {
       email: '',
       username: '',
       password: '',
+      errorMsg: '',
     }
   }
+  componentDidMount() {
+    if (this.props.auth.registrationStatus == 'success') {
+      this.setState({
+        registrationSuccess: "Registration successful"
+      });
+    }
+    this.props.resetRegistrationStatus();
+  }
+
   onInputChange = (fieldName, newValue) => {
     var newState = this.state;
     newState[fieldName] = newValue;
@@ -23,13 +33,30 @@ class LoginContainer extends Component {
       username: this.state.username,
       password: this.state.password,
     }
-    this.props.onLogin(form)
-    .then (res = console.log(res));
+    this.props.onLogin(form);
+  }
+  componentWillUnmount () {
+    this.props.resetRegistrationStatus();
+    this.props.resetLoginStatus();
   }
 
   render() {
+    const auth = this.props.auth;
     return(
       <div>
+      {(this.state.registrationSuccess)?(<div className='message is-success'>
+        <div className='message-body'>
+          {this.state.registrationSuccess}
+          </div>
+        </div>)
+        :''}
+
+        {auth.loginError?(<div className='message is-danger'>
+          <div className='message-body'>
+            {auth.loginError}
+          </div>
+        </div>)
+        :''}
         <h1>Login</h1>
         <TextInput
           label='Username'
@@ -64,6 +91,9 @@ var mapStateToProps = function(appState){
 var mapDispatchToProps = function(dispatch){
   return {
     onLogin: function(form){ dispatch(authActions.onLogin(form)); },
+
+    resetRegistrationStatus: function(){ dispatch(authActions.resetRegistrationStatus()); },
+    resetLoginStatus: function(){ dispatch(authActions.resetLoginStatus()); },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

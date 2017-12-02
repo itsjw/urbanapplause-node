@@ -3,7 +3,6 @@ let utils = require('../src/services/utils');
 let db = require('./pghelper');
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-
 let findAll = (req, res, next) => {
 
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
@@ -55,7 +54,9 @@ let findById = (req, res, next) => {
 
 
 const submitNew = (req, res, next) => {
-  console.log(req.body);
+  if (!req.body.jwtauth) {
+    return res.json({message: "Not authorized"});
+  }
   var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
   if (artist_id==null||'null') {
@@ -68,7 +69,7 @@ const submitNew = (req, res, next) => {
   }
   let image = req.body.image;
   let description = req.body.description;
-  let user_id = req.body.user_id;
+  let user_id = req.body.jwtauth.id;
   let place = JSON.parse(req.body.place);
   let lng = place.geometry.location.lng;
   let lat = place.geometry.location.lat;

@@ -29,11 +29,12 @@ const onLogin = (values) => {
             localStorage.setItem('expires', data.expires);
             history.push("/");
           } else {
-            dispatch({type:C.LOGIN_FAILURE, data: JSON.parse(res)});
+            dispatch({type:C.LOGIN_FAILURE, errorMsg: "Incorrect username or password"});
           }
+          return 'xdata';
         })
         .then((error) => {
-            dispatch({type:C.LOGIN_FAILURE, data: JSON.parse(res)});
+          return error;
       });
   }
 }
@@ -93,7 +94,17 @@ const checkLocalAuthState = () => {
     }
     return;
   }
- }
+}
 
+const resetRegistrationStatus = () => {
+  return function(dispatch) {
+    dispatch({type: C.REGISTER_RESET});
+  }
+}
+const resetLoginStatus = () => {
+  return function(dispatch) {
+    dispatch({type: C.LOGIN_RESET});
+  }
+}
 
-export default {onRegister, onLogin, onLogout, checkLocalAuthState};
+export default {onRegister, onLogin, onLogout, checkLocalAuthState, resetRegistrationStatus, resetLoginStatus};
