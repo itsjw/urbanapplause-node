@@ -82,10 +82,10 @@ app.get("/contact*", (req, res) => {
 
 
 //SSL
-app.get('http://urbanapplause.com/.well-known/acme-challenge/zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI', function(req, res) {
+app.get('/.well-known/acme-challenge/zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI', function(req, res) {
   res.send('zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
 });
-app.get('http://www.urbanapplause.com/.well-known/acme-challenge/2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4', function(req, res) {
+app.get('/.well-known/acme-challenge/2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4', function(req, res) {
   res.send('2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
 })
 // Adding CORS support
