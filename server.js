@@ -60,6 +60,7 @@ app.use(function(req, res, next) {
 app.use(compression());
 
 app.use('/', express.static(__dirname + '/public'));
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 })
@@ -77,6 +78,15 @@ app.get("/about*", (req, res) => {
 })
 app.get("/contact*", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
+})
+
+
+//SSL
+app.get('http://urbanapplause.com/.well-known/acme-challenge/zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI', function(req, res) {
+  res.send('zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
+});
+app.get('http://www.urbanapplause.com/.well-known/acme-challenge/2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4', function(req, res) {
+  res.send('2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
 })
 // Adding CORS support
 
