@@ -58,7 +58,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(compression());
-
+app.use(express.static('public'));
 app.use('/', express.static(__dirname + '/public'));
 
 app.get("/", (req, res) => {
@@ -82,6 +82,7 @@ app.get("/contact*", (req, res) => {
 
 
 //SSL
+app.get('/health-check', (req, res) => res.sendStatus(200));
 app.get('/.well-known/acme-challenge/zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI', function(req, res) {
   res.send('zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
 });
