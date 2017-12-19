@@ -1,7 +1,7 @@
 module.exports = {
   //SERVER URLS
-  SERVER_URL1: "http://localhost:3000",
-  SERVER_URL: "http://urbanapplause.com",
+  SERVER_URL: "http://localhost:3000",
+  SERVER_URL0: "http://urbanapplause.com",
 
   // AUTH ACTIONS
   REGISTER_REQUEST: "REGISTER_REQUEST",

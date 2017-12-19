@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import TextInput from './TextInput';
 import FileInput from './FileInput';
 import SelectInput from './SelectInput';
-import {getUploadsImUrl} from '../services/utils';
 import GoogleMap from './GoogleMap';
 
-import cloudinary from 'cloudinary';
+
+
 class WorkForm extends Component {
   constructor(props) {
     super(props);
@@ -13,14 +13,11 @@ class WorkForm extends Component {
       artist_id: this.props.artist_id || null,
       description: this.props.description ||'',
       image: this.props.image || '',
+      imageData: null,
       city_id: 2,
       fileUploadStatus: null,
       errors: {},
       place: null,
-      options: [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two', clearableValue: false }
-      ]
     }
   }
   onSelectArtist = (action, value) => {
@@ -33,7 +30,6 @@ class WorkForm extends Component {
 
   }
   handleLocationChange = (place) => {
-    console.log(place);
     this.setState({
       place: place
     });
@@ -43,36 +39,9 @@ class WorkForm extends Component {
     newState[fieldName] = newValue;
     this.setState({newState});
   }
-  onFileChange = (e) => {
-    this.setState({
-      image: '',
-      fileUploadStatus: 'pending'
-    })
-    var file = document.querySelector('input[type=file]').files[0];
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      console.log(e.target);
-      cloudinary.config({
-        cloud_name: 'dt69uxouv',
-        api_key: '371182578119399',
-        api_secret: 'o-EMp3H21ZeD6faMa9TeY1fWUaU'
-      });
-        cloudinary.uploader.upload(
-        e.target.result,
-        function(result) {
-         console.log(result.url);
-          this.setState({
-            image: result.url,
-            fileUploadStatus: 'complete',
-          });
-      }.bind(this));
-    }.bind(this);
-    reader.readAsDataURL(file);
-    this.setState({
-      isEditingImage: false
-    });
-   }
-  handleSubmit = () => {
+
+
+   handleSubmit = () => {
     var entry = {
       image: this.state.image,
       description: this.state.description,
@@ -114,14 +83,13 @@ class WorkForm extends Component {
             refName='photoFile'
             title='Choose an image'
             label="Choose a photo..."
-            onChange={this.onFileChange}
+            onImageChange={this.onInputChange}
             imgUrl={this.state.image}
             fileUploadStatus={this.state.fileUploadStatus}
           />
 
         <SelectInput
             label='Artist'
-            options={this.state.options}
             selectOption='Artist Selected'
             createOption='New'
             unknownOption='Unknown'
@@ -156,6 +124,7 @@ class WorkForm extends Component {
           <GoogleMap
             onLocationChange={this.handleLocationChange}
             searchBoxRef="locationInput"
+            place={this.state.place}
           />
         </div>
         <button className='button is-primary' onClick={this.handleSubmit}>Submit</button>

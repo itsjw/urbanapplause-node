@@ -54,6 +54,8 @@ let findById = (req, res, next) => {
 
 
 const submitNew = (req, res, next) => {
+  console.log('submitting.....');
+  console.log(req.body);
   if (!req.body.jwtauth) {
     return res.json({message: "Not authorized"});
   }

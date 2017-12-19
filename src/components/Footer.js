@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Icon} from 'react-fa';
+import HelloWorld from './HelloWorld';
 
 class Footer extends Component {
   render() {
@@ -15,7 +16,8 @@ class Footer extends Component {
               </p>
 
               <span className='icon is-medium'><a className='social-link' href='https://github.com/flannerykj/urbanapplause-node' target='_blank'><Icon name='github' size='2x'/></a></span><br/>
-          </div>
+            </div>
+            <HelloWorld/>
           </div>
         </div>
       </div>

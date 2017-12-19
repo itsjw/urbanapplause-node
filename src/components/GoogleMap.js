@@ -5,7 +5,8 @@ class GoogleMap extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      map: null
+      map: null,
+      imageData: null
     };
   }
   placeMarker = (position, map) => {
