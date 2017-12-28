@@ -16,7 +16,7 @@ const initialstate = {
       work: {},
       hasreceiveddata: false
     },
-    newWorkErrors: []
+    newWorkErrors: {}
   },
   artists: {
 		hasreceiveddata: false,

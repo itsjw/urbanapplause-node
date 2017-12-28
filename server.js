@@ -13,6 +13,7 @@ let express = require('express'),
   artists = require('./server/artists'),
   users = require('./server/users'),
   jwtauth = require('./server/jwtauth'),
+  validation = require('./server/formValidation'),
   app = express();
 
 
@@ -123,7 +124,7 @@ app.post('/api/login', auth.login);
 
 app.get('/api/works', works.findAll);
 app.get('/api/works/:id', works.findById);
-app.post('/api/newwork', works.submitNew);
+app.post('/api/newwork', validation.works, works.submitNew);
 app.delete('/api/deletework/:id', works.deleteWork);
 
 app.get('/api/artists', artists.findAll);

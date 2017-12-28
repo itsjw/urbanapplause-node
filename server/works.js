@@ -3,8 +3,8 @@ let utils = require('../src/services/utils');
 let db = require('./pghelper');
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 const { check, validationResult } = require('express-validator/check');
-let findAll = (req, res, next) => {
 
+let findAll = (req, res, next) => {
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 8,
         page = req.query.page ? parseInt(req.query.page) : 1,
         search = req.query.search,
@@ -54,19 +54,13 @@ let findById = (req, res, next) => {
 
 
 const submitNew = (req, res, next) => {
-  //Validations
-  req.checkBody('date', 'Date is not valid').isDate();
-  req.checkBody('place', 'Email is required').notEmpty();
 
-  req.checkBody('image', 'Image is required').notEmpty();
+  const errors = validationResult(req);
 
-  var errors = req.validationErrors();
-
-  if(errors) {
-    console.log('yes, there are errors');
-
-    res.json({sucessful: false, errors: errors});
-  }
+  if(!errors.isEmpty()) {
+    console.log(errors.array());
+    res.json({sucessful: false, errors: errors.array()});
+  } else {
   var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
   if (artist_id==null||'null') {
@@ -83,7 +77,7 @@ const submitNew = (req, res, next) => {
   let place = JSON.parse(req.body.place);
   let lng = place.geometry.location.lng;
   let lat = place.geometry.location.lat;
-  let formatted_address = place.formatted_address;
+  let formatted_address = body.geometry.location.formatted_address;
   let city = utils.getAddressComponents(place).City.short_name;
 
   let locationSql = "INSERT INTO location (lng, lat, formatted_address, city) VALUES (" + lng + ", " + lat + ", '" + formatted_address + "', '" + city + "') RETURNING id;";
@@ -106,6 +100,7 @@ const submitNew = (req, res, next) => {
         });
       }
     });
+  }
 }
 
 let deleteWork = (req, res, next) => {

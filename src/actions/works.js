@@ -42,21 +42,25 @@ function submitNewWork(values) {
     }
     return encodeURIComponent(key) + '=' + encodeURIComponent(value);
   }).join('&');
-  console.log('qs : ', qs);
 
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_WORK_RESPONSE});
-    console.log('made it to here');
     return request({url: baseURL + "/api/newwork", method: "POST", data: qs})
+      .then((resString) => JSON.parse(resString))
       .then((res) =>
         {
-          console.log(res);
           if (res.successful ==true) {
-          dispatch({type:C.RECEIVE_NEW_WORK_RESPONSE, data: JSON.parse(res.data)});
+          dispatch({type:C.RECEIVE_NEW_WORK_RESPONSE, data: res.data});
             dispatch(getWorks());
           } else {
-            console.log('work form errors');
-            dispatch({type: C.FAILED_NEW_WORK_RESPONSE, errors: JSON.parse(res.errors)});
+            const errors = {};
+            res.errors.map((error, i) => {
+              errors[error.param] = {
+                msg: error.msg,
+                value: error.value
+              }
+            })
+            dispatch({type: C.FAILED_NEW_WORK_RESPONSE, errors: errors});
           }
         })
   }

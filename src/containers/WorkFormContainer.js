@@ -87,12 +87,19 @@ class WorkFormContainer extends Component {
     return(
       <div>
         {this.state.showModal==true?<Modal message={this.state.modalMessage} options={["Yes", "No"]} onRespond={this.handleModalRespond}/>:''}
+        {Object.keys(this.props.works.newWorkErrors).length>0 ?(
+        <article className='message is-danger'>
+          <div className='message-body'>
+            There were some problems with your sumission
+          </div>
+        </article>):''}
         <ChooseImage
           imagePath={this.state.imagePath}
           imageStatus={this.state.imageStatus}
           onChange={this.onInputChange}
           imageName={this.state.imageName}
           onClear={this.onInputClear}
+          error={this.props.works.newWorkErrors.image}
         />
         <ChooseDate
           date={this.state.date}
@@ -130,6 +137,7 @@ class WorkFormContainer extends Component {
 
 var mapStateToProps = function(appState){
   return {
+    works: appState.works,
     artists: appState.artists,
     auth: appState.auth
   }

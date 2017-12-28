@@ -97,6 +97,7 @@ class ChooseImage extends Component {
             </span>
           </label>
         </div>
+        {this.props.error?<p className='help is-danger'>{this.props.error.msg}</p>:''}
       </div>
     )
   }
