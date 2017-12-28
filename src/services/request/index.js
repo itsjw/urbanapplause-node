@@ -1,14 +1,19 @@
 export default opts => {
   return new Promise((resolve, reject) => {
-      let xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
+    console.log('new xhr created');
       xhr.open(opts.method || "GET", opts.url, true);
       xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
+    xhr.onload = () => {
+      console.log('xhr onload called');
+      if (xhr.status >= 200 && xhr.status < 300) {
+        console.log('about to request xhr reqponse which is', xhr.response);
                 resolve(xhr.response);
-            } else {
-                reject({
-                    status: this.status,
+      } else {
+
+                console.log('rejecting', xhr.statusText);
+              reject({
+                    status: xhr.status,
                     statusText: xhr.statusText
                 });
             }

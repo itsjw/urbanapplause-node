@@ -44,6 +44,11 @@ const worksReducer = (currentstate, action) => {
 		case C.RECEIVE_NEW_WORK_RESPONSE:
 			return Object.assign({},currentstate,{
 				submittingnew: false
+      });
+    case C.FAILED_NEW_WORK_RESPONSE:
+			return Object.assign({},currentstate,{
+        submittingnew: false,
+        newWorkErrors: action.errors
 			});
 		case C.START_WORK_EDIT:
 			newstate = _.cloneDeep(currentstate);

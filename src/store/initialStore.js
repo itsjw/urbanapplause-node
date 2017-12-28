@@ -15,7 +15,8 @@ const initialstate = {
     selectedWork: {
       work: {},
       hasreceiveddata: false
-    }
+    },
+    newWorkErrors: []
   },
   artists: {
 		hasreceiveddata: false,

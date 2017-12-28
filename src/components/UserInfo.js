@@ -16,8 +16,6 @@ class UserInfo extends Component {
         <h3>Username</h3>
         <p>{this.props.user.username}</p>
 
-        <h3>Bio</h3>
-        <p>{this.props.user.bio}</p>
         <h3>Member Since</h3>
         <p>{getMonthName(date_joined)} {date_joined.getFullYear()}</p>
 

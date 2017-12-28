@@ -65,6 +65,8 @@ class FileInput extends Component {
   onFileChange = (e) => {
     var setState = this.setImageData;
     var file = e.target.files[0];
+    console.log('FILE INFO', file);
+    this.props.onChange('imageName', file.name);
     if (file && file.name) {
       var data = function(setState) {
         console.log(setState);
@@ -108,7 +110,7 @@ class FileInput extends Component {
         {(fileUploadStatus=='pending')?<div className='file-upload-preview'><a className="button is-loading">Loading</a></div>:''}
         <div className="file">
           <label className="file-label">
-            <input className="file-input" type="file" name={name||"photo"} onChange={this.onFileChange||''}/>
+            <input className="file-input" type="file" name={name||"photo"} onChange={this.onFileChange}/>
             <span className="file-cta">
               <span className="file-icon">
                 <i className="fa fa-upload"></i>

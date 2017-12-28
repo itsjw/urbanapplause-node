@@ -25,7 +25,7 @@ class GoogleMap extends React.Component {
           zoom: 12
         });
 
-        var input = this.refs[this.props.searchBoxRef];
+        var input = this.refs.locationQuery;
         var searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -112,7 +112,7 @@ class GoogleMap extends React.Component {
     return (
       <div>
         <div className='control'>
-          <input ref='locationInput' className="controls input" type="text" placeholder="Search for a location" style={{width: '60%'}} />
+          <input ref='locationQuery' className="controls input" type="text" placeholder="Search for a location" style={{width: '60%'}} />
         </div>
 
         <div ref="map" style={{width: '100%', zIndex: '10', height: '400px',paddingLeft: 'calc(0.625em - 1px)', paddingRight: 'calc(0.625em - 1px)' }}></div>

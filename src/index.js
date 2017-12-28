@@ -6,6 +6,7 @@ import {router} from './router';
 
 
 import './sass/main.scss';
+require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
 class App extends React.Component {
 

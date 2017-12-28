@@ -6,97 +6,68 @@ class SelectInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textInput: '',
       activeMatchIndex: 0,
+      maxLength: null,
       selectedOptionId: this.props.selectedOptionId||null,
       selectedOptionName: this.props.selectedOptionName||null,
-      showMatches: false,
       matchList: [],
-      input_type: 'none selected'
     }
   }
-  showOptions = () => {
-    if (this.state.textInput.length>0) {
-      this.setState({
-        showMatches: true
-      })
+  shouldShowMatches = () => {
+    if (
+      this.props.artistName.length>0 &&
+      this.props.isCreatingNew==false &&
+      this.activeElement==this.refs.input_box.focused
+    ) {
+      return true
+    }else {
+      return false;
     }
   }
-  hideOptions = () => {
-    this.setState({
-      showMatches: false
-    });
-  }
-
   onInputChange = (e) => {
-    this.setState({
-      textInput: e.target.value
-    });
-    if (this.state.input_type==this.props.createOption) {
-      this.props.setValue(this.props.createOption, e.target.value);
-    } else {
-        this.setState({
-          input_type: 'none selected'
-        })
-    }
-    this.refreshOptionList(e.target.value);
+    this.props.onChange('artistName', e.target.value);
+    this.updateMatchList(e.target.value);
   }
-  refreshOptionList = (stringInput) => {
+  updateMatchList = (query) => {
     var optionList = this.props.options;
     var matches = [];
     optionList.map((option, i) => {
-      if (option.name.toLowerCase().indexOf(stringInput.toLowerCase())>-1) {
+      if (option.name.toLowerCase().indexOf(query.toLowerCase())>-1) {
         matches.push(optionList[i]);
       }
     });
     this.setState({
-      matchList: matches
+      matchList: matches,
+      maxLength: matches.length
     });
 
   }
   onSetCreatingClick = () => {
-    this.setState({
-      input_type: this.props.createOption,
-      selectedOptionId: null,
-      selectedOptionName: null
-    });
-    this.hideOptions();
-    this.props.setValue(this.props.createOption, this.state.textInput);
+    this.props.onChange('artistInputType', 'create');
     this.refs.input_box.focus();
-  }
-  onSetUnknownClick = () => {
-    this.setState({
-      input_type: this.props.unknownOption,
-      textInput: 'Anonymous',
-      selectedOptionId: null,
-      selectedOptionName: null
-    });
-    this.hideOptions();
-    this.props.setValue(this.props.unknownOption, '');
   }
 
   onKeyDown = (e) => {
     const {activeMatchIndex, matchList} = this.state;
-    const maxLength = Object.keys(this.state.matchList).length+1;
+    const maxLength = this.state.maxLength;
 
     if (e.keyCode == 13) {
       e.preventDefault();
       if(activeMatchIndex == maxLength) {
         this.onSetCreatingClick();
-      } else if (activeMatchIndex == maxLength-1) {
-        this.onSetUnknownClick();
       } else {
         Object.keys(matchList).map((key, i) => {
           if (i==activeMatchIndex) {
-            this.selectMatch(key);
+            this.onSelectArtist(key);
           }
         });
       }
     }
     if (e.keyCode == 40) { //down key pressed
+      console.log('down key pressed ', activeMatchIndex);
       if(activeMatchIndex < maxLength) {
         this.setState({
-          activeMatchIndex: this.state.activeMatchIndex+1});
+          activeMatchIndex: this.state.activeMatchIndex + 1});
       }
     }
     if (e.keyCode == 38) {
@@ -107,29 +78,11 @@ class SelectInput extends Component {
       }
     }
   }
-  selectMatch = (key) => {
-    console.log('match selected');
-    this.setState({
-      input_type: this.props.selectOption,
-      selectedOptionId: key,
-      textInput: this.state.matchList[key].name,
-    });
-    this.props.setValue(this.props.selectOption, this.state.matchList[key].id);
-  }
-
-  onMatchClick = (key) => {
-    this.selectMatch(key);
-  }
-  clearInputType = () => {
-    this.setState({
-      input_type: 'none selected',
-      selectedOptionId: null,
-      selectedOptionName: null,
-      textInput: ''
-    });
-    this.props.setValue(null, null);
-    this.refs.input_box.focus();
-    this.refs.input_box.select();
+  onSelectArtist = (key) => {
+    const artist= this.state.matchList[key]
+    this.props.onChange('artistId', artist.id);
+    this.props.onChange('artistName', artist.name);
+    this.hideMatches();
   }
 
   render() {
@@ -139,31 +92,21 @@ class SelectInput extends Component {
           key={key}
           value={key}
           className={(this.state.activeMatchIndex==index)?'dropdown-item is-active':'dropdown-item'}
-          onClick={(e) => this.onMatchClick(key)}>
+          onClick={(e) => this.onSelectArtist(key)}>
             {matches[key].name}
       </a>
 
-      )
-     return(
-      <div className="field">
-        <label className="label">
-          {this.props.label||''}<br/>
-          {(this.state.input_type=='none selected')?
-              <span className='tag is-danger'>{this.state.input_type}</span>:
-              <span className='tag is-success'>
-                {this.state.input_type}
-                <span className="delete" onClick={this.clearInputType}></span>
-              </span>
-          }
-        </label>
-          <div className={(this.state.input_type=='none selected'&& this.state.textInput.length > 0)?"dropdown is-active select-input":"select-input"}>
-            <div className='control'>
-              <div className="dropdown-trigger select-input">
-                <input
+    )
+    const showMatches = this.shouldShowMatches();
+    return(
+       <div className={showMatches==true?"dropdown is-active select-input":"dropdown select-input"} style={{width: '100%'}}>
+          <div className='control' style={{width: '100%'}}>
+            <div className="dropdown-trigger select-input">
+              <input
                   className={`input`}
                   type='text'
                   ref='input_box'
-                  value={this.state.selectedOptionName||this.state.textInput}
+                  value={this.props.artistName}
                   onChange={this.onInputChange}
                   onKeyDown={this.onKeyDown}
                   placeholder={this.props.placeholder}
@@ -174,12 +117,8 @@ class SelectInput extends Component {
               <div className='dropdown-content'>
                 {result}
                 <hr className="dropdown-divider"/>
-                <a className={(this.state.activeMatchIndex==Object.keys(this.state.matchList).length)?'dropdown-item is-active':'dropdown-item'} onClick={this.onSetUnknownClick}
->
-                   Unknown
-                 </a>
-                  <hr className="dropdown-divider"/>
-                <a className={(this.state.activeMatchIndex==Object.keys(this.state.matchList).length+1)?'dropdown-item is-active':'dropdown-item'} onClick={this.onSetCreatingClick}
+
+                <a className={(this.state.activeMatchIndex==Object.keys(this.state.matchList).length)?'dropdown-item is-active':'dropdown-item'} onClick={this.onSetCreatingClick}
 >
                    Create New
                 </a>
@@ -187,7 +126,6 @@ class SelectInput extends Component {
               </div>
             </div>
         </div>
-      </div>
     )
   }
 }

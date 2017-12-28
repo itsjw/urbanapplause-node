@@ -6,12 +6,17 @@ class WorkDetail extends Component {
     return(
       <div>
        <h3 className='title is-3'>Artist</h3>
-        {work.artist}
+       <a href={`/artists/${work.artist_id}`}>{work.artist}</a>
+
+       <h3 className='title is-3'>Photo</h3>
         <img src={work.image}/>
        <h3 className='title is-3'>Description</h3>
        {work.description}
-      <h3 className='title is-3'>Posted By</h3>
-        {work.username}
+       <h3 className='title is-3'>Posted By</h3>
+       <a href={`/users/${work.user_id}`}>{work.username}</a>
+
+       <h3 className='title is-3'>Posted On</h3>
+       {new Date(work.date_posted).toString()}
       </div>
     )
   }

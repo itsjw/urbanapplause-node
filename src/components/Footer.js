@@ -17,7 +17,6 @@ class Footer extends Component {
 
               <span className='icon is-medium'><a className='social-link' href='https://github.com/flannerykj/urbanapplause-node' target='_blank'><Icon name='github' size='2x'/></a></span><br/>
             </div>
-            <HelloWorld/>
           </div>
         </div>
       </div>

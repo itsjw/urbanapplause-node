@@ -11,11 +11,11 @@
 @import 'bulma/sass/components/message';
 @import 'bulma/sass/elements/form';
 @import 'bulma/sass/elements/other';
-
 @import 'bulma/sass/elements/tag';
 @import 'bulma/sass/grid/columns';
 @import 'bulma/sass/components/modal';
 @import 'bulma/sass/layout/footer';
+@import 'bulma/sass/grid/tiles';
 
 
 
@@ -136,4 +136,8 @@ html, body {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 
+}
+
+.datepicker {
+  z-index: 20;
 }

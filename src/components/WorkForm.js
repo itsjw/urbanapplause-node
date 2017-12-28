@@ -10,6 +10,7 @@ class WorkForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      artist_input_type: 'select',
       artist_id: this.props.artist_id || null,
       description: this.props.description ||'',
       image: this.props.image || '',
@@ -72,7 +73,6 @@ class WorkForm extends Component {
     this.props.onCancel();
     this.forceUpdate();
   }
-  a
   render() {
     return (
       <div>
@@ -88,8 +88,14 @@ class WorkForm extends Component {
             fileUploadStatus={this.state.fileUploadStatus}
           />
 
+        <label className='label'>Artist</label>
+        <span className='tag is-success'>Aritst Unknown</span>
+        {this.state.artistInputType=='unknown'?(
+          <div><span onClick={(() => (this.setState({artistInputType: 'select'})))}>X</span></div>
+        )
+            :(
+              <div>
         <SelectInput
-            label='Artist'
             selectOption='Artist Selected'
             createOption='New'
             unknownOption='Unknown'
@@ -100,6 +106,8 @@ class WorkForm extends Component {
             onCreateNew={this.onCreateNewArtist}
             options={this.props.artistList}
           />
+        <button className='button' onClick={((e)=>this.setState({artistInputType: 'unknown'}))}>I dont know the artist</button>
+        </div>)}
 
         <TextInput
           label='Description'

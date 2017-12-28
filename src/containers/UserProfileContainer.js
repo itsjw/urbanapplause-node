@@ -36,7 +36,7 @@ class UserProfileContainer  extends Component {
         tabContent = <div>applause</div>
       }
       if (this.state.activeTab =='account'){
-        tabContent = <div> <h1 className='title is-3'>Account Info</h1></div>
+        tabContent = <div> <label className='label'>Email</label>{this.props.user.email}</div>
       }
 
     const id = this.props.match.params.id;

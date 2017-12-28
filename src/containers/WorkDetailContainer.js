@@ -40,10 +40,7 @@ class WorkDetailContainer  extends Component {
         </div>);
     } else {
       return (
-        <div>
           <WorkDetail work={this.props.work}/>
-          <button className='button disabled' onClick={this.openForm}>Edit</button>
-        </div>
       )
     }
   }

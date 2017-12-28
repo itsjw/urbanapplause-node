@@ -4,7 +4,7 @@ import ArtistInfo from '../components/ArtistInfo';
 import ArtistEditForm from '../components/ArtistEditForm';
 import artistActions from '../actions/artists';
 import workActions from '../actions/works';
-import WorkList from '../components/WorkList';
+import WorkGallery from '../components/WorkGallery';
 import {connect} from 'react-redux';
 
 class ArtistProfileContainer  extends Component {
@@ -46,7 +46,7 @@ class ArtistProfileContainer  extends Component {
           <ArtistInfo artist={this.props.artist}/>
           <button className='button' onClick={this.openForm}>Edit</button>
           <h3 className='title is-3'>Works by {this.props.artist.name}</h3>
-          {(this.props.works.items.length>0)?<WorkList works={this.props.works.items} total={this.props.works.total} onDeleteWork={this.props.deleteWork} />:"No works posted for this artist"}
+          <WorkGallery works={this.props.works.items} total={this.props.works.total} onDeleteWork={this.props.deleteWork} hasreceiveddata={this.props.works.hasreceiveddata}/>
         </div>
       )
     }

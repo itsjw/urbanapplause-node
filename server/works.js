@@ -2,10 +2,10 @@
 let utils = require('../src/services/utils');
 let db = require('./pghelper');
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-
+const { check, validationResult } = require('express-validator/check');
 let findAll = (req, res, next) => {
 
-    let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
+    let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 8,
         page = req.query.page ? parseInt(req.query.page) : 1,
         search = req.query.search,
         min = req.query.min,
@@ -54,10 +54,18 @@ let findById = (req, res, next) => {
 
 
 const submitNew = (req, res, next) => {
-  console.log('submitting.....');
-  console.log(req.body);
-  if (!req.body.jwtauth) {
-    return res.json({message: "Not authorized"});
+  //Validations
+  req.checkBody('date', 'Date is not valid').isDate();
+  req.checkBody('place', 'Email is required').notEmpty();
+
+  req.checkBody('image', 'Image is required').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if(errors) {
+    console.log('yes, there are errors');
+
+    res.json({sucessful: false, errors: errors});
   }
   var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
@@ -71,7 +79,7 @@ const submitNew = (req, res, next) => {
   }
   let image = req.body.image;
   let description = req.body.description;
-  let user_id = req.body.jwtauth.id;
+  let user_id = req.body.user_id;
   let place = JSON.parse(req.body.place);
   let lng = place.geometry.location.lng;
   let lat = place.geometry.location.lat;
@@ -86,18 +94,15 @@ const submitNew = (req, res, next) => {
       if(newArtistSql) {
         db.query(newArtistSql)
           .then((item) => {
-            console.log('CREATED NEW ARTIST WITH ID ', item[0].id);
             db.query(sql, [item[0].id])
               .then((item) => {
-                console.log('CREATED NEW WORK WITH NEW ARTIST');
-              return res.json(item[0]);
+              return res.json({successful: true, data: item[0]});
             });
           });
       } else {
       db.query(sql, [artist_id])
           .then((item) => {
-            console.log('CREATED NEW WORK WITH EXISTING OR NULL ARTIST');
-          return res.json(item[0]);
+            return res.json({successful: true, data: item[0]});
         });
       }
     });
