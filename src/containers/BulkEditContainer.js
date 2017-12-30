@@ -8,6 +8,7 @@ import artistActions from '../actions/artists';
 import ChooseArtist from '../components/ChooseArtist';
 import TextInput from '../components/TextInput';
 import C from '../constants.js';
+import {Redirect} from 'react-router-dom'
 
 function getCoord(number, ref) {
     var l = number[0].numerator + number[1].numerator /
@@ -30,19 +31,26 @@ class BulkEditContainer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      newWorks: []
+      newWorks: [],
+      redirect: false
+    }
+  }
+  componentDidMount() {
+    if(!this.props.works.newfiles) {
+      this.setState({
+        redirect: '/works/bulk-add'
+      });
     }
   }
   newWorkToState = (i, newWork) => {
-    console.log('work with exif', newWork);
     var newWorks = this.state.newWorks;
     newWorks.push( newWork );
-    console.log(newWorks);
     this.setState({
       newWorks: newWorks
     });
   }
   getWorkExif = (i, newWork) => {
+    console.log('GETTING WORK EXIF')
     var setState = this.newWorkToState;
     var onInputChange = (fieldName, value) => {this.onInputChange(i, fieldName, value)};
     return EXIF.getData(newWork.file, function(i){
@@ -71,7 +79,7 @@ class BulkEditContainer extends Component {
       var newWork = {
         imageFilename: image.filename,
         artistInputType: 'unknown',
-        artistId: null,
+        artistId: 0,
         artistName: '',
         date: new Date(),
         file: this.props.works.newfiles.item(i),
@@ -88,42 +96,54 @@ class BulkEditContainer extends Component {
     this.setState({
       newWorks: newWorks
     });
-    console.log(index, newWorks[index]);
-  }
-
-  componentWillReceiveProps(){
-    this.setNewWorks(this.props);
   }
   componentWillUpdate(nextProps, nextState){
-    if (nextProps != this.props) {
-      this.setNewWorks(nextProps);
+    if ((nextProps.works.newfiles != this.props.works.newfiles) || (nextProps.works.newimages != this.props.works.newimages)) {
+      if (nextProps.works.newimages.length > 0 ){
+        this.setNewWorks(nextProps);
+      } else {
+        this.setState({
+          redirect: '/works/bulk-add'
+        });
+    }
     }
   }
   handleSubmit = () => {
-    this.state.newWorks = ((newWork, i) => {
+    this.state.newWorks.map((newWork, i) => {
+      var entry = {
+        image: newWork.imageFilename,
+        description: newWork.description,
+        place: newWork.place,
+        user_id: this.props.auth.user.id,
+        artist_id: newWork.artistId,
+        new_artist_name: newWork.artistName
+      }
+
+      entry.token = this.props.auth.token;
+      this.props.submitNewWork(entry);
     });
-    var entry = {
-      image: newWork.imageFilename,
-      description: newWork.description,
-      place: newWork.place,
-      user_id: this.props.auth.user_id,
-      artist_id: newWork.artistId,
-      artist_name: newWork.artistName
-    }
-    if (this.state.artist ==null) {
-      alert('Please select a valid option for the artist field');
-      return;
-    }
-    if (entry.place==null) {
-      alert('Please choose a location for this work');
-      return;
-    }
-    console.log(entry);
-    this.props.onSubmit(entry);
-    this.props.onCancel();
-    this.forceUpdate();
+    this.setState({
+        redirect: '/works'
+      });
   }
-  render() {
+  onCancel = () => {
+    this.setState({
+      redirect: '/works'
+    })
+  }
+  chooseDifferentImages = () => {
+   this.setState({
+      redirect: '/works/bulk-add'
+    })
+
+  }
+    render() {
+      if (this.state.redirect != false) {
+        return (
+          <Redirect to={this.state.redirect} />
+        )
+      }
+
     return(
       <div>
         <h1>Edit photos</h1>
@@ -167,7 +187,10 @@ class BulkEditContainer extends Component {
           </div>
           )
         })}
-                <button className='button is-primary' onClick={this.handleSubmit}>Submit</button>
+        <button className='button is-primary' onClick={this.handleSubmit}>Submit</button>
+
+        <button className='button' onClick={this.chooseDifferentImages}>Choose different images</button>
+        <button className='button' onClick={this.onCancel}> Cancel</button>
       </div>
     )
   }
@@ -176,11 +199,12 @@ class BulkEditContainer extends Component {
 var mapStateToProps = function(appState){
   return {
     works: appState.works,
+    auth: appState.auth
   }
 }
 var mapDispatchToProps = function(dispatch){
   return {
-    onSubmit: function(work){ dispatch(workActions.submitNewWork(work)); },
+    submitNewWork: function(work){ dispatch(workActions.submitNewWork(work)); },
     getArtists: function(query){ dispatch(artistActions.getArtists(query)); },
   }
 }

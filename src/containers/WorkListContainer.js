@@ -95,7 +95,7 @@ class WorkListContainer extends Component {
 
             {(this.props.auth.currently=="LOGGED_IN")?
       <div className='column is-narrow'>
-              <a className='button is-primary' href="/works/new">+ New Work</a>
+              <a className='button is-primary' href="/works/bulk-add">+ Add Works</a>
             </div>:''}
           </div>
         </section>

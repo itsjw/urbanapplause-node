@@ -67,10 +67,26 @@ class BulkPostContainer extends Component {
     return(
       <div>
         <form ref="frmUploader" encType="multipart/form-data" method="post" onSubmit={this.handleFormSubmit} action={`${C.SERVER_URL}/api/upload`} >
-          Select images to upload:
-          <input type='file' name='photos' multiple={true} onChange={this.handleSelectImages}/>
-          <input type='submit' value='Upload'/>
-      </form>
+          <div className={`field ${this.state.localFiles.length>0?'has-addons':''}`}>
+            <p className='control'>
+          <div className="file">
+            <label className="file-label">
+              <input className="file-input" type="file" name="photos" onChange={this.handleSelectImages} multiple={true}/>
+              <span className="file-cta">
+                <span className="file-icon">
+                  <i className="fa fa-upload"></i>
+                </span>
+                <span className="file-label">
+                  Choose images to upload
+                </span>
+              </span>
+            </label>
+          </div>
+        </p>
+
+        {this.state.localFiles.length>0?<p className='control'><input type='submit' className='button is-primary' value='Upload Images' style={{float: 'right'}}/></p>:''}
+      </div>
+        </form>
         <div id='preview'>
         </div>
       </div>

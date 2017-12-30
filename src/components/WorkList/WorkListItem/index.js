@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {timeSince} from '../../../services/utils';
 import {Icon} from 'react-fa';
+import C from '../../../constants';
 
 class PostPreview extends Component {
   handleDelete = () => {
@@ -11,7 +12,7 @@ class PostPreview extends Component {
     return(
       <div className="card">
         <div className='card-image'>
-          <img src={work.image}/>
+          <img src={`${C.SERVER_URL}/${C.UPLOADS_SUBPATH}/${work.image}`||work.image}/>
         </div>
         <div className="card-content">
           <div className="media">

@@ -9,7 +9,6 @@ class ChooseArtist extends Component {
     this.props.onChange('artistInputType', 'unknown');
   }
   clearInput = () => {
-    console.log('clearing input');
     this.props.onChange('artistInputType', 'select');
 
     this.props.onChange('artistName', '');
@@ -22,18 +21,14 @@ class ChooseArtist extends Component {
   render() {
     const artistName = this.props.artistName;
     var successText = '';
-    console.log(this.props.artistInputType);
     switch (this.props.artistInputType) {
       case 'create':
-        console.log('is create');
         successText = 'Creating New';
         break;
       case 'unknown':
-        console.log('is unknown');
         successText = 'Artist Unknown';
         break;
       case 'select':
-        console.log('is select');
         successText = artistName;
         break;
     }

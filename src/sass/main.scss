@@ -47,12 +47,15 @@ html, body {
 .wrapper {
   margin: 0 auto;
   max-width: 800px;
+  min-height: 300px;
 }
 
 .footer, .push {
   height: 50px;
   padding-top: 20px;
   margin-top: 30px;
+  bottom: 0;
+  background-color: $bg-color-main;
 }
 
 .text-centered-wrapper {
