@@ -114,16 +114,6 @@ class BulkEditContainer extends Component {
       alert('Please select a valid option for the artist field');
       return;
     }
-    switch(this.state.artist.action) {
-      case null:
-        return;
-      case 'Unknown':
-        entry.anonymous = true;
-      case 'New':
-        entry.new_artist_name = this.state.artist.value;
-      case 'Artist Selected':
-        entry.artist_id = this.state.artist.value;
-    }
     if (entry.place==null) {
       alert('Please choose a location for this work');
       return;
@@ -190,7 +180,7 @@ var mapStateToProps = function(appState){
 }
 var mapDispatchToProps = function(dispatch){
   return {
-
+    onSubmit: function(work){ dispatch(workActions.submitNewWork(work)); },
     getArtists: function(query){ dispatch(artistActions.getArtists(query)); },
   }
 }
