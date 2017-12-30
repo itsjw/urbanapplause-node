@@ -8,7 +8,8 @@ const initialstate = {
     expires: null
 	},
 	works: {
-		hasreceiveddata: false,
+    hasreceiveddata: false,
+    newimages: [],
 		submittingnew: false,
     states: {},
     items: [],

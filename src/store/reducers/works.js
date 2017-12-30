@@ -36,7 +36,14 @@ const worksReducer = (currentstate, action) => {
           receivedAt: action.receivedAt
         }
       });
-
+    case C.SET_NEW_FILES:
+      return Object.assign({},currentstate, {
+        newfiles: action.files
+      })
+    case C.IMAGE_UPLOAD_SUCCESS:
+      return Object.assign({},currentstate, {
+        newimages: action.files
+      })
     case C.AWAIT_NEW_WORK_RESPONSE:
 			return Object.assign({},currentstate,{
 				submittingnew: true

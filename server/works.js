@@ -51,7 +51,12 @@ let findById = (req, res, next) => {
         .then(item => res.json(item[0]))
         .catch(next);
 };
-
+const fileUpload = (req, res, next) => {
+  console.log(req.body);
+  res.send({
+    json: "ok"
+  });
+}
 
 const submitNew = (req, res, next) => {
 
@@ -116,4 +121,5 @@ let deleteWork = (req, res, next) => {
 exports.deleteWork = deleteWork;
 exports.submitNew = submitNew;
 exports.findAll = findAll;
+exports.fileUpload= fileUpload;
 exports.findById = findById;

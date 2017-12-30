@@ -1,5 +1,8 @@
 import C from '../constants';
 import request from '../services/request';
+import requestUpload from '../services/request/uploadFiles';
+
+import {AJAXSubmit} from '../services/request/uploadFiles';
 let baseURL = C.SERVER_URL;
 
 function requestWorks() {
@@ -31,6 +34,21 @@ function getWorks(values) {
     return request({url: baseURL + "/api/works" + qs})
       .then(data => dispatch(receiveWorks(JSON.parse(data))));
   }
+}
+function setNewFiles(files){
+  return function(dispatch) {
+    dispatch({type: C.SET_NEW_FILES, files: files});
+  };
+}
+function uploadFiles(e){
+  return function(dispatch) {
+    dispatch({type: C.AWAIT_IMAGE_UPLOAD_RESPONSE});
+    return AJAXSubmit(e, baseURL + '/api/upload')
+      .then((res) => {
+        console.log('RES', res);
+        dispatch({type: C.IMAGE_UPLOAD_SUCCESS, files: JSON.parse(res)});
+        });
+  };
 }
 
 function submitNewWork(values) {
@@ -120,4 +138,4 @@ const submitWorkEdit = (qid, content) => {
 
 
 
-export default {getWorks, submitNewWork, findById, startWorkEdit, cancelWorkEdit, submitWorkEdit, deleteWork};
+export default {getWorks, submitNewWork, uploadFiles, setNewFiles, findById, startWorkEdit, cancelWorkEdit, submitWorkEdit, deleteWork};

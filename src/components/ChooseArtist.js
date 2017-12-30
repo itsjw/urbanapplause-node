@@ -9,6 +9,7 @@ class ChooseArtist extends Component {
     this.props.onChange('artistInputType', 'unknown');
   }
   clearInput = () => {
+    console.log('clearing input');
     this.props.onChange('artistInputType', 'select');
 
     this.props.onChange('artistName', '');

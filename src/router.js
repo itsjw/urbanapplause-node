@@ -11,6 +11,9 @@ import LoginContainer from './containers/LoginContainer';
 import WorkListContainer from './containers/WorkListContainer';
 import WorkDetailContainer from './containers/WorkDetailContainer';
 import WorkFormContainer from './containers/WorkFormContainer';
+import BulkPostContainer from './containers/BulkPostContainer';
+
+import BulkEditContainer from './containers/BulkEditContainer';
 import ArtistListContainer from './containers/ArtistListContainer';
 import ArtistProfileContainer from './containers/ArtistProfileContainer';
 import ArtistFormContainer from './containers/ArtistFormContainer';
@@ -41,7 +44,10 @@ export const router =
             <Route exact path='/signin' component={LoginContainer}/>
 
             <Route exact path='/works' component={WorkListContainer}/>
-             <Route exact path='/works/new' component={WorkFormContainer}/>
+            <Route exact path='/works/new' component={WorkFormContainer}/>
+            <Route exact path='/works/bulk-add' component={BulkPostContainer}/>
+
+             <Route exact path='/works/bulk-edit' component={BulkEditContainer}/>
              <Route exact path='/works/:id' component={WorkDetailContainer}/>
 
              <Route exact path='/users' component={UserListContainer}/>
@@ -49,6 +55,7 @@ export const router =
 
              <Route exact path='/artists' component={ArtistListContainer}/>
              <Route exact path='/artists/new' component={ArtistFormContainer}/>
+
              <Route exact path='/artists/:id' component={ArtistProfileContainer}/>
 
              <Route exact path='/about' component={AboutPage}/>

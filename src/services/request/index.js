@@ -1,4 +1,5 @@
 export default opts => {
+  console.log(opts.data);
   return new Promise((resolve, reject) => {
     let xhr = new XMLHttpRequest();
     console.log('new xhr created');

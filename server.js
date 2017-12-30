@@ -14,11 +14,11 @@ let express = require('express'),
   users = require('./server/users'),
   jwtauth = require('./server/jwtauth'),
   validation = require('./server/formValidation'),
+  multer = require('multer'),
   app = express();
 
-
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.set('port', process.env.PORT || 3000);
 
 //Express Session
@@ -61,6 +61,9 @@ app.use(function(req, res, next) {
 app.use(compression());
 app.use(express.static('public'));
 app.use('/', express.static(__dirname + '/public'));
+app.use('/api/uploads', express.static(__dirname + '/server/uploads'));
+
+
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
@@ -96,7 +99,7 @@ app.get('/.well-known/acme-challenge/2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4
 app.all('*', function (req, res, next) {
     // Set CORS headers: allow all origins, methods, and headers: you may want to lock this down in a production environment
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE, post, get");
     res.header("Access-Control-Allow-Headers", req.header('access-control-request-headers'));
 
     if (req.method === 'OPTIONS') {
@@ -106,6 +109,32 @@ app.all('*', function (req, res, next) {
         next();
     }
 });
+var Storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, "./server/uploads");
+  },
+    filename: function(req, file, callback) {
+    callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+    }
+});
+
+ var upload = multer({
+    storage: Storage
+ }).array("photos", 3); //Field name and max count
+
+app.post("/api/upload", function(req, res) {
+  upload(req, res, function(err) {
+    if (err) {
+      console.log(err);
+      return res.end("Something went wrong!");
+    }
+    console.log(req.files);
+    res.send(req.files);
+    return res.end('success');
+
+     });
+ });
+
 app.get('/api/test', function (req, res) {
   console.log(process.env.DATABASE_URL);
   res.send({
