@@ -62,7 +62,6 @@ let register = (req, res, next) => {
   req.checkBody('password', 'Password is required').notEmpty();
   req.checkBody('password2', 'Passwords do not match').equals(password);*/
 
-  var errors = req.validationErrors();
 
     var salt = bcrypt.genSaltSync(10);
     bcrypt.hash(password, salt, null, function(err, hash){
