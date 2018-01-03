@@ -77,7 +77,11 @@ class UserListContainer extends Component {
         <section className='section'>
           <Paginator page={users.page} pageSize={users.pageSize} total={users.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
         </section>
-        <UserList users={users.items} total={users.total} onDeleteUser={this.props.deleteUser} />
+        <UserList
+          users={users.items}
+          total={users.total}
+          hasreceiveddata={users.hasreceiveddata}
+        />
         <Paginator page={users.page} pageSize={users.pageSize} total={users.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
 
       </div>

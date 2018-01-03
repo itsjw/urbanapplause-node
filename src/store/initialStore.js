@@ -19,6 +19,7 @@ const initialstate = {
     },
     newWorkErrors: {}
   },
+  comments: {},
   artists: {
 		hasreceiveddata: false,
 		submittingnew: false,

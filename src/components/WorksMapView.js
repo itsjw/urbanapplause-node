@@ -1,6 +1,7 @@
 import React from 'react'
 import scriptLoader from 'react-async-script-loader'
 import {timeSince} from '../services/utils';
+import C from '../constants';
 
 class GoogleMap extends React.Component {
   constructor(props){
@@ -49,7 +50,7 @@ class GoogleMap extends React.Component {
 
                 <div
                   className='thumbnail-container'>
-                  <img style="width: 200px;" className='image' src='${work.image}'/></div>
+                  <a href='/works/${work.id}'><img style="width: 200px;" className='image' src='${C.SERVER_URL}/${C.UPLOADS_SUBPATH}/${work.image}'/></a></div>
                               </div>`;
 
             var infowindow = new google.maps.InfoWindow({
@@ -92,6 +93,6 @@ class GoogleMap extends React.Component {
 
 export default scriptLoader(
   [
-    'https://maps.googleapis.com/maps/api/js?key=AIzaSyCN9joc20fO_YTL4VRhjeOtcdC3i04zGCs&libraries=places'
+    'https://maps.googleapis.com/maps/api/js?key=AIzaSyANx2mIntSN2Ss07ZwAdGw0YOPA-bosBhU&libraries=places'
   ]
 )(GoogleMap)

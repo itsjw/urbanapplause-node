@@ -20,7 +20,7 @@ import ArtistFormContainer from './containers/ArtistFormContainer';
 
 import UserListContainer from './containers/UserListContainer';
 import UserProfileContainer from './containers/UserProfileContainer';
-
+import PlaygroundContainer from './containers/PlaygroundContainer';
 import AboutPage from './pages/AboutPage';
 import ErrorPage from './pages/ErrorPage';
 import ContactPage from './pages/ContactPage';
@@ -60,6 +60,7 @@ export const router =
 
              <Route exact path='/about' component={AboutPage}/>
              <Route exact path='/contact' component={ContactPage}/>
+             <Route exact path='/playground' component={PlaygroundContainer}/>
              <Route path='/' component={ErrorPage}/>
            </Switch>
          </div>

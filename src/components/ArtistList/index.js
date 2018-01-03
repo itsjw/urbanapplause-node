@@ -6,11 +6,18 @@ class ArtistList extends React.Component {
         let listItems = this.props.artists.map(artist =>
           <ArtistListItem key={artist.id} artist={artist} onSearchKeyChange={this.props.onSearchKeyChange}/>
         );
-        return (
-            <div className="">
-                {listItems}
-            </div>
-        );
+
+        if (this.props.hasreceiveddata==true) {
+          return (
+            <div>
+              {(this.props.artists.length>0)?listItems:<span><strong>No results. Broaden your search to find matches. </strong></span>}
+                  {listItems}
+              </div>
+          );
+        } else {
+          return (<div className='worklist-container'>Loading...</div>)
+        }
+
     }
 };
 

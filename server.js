@@ -3,13 +3,11 @@
 let express = require('express'),
   compression = require('compression'),
   bodyParser = require('body-parser'),
-  cookieParser = require('cookie-parser'),
   expressValidator = require('express-validator'),
-  flash = require('flash'),
   session = require('express-session'),
-  passport = require('passport'),
   auth = require('./server/auth'),
   works = require('./server/works'),
+  comments = require('./server/comments'),
   artists = require('./server/artists'),
   users = require('./server/users'),
   jwtauth = require('./server/jwtauth'),
@@ -22,13 +20,27 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.set('port', process.env.PORT || 3000);
 
 //Express Session
-app.use(session({
-  secret: 'secret',
-  saveUninitialized: true,
-  resave: true
-}));
+app.use(
+  session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+  }));
 
+// Adding CORS support
+app.all('*', function (req, res, next) {
+    // Set CORS headers: allow all origins, methods, and headers: you may want to lock this down in a production environment
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
+    res.header("Access-Control-Allow-Headers", req.header('access-control-request-headers'));
 
+    if (req.method === 'OPTIONS') {
+        // CORS Preflight
+        res.send();
+    } else {
+        next();
+    }
+});
 
 //Express Validator
 app.use(expressValidator({
@@ -47,68 +59,18 @@ app.use(expressValidator({
   }
 }));
 
-//Connect Flash
-app.use(flash());
-
-//Set global variables
-app.use(function(req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  next();
-});
-
 app.use(compression());
-app.use(express.static('public'));
-app.use('/', express.static(__dirname + '/public'));
 app.use('/api/uploads', express.static(__dirname + '/server/uploads'));
 
-
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-})
-app.get("/artists*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-})
-app.get("/works*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-})
-app.get("/users*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-})
-app.get("/about*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-})
-app.get("/contact*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+app.get('/', (req, res) => {
+  res.send("Urban Applause API");
 })
 
-
-//SSL
-app.get('/health-check', (req, res) => res.sendStatus(200));
-app.get('/.well-known/acme-challenge/zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI', function(req, res) {
-  res.send('zDLl5Nh1cTBdjhuUHYFQDJj8OurBlxOejyFAftrPLqI.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
-});
-app.get('/.well-known/acme-challenge/2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4', function(req, res) {
-  res.send('2gTbndH5fwLnW75fXlkAsLcOnv1wZ2Yt2LL3BHib1e4.HtPdwjhatvllMzHkse39fa1Ztvp-IU_eWQXqT155dPs')
-})
-// Adding CORS support
+app.get('/api/dummy', artists.findAllDummy);
 
 
-app.all('*', function (req, res, next) {
-    // Set CORS headers: allow all origins, methods, and headers: you may want to lock this down in a production environment
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE, post, get");
-    res.header("Access-Control-Allow-Headers", req.header('access-control-request-headers'));
 
-    if (req.method === 'OPTIONS') {
-        // CORS Preflight
-        res.send();
-    } else {
-        next();
-    }
-});
+//Photo Uploads via Multer
 var Storage = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, "./server/uploads");
@@ -120,51 +82,41 @@ var Storage = multer.diskStorage({
 
  var upload = multer({
     storage: Storage
- }).array("photos", 3); //Field name and max count
+ }).array("photos", 20); //Field name and max count
 
-app.post("/api/upload", function(req, res) {
+//Server-side routes
+app.post("/api/upload", [jwtauth], function(req, res) {
   upload(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Something went wrong!");
     }
-    console.log(req.files);
     res.send(req.files);
     return res.end('success');
-
-     });
- });
-
-app.get('/api/test', function (req, res) {
-  console.log(process.env.DATABASE_URL);
-  res.send({
-    json: [
-      {
-        id: process.env.DATABASE_URL
-      }
-    ]
   });
 });
 
-function ensureAuthenticated() {
-}
 app.post('/api/register', auth.register);
 app.post('/api/login', auth.login);
 
 app.get('/api/works', works.findAll);
 app.get('/api/works/:id', works.findById);
-app.post('/api/newwork', validation.works, works.submitNew);
-app.delete('/api/deletework/:id', works.deleteWork);
+app.post('/api/newwork', [jwtauth], works.submitNew);
+app.delete('/api/deletework/:id', [jwtauth], works.deleteWork);
+
+app.get('/api/comments/:work_id', comments.findByWorkId);
+app.post('/api/newcomment', [jwtauth], comments.submitNew);
+app.delete('/api/deletecomment/:id', [jwtauth], comments.deleteComment);
 
 app.get('/api/artists', artists.findAll);
 app.get('/api/artists/:id', artists.findById);
-app.post('/api/newartist', artists.submitNew);
-app.put('/api/updateartist/:id', artists.updateById);
+app.post('/api/newartist', [jwtauth], artists.submitNew);
+app.put('/api/updateartist/:id', [jwtauth], artists.updateById);
 
 app.get('/api/users', users.findAll);
 app.get('/api/users/:id', users.findById);
 app.post('/api/newuser', users.submitNew);
-app.put('/api/updateuser/:id', users.updateById);
+app.put('/api/updateuser/:id', [jwtauth], users.updateById);
 
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

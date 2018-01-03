@@ -8,9 +8,7 @@ class AboutPage extends Component {
         <h1 className='title is-1' id='top'>About</h1>
         <ol>
           <li><a href='#what-is'>What Is Urban Applause</a></li>
-
           <li><a href='#how-it-works'>How It Works</a></li>
-          <li><a href='#upcoming-features'>Upcoming Features</a></li>
           <li><a href='#technology-stack'>Technology Stack</a></li>
         </ol>
         <hr />
@@ -25,26 +23,6 @@ class AboutPage extends Component {
           <br/>
           <a href='#top'>Back to top<span className='icon is-medium'><Icon name='arrow-up'/></span></a>
 </p>
-
-       <h2 id='upcoming-features' className='subtitle is-2'>Upcoming Features</h2>
-         <strong>Up Next</strong>
-         <ul>
-           <li>User accounts</li>
-           <li>See artist's recent works on their profile page</li>
-           <li>Sort artists alphabetically or by most recently active</li>
-           <li>Filter artists for city</li>
-           <li> ilter works within a time range</li>
-           <li>Filter works for a city</li>
-        </ul>
-        <strong>Eventually</strong>
-        <ul>
-          <li>Create "verified artist accounts" that have been claimed and are managed by the artist themselves. </li>
-          <li>Allow users to follow artists and other users</li>
-          <li>Users can receive notifications when someone they follow posts</li>
-          <li>Allow for commenting and favouriting/saving on works</li>
-          <li>Create your own street art tour by defining a location range and saving pins of works you want to visit. Export save and export map.</li>
-      </ul>
-          <a href='#top'>Back to top<span className='icon is-medium'><Icon name='arrow-up'/></span></a>
 
       <h2 id='technology-stack' className='subtitle is-2'>Technology Stack</h2>
          <ul>

@@ -1,25 +1,21 @@
 "use strict";
 
 let db = require('./pghelper');
-
 let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-let findAll0 = (req, res, next) => {
-  let sql = `ALTER TABLE artist ADD COLUMN email VARCHAR(350);`;
 
-let sql4 = `CREATE TABLE work (
- id serial PRIMARY KEY,
- artist_id integer REFERENCES artist (id),
- description VARCHAR (500),
- location_id integer REFERENCES location (id),
-  date_posted timestamp with time zone NOT NULL DEFAULT now(),
-  image text
-);`
-  let sql0 = "SELECT table_name FROM information_schema.tables WHERE table_schema='public';";
-  db.query(sql)
-        .then(item => res.json(item))
-        .catch(next);
+
+let findAllDummy = (req, res, next) => {
+
+  let sql = "SELECT * FROM artist;";
+  return db.query(sql, [])
+    .then(result => {
+      console.log(result);
+      return(res.json({data: result}));
+    })
+    .catch((err)=>{res.json({'error': err}); return next});
 }
 let findAll = (req, res, next) => {
+    console.log('findingall artists');
     let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 12,
         page = req.query.page ? parseInt(req.query.page) : 1,
         search = req.query.search,
@@ -37,18 +33,21 @@ let findAll = (req, res, next) => {
 
   let countSql = "SELECT COUNT(*) from artist " + where;
   let sql = "SELECT * " +
-                "FROM artist  " + where +
-" ORDER BY artist.name LIMIT $" + (values.length + 1) + " OFFSET $" + + (values.length + 2);
-
+    "FROM artist  " + where +
+    " ORDER BY artist.name LIMIT $" + (values.length + 1) +
+    " OFFSET $" + + (values.length + 2);
+  console.log('sql is: ', sql);
     db.query(countSql, values)
-        .then(result => {
+    .then(result => {
+        console.log('RESULT: ', result);
             let total = parseInt(result[0].count);
             db.query(sql, values.concat([pageSize, ((page - 1) * pageSize)]))
                 .then(items=> {
                     return res.json({"pageSize": pageSize, "page": page, "total": total, "items": items});
                 })
                 .catch(next);
-        })
+    })
+
         .catch(next);
 };
 
@@ -86,4 +85,6 @@ let submitNew = (req, res, next) => {
 exports.submitNew = submitNew;
 exports.updateById = updateById;
 exports.findById = findById;
+
+exports.findAllDummy = findAllDummy;
 exports.findAll = findAll;

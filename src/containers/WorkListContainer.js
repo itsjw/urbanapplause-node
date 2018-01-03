@@ -6,6 +6,7 @@ import RangeSlider from '../components/RangeSlider';
 import WorksMapView from '../components/WorksMapView';
 import WorkFormContainer from './WorkFormContainer';
 import workActions from '../actions/works';
+import commentActions from '../actions/comments';
 import {connect} from 'react-redux';
 import {Icon} from 'react-fa';
 
@@ -26,7 +27,6 @@ class WorkListContainer extends Component {
       this.findWorks();
     }
     searchKeyChangeHandler(searchKey) {
-      console.log(searchKey);
       this.setState({searchKey: searchKey, page: 1}, this.findWorks);
     }
     rangeChangeHandler(values) {
@@ -34,9 +34,8 @@ class WorkListContainer extends Component {
     }
 
     findWorks() {
-        this.props.getWorks({search: this.state.searchKey, min: this.state.min, max: this.state.max, page: this.state.page})
+      this.props.getWorks({search: this.state.searchKey, min: this.state.min, max: this.state.max, page: this.state.page})
     }
-
     nextPageHandler() {
         let p = this.state.page + 1;
         this.setState({page: p}, this.findWorks);
@@ -105,7 +104,7 @@ class WorkListContainer extends Component {
         </section>
         {(this.state.mapView==true)?
             <WorksMapView works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} />:
-            <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} hasreceiveddata={works.hasreceiveddata} />}
+            <WorkList works={works.items} total={works.total} onDeleteWork={this.props.deleteWork} hasreceiveddata={works.hasreceiveddata} comments={this.props.comments} />}
         <Paginator page={works.page} pageSize={works.pageSize} total={works.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
 
       </div>
@@ -115,13 +114,15 @@ class WorkListContainer extends Component {
 var mapStateToProps = function(appState){
   return {
     works: appState.works,
-    auth: appState.auth
+    auth: appState.auth,
+    comments: appState.comments
   }
 }
 var mapDispatchToProps = function(dispatch){
   return {
     getWorks: function(values){ dispatch(workActions.getWorks(values)); },
-    deleteWork: function(id){ dispatch(workActions.deleteWork(id)); }
+    deleteWork: function(id){ dispatch(workActions.deleteWork(id)); },
+    deleteComment: function(id){ dispatch(commentActions.deleteComment(id)); },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WorkListContainer);

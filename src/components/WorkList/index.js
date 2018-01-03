@@ -4,7 +4,13 @@ import WorkListItem from './WorkListItem';
 class WorkList extends React.Component {
   render() {
         let listItems = this.props.works.map(work =>
-            <WorkListItem key={work.id} work={work} onSearchKeyChange={this.props.onSearchKeyChange} onDelete={this.props.onDeleteWork}/>
+          <WorkListItem
+            key={work.id}
+            work={work}
+            comments={this.props.comments[work.id]||{items: [], hasreceiveddata: false}}
+            onSearchKeyChange={this.props.onSearchKeyChange}
+            onDelete={this.props.onDeleteWork}
+            />
         );
         if (this.props.hasreceiveddata==true) {
         return (

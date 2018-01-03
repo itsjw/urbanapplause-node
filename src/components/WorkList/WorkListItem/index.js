@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import {timeSince} from '../../../services/utils';
 import {Icon} from 'react-fa';
 import C from '../../../constants';
+import CommentList from '../../../containers/CommentsContainer';
 
-class PostPreview extends Component {
+class WorkListItem extends Component {
   handleDelete = () => {
     this.props.onDelete(this.props.work.id);
   }
@@ -12,7 +13,7 @@ class PostPreview extends Component {
     return(
       <div className="card">
         <div className='card-image'>
-          <img src={`${C.SERVER_URL}/${C.UPLOADS_SUBPATH}/${work.image}`||work.image}/>
+          <a href={`/works/${work.id}`} className='buton is-info'><img src={`${C.SERVER_URL}/${C.UPLOADS_SUBPATH}/${work.image}`||work.image}/></a>
         </div>
         <div className="card-content">
           <div className="media">
@@ -29,17 +30,15 @@ class PostPreview extends Component {
 
           <div className='content'>
             <p>{work.description}</p>
-            <a href={`/works/${work.id}`} className='buton is-info'>View Details</a><hr />
-            <div className='columns'>
-              <div className='column'>
-                Posted {timeSince(new Date(work.date_posted))} ago by <a href={`/users/${work.user_id}`}>{work.username}</a>
-              </div>
-              <div className='column is-narrow'>
-                      <span onClick={this.handleDelete} className="icon is-medium action-icon">
-                        <Icon name="trash"/>
-                      </span>
-              </div>
-            </div>
+            Posted {timeSince(new Date(work.date_posted))} ago by <a href={`/users/${work.user_id}`}>{work.username}</a>
+          <span onClick={this.handleDelete} className="icon is-medium action-icon">
+              <Icon name="trash"/>
+          </span>
+
+            <hr />
+            <CommentList
+              work_id={work.id}
+              />
           </div>
         </div>
       </div>
@@ -48,4 +47,4 @@ class PostPreview extends Component {
   }
 }
 
-export default PostPreview;
+export default WorkListItem;

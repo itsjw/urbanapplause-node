@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import FileInput from '../components/FileInput';
-import EXIF from '../services/exif-js/exif.js';
-import {getUploadsImUrl} from '../services/utils';
-import cloudinary from 'cloudinary';
-import geocoding from 'reverse-geocoding';
 import workActions from '../actions/works';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
 import C from '../constants';
-import { withRouter } from 'react-router-dom'
-
 import {AJAXSubmit} from '../services/request/uploadFiles';
-
 
 class BulkPostContainer extends Component {
   constructor(props){
@@ -69,22 +61,25 @@ class BulkPostContainer extends Component {
         <form ref="frmUploader" encType="multipart/form-data" method="post" onSubmit={this.handleFormSubmit} action={`${C.SERVER_URL}/api/upload`} >
           <div className={`field ${this.state.localFiles.length>0?'has-addons':''}`}>
             <p className='control'>
-          <div className="file">
-            <label className="file-label">
-              <input className="file-input" type="file" name="photos" onChange={this.handleSelectImages} multiple={true}/>
-              <span className="file-cta">
-                <span className="file-icon">
-                  <i className="fa fa-upload"></i>
+              <span className="file">
+                <label className="file-label">
+                <input className="file-input" type="file" name="photos" onChange={this.handleSelectImages} multiple={true}/>
+                <span className="file-cta">
+                  <span className="file-icon">
+                    <i className="fa fa-upload"></i>
+                  </span>
+                  <span className="file-label">
+                    Choose images to upload
+                  </span>
                 </span>
-                <span className="file-label">
-                  Choose images to upload
-                </span>
-              </span>
-            </label>
-          </div>
-        </p>
+              </label>
+            </span>
+          </p>
 
-        {this.state.localFiles.length>0?<p className='control'><input type='submit' className='button is-primary' value='Upload Images' style={{float: 'right'}}/></p>:''}
+        {this.state.localFiles.length>0?
+            <p className='control'><input type='submit' className='button is-primary' value='Upload Images' style={{float: 'right'}}/></p>:
+            ''
+        }
       </div>
         </form>
         <div id='preview'>

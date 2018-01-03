@@ -69,7 +69,10 @@ class ArtistListContainer extends Component {
               <section className='section'>
                 <Paginator page={artists.page} pageSize={artists.pageSize} total={artists.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
               </section>
-              <ArtistList artists={artists.items} total={artists.total} />
+              <ArtistList
+                artists={artists.items}
+                total={artists.total}
+                hasreceiveddata={artists.hasreceiveddata}/>
             </div>
           </Route>
           <Route path='/artists/:artist_id' render={(match) => {

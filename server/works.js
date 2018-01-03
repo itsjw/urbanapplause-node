@@ -5,67 +5,53 @@ let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 const { check, validationResult } = require('express-validator/check');
 
 let findAll = (req, res, next) => {
-    let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 8,
-        page = req.query.page ? parseInt(req.query.page) : 1,
-        search = req.query.search,
-        min = req.query.min,
+  let pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 8,
+    page = req.query.page ? parseInt(req.query.page) : 1,
+    search = req.query.search,
+    min = req.query.min,
     max = req.query.max,
     artist_id = req.query.artist_id,
-        whereParts = [],
-        values = [];
+    whereParts = [],
+    values = [];
 
-    if (search) {
+  if (search) {
         values.push(escape(search));
         whereParts.push("work.description || artist.name ~* $" + values.length);
-    }
+  }
   if (artist_id) {
     values.push(escape(artist_id));
     whereParts.push("artist_id = $1");
   }
-    let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
-
-    let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;
-
-    let sql = "SELECT work.id, work.image, date_posted, description, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
+  let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
+  let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;
+  let sql = "SELECT work.id, work.image, date_posted, description, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
     "FROM (((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN location ON work.location_id = location.id) INNER JOIN users ON work.user_id = users.id) " + where +
-                " ORDER BY work.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
-    db.query(countSql, values)
-        .then(result => {
-            let total = parseInt(result[0].count);
-            db.query(sql, values.concat([pageSize, ((page - 1) * pageSize)]))
-                .then(items => {
-                    return res.json({"pageSize": pageSize, "page": page, "total": total, "items": items});
-                })
-                .catch(next);
+    " ORDER BY work.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
+
+  db.query(countSql, values)
+    .then(result => {
+      let total = parseInt(result[0].count);
+      db.query(sql, values.concat([pageSize, ((page - 1) * pageSize)]))
+        .then(items => {
+          return res.json({"pageSize": pageSize, "page": page, "total": total, "items": items});
         })
         .catch(next);
+    })
+    .catch(next);
   }
 
 let findById = (req, res, next) => {
-    let id = req.params.id;
-    let sql = "SELECT work.id, work.image, date_posted, description, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
+  let id = req.params.id;
+  let sql = "SELECT work.id, work.image, date_posted, description, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
     "FROM (((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN location ON work.location_id = location.id) INNER JOIN users ON work.user_id = users.id) " +
-        "WHERE work.id = $1";
+    "WHERE work.id = $1";
 
-    db.query(sql, [id])
-        .then(item => res.json(item[0]))
-        .catch(next);
+  db.query(sql, [id])
+    .then(item => res.json(item[0]))
+    .catch(next);
 };
-const fileUpload = (req, res, next) => {
-  console.log(req.body);
-  res.send({
-    json: "ok"
-  });
-}
 
 const submitNew = (req, res, next) => {
-
-  const errors = validationResult(req);
-
-  if(!errors.isEmpty()) {
-    console.log(errors.array());
-    res.json({sucessful: false, errors: errors.array()});
-  } else {
   var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
   if (artist_id==null||'null') {
@@ -82,8 +68,8 @@ const submitNew = (req, res, next) => {
   let place = JSON.parse(req.body.place);
   let lng = place.geometry.location.lng;
   let lat = place.geometry.location.lat;
-  let formatted_address = body.geometry.location.formatted_address;
-  let city = utils.getAddressComponents(place).City.short_name;
+  let formatted_address = place.formatted_address;
+  let city = place.city||utils.getAddressComponents(place).City.short_name;
 
   let locationSql = "INSERT INTO location (lng, lat, formatted_address, city) VALUES (" + lng + ", " + lat + ", '" + formatted_address + "', '" + city + "') RETURNING id;";
 
@@ -105,21 +91,18 @@ const submitNew = (req, res, next) => {
         });
       }
     });
-  }
 }
 
 let deleteWork = (req, res, next) => {
   let id = req.params.id;
-
   let sql = "DELETE FROM work WHERE work.id = $1";
-
   db.query(sql, [id])
-      .then(item => res.json())
-      .catch(next);
-
+    .then(item => res.json())
+    .catch(next);
 }
+
+
 exports.deleteWork = deleteWork;
 exports.submitNew = submitNew;
 exports.findAll = findAll;
-exports.fileUpload= fileUpload;
 exports.findById = findById;

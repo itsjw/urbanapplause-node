@@ -1,13 +1,14 @@
 import React from 'react';
+import C from '../constants';
 
 class WorkGallery extends React.Component {
   render() {
 
-    let listItems = this.props.works.map(work =>
-      <div className='tile is-4'>
+    let listItems = this.props.works.map((work, i) =>
+      <div className='tile is-4' key={i}>
         <a href={`/works/${work.id}`}>
           <figure className="image is-4by3">
-            <img src={work.image}/>
+            <img src={`${C.SERVER_URL}/${C.UPLOADS_SUBPATH}/${work.image}`}/>
           </figure>
         </a>
       </div>

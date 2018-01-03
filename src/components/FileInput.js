@@ -22,10 +22,8 @@ class FileInput extends Component {
       return EXIF.getData(file, function() {
         return this.exifdata;
         if (exifdata) {
-          console.log(exifdata);
           const lng = getCoord(exifdata.GPSLongitude, exifdata.GPSLongitudeRef);
           const lat = getCoord(exifdata.GPSLatitude, exifdata.GPSLatitudeRef);
-          console.log('getExifData', lng, lat);
           return null;
         } else {
             return("No EXIF data found in image '" + file.name + "'.");
@@ -42,7 +40,6 @@ class FileInput extends Component {
     this.props.onImageChange('place', place);
   }
   setImageData = (data) => {
-    console.log(data);
     this.setState({
       imageData: data
     });

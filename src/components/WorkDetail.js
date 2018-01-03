@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import C from '../constants';
 
 class WorkDetail extends Component {
   render() {
@@ -9,7 +10,7 @@ class WorkDetail extends Component {
        <a href={`/artists/${work.artist_id}`}>{work.artist}</a>
 
        <h3 className='title is-3'>Photo</h3>
-        <img src={work.image}/>
+       <img src={`${C.SERVER_URL}/${C.UPLOADS_SUBPATH}/${work.image}`}/>
        <h3 className='title is-3'>Description</h3>
        {work.description}
        <h3 className='title is-3'>Posted By</h3>

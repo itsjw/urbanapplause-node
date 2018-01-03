@@ -1,5 +1,6 @@
 import C from '../constants';
 import request from '../services/request';
+import commentActions from './comments';
 import requestUpload from '../services/request/uploadFiles';
 
 import {AJAXSubmit} from '../services/request/uploadFiles';
@@ -21,25 +22,38 @@ function receiveWorks(data) {
     receivedAt: Date.now()
   }
 }
+
 function getWorks(values) {
   return function(dispatch){
     dispatch(requestWorks());
     let qs = "";
     if (values) {
-        qs = Object.keys(values).map(key => {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
-        }).join('&');
-        qs = "?" + qs;
+      qs = Object.keys(values).map(key => {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
+      }).join('&');
+      qs = "?" + qs;
     }
     return request({url: baseURL + "/api/works" + qs})
-      .then(data => dispatch(receiveWorks(JSON.parse(data))));
+      .then((data) => {
+        let jsonData =  JSON.parse(data);
+        dispatch(receiveWorks(jsonData))
+        console.log(jsonData)
+
+        let getCommentsForWork = function(work_id){ dispatch(commentActions.getCommentsForWork(work_id))};
+        jsonData.items.map((work, i) => {
+          getCommentsForWork(work.id);
+        });
+
+      });
   }
 }
+
 function setNewFiles(files){
   return function(dispatch) {
     dispatch({type: C.SET_NEW_FILES, files: files});
   };
 }
+
 function uploadFiles(e){
   return function(dispatch) {
     dispatch({type: C.AWAIT_IMAGE_UPLOAD_RESPONSE});
@@ -47,7 +61,7 @@ function uploadFiles(e){
       .then((res) => {
         console.log('RES', res);
         dispatch({type: C.IMAGE_UPLOAD_SUCCESS, files: JSON.parse(res)});
-        });
+      });
   };
 }
 
@@ -83,7 +97,8 @@ function submitNewWork(values) {
         })
   }
 }
-export let deleteWork = (id) => {
+
+let deleteWork = (id) => {
   var error = false;
 		return function(dispatch,getState){
       return request({url: baseURL + "/api/deletework/" + id, method: "DELETE"})
@@ -98,6 +113,7 @@ let findById = (id) => {
       .then(data => dispatch(receiveWork(JSON.parse(data))));
   }
 }
+
 function requestWork(id) {
   return {
     type: C.REQUEST_WORK_DATA,
@@ -120,6 +136,7 @@ const startWorkEdit = (qid) => {
 const cancelWorkEdit = (qid) => {
 		return {type:C.FINISH_WORK_EDIT,qid};
 }
+
 const submitWorkEdit = (qid, content) => {
 		return function(dispatch,getState){
       /*var state = getState(),
