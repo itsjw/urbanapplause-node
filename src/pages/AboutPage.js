@@ -30,9 +30,9 @@ class AboutPage extends Component {
            <li><a href='https://redux.js.org/'>Redux</a> (Javascript State Manager)</li>
            <li><a href='https://bulma.io'>Bulma</a> (CSS Framework)</li>
            <li><a href='https://expressjs.com'>Express</a> (NodeJS Server)</li>
+           <li><a href='https://jwt.io/'>JWT Web Tokens</a> (Authentication API)</li>
            <li><a href='https://www.postgresql.org/'>PostgreSQL</a> (Database)</li>
-           <li><a href='https://www.heroku.com/'>Heroku</a> (App and Database Hosting)</li>
-           <li><a href='https://cloudinary.com/'>Cloudinary</a> (Image hosting and CDN service)</li>
+           <li><a href='https://www.digitalocean.com'>Digital Ocean</a> (Cloud Server)</li>
          </ul>
           <a href='#top'>Back to top<span className='icon is-medium'><Icon name='arrow-up'/></span></a>
       </div>
