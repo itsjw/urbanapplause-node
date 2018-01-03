@@ -7,7 +7,7 @@ import workActions from '../actions/works';
 import artistActions from '../actions/artists';
 
 import EXIF from '../services/exif-js/exif.js';
-import {getCoord} from '../services/location';
+import {getCoord, reverseGeocode} from '../services/location';
 import C from '../constants.js';
 import tempArtistOptions from '../testData/artists';
 
@@ -19,6 +19,7 @@ class BulkEditContainer extends Component {
     super(props);
     this.state = {
       newWorks: [],
+      status: 'loading',
       redirect: false
     }
   }
@@ -42,28 +43,11 @@ class BulkEditContainer extends Component {
     return EXIF.getData(newWork.file, function(i){
       const lng = getCoord(this.exifdata.GPSLongitude, this.exifdata.GPSLongitudeRef);
       const lat = getCoord(this.exifdata.GPSLatitude, this.exifdata.GPSLatitudeRef);
-      console.log(lng, lat);
-      const exifPlace = new Promise(function(resolve, reject){
-      geocoding.location({'latitude': lat, 'longitude': lng}, function (err, data){
-        if(err){
-          console.log(err);
-          resolve({
-            formatted_address: `Reverse geocoding failed. Coordinates for this image are latitude: ${lat}, longitude: ${lng}`,
-            geometry: {
-              location: {
-                lat: lat,
-                lng: lng
-              }
-            },
-            city: 'Unknown',
-          });
-        }else{
-          resolve(data.results[0]);
-        }
-      });
-      }).then((result) => {
-        onInputChange('place', result);
-        return result;
+      var exifPlace = reverseGeocode(lat, lng).then((data) => ( JSON.parse(data)))
+        .then((json) => {
+        onInputChange('place', json.results[0]);
+        console.log(json.results);
+        return json.results[0];
       });
 
       const exifWork = Object.assign({}, newWork, {imageExif: this.exifdata, place: exifPlace, date: this.exifdata.DateTime});
@@ -85,6 +69,9 @@ class BulkEditContainer extends Component {
       }
       this.getWorkExif(i, newWork);
     });
+    this.setState({
+      status: 'complete'
+    });
   }
   onInputChange = (index, fieldName, newValue) => {
     var newWorks = this.state.newWorks;
@@ -96,6 +83,9 @@ class BulkEditContainer extends Component {
   componentWillUpdate(nextProps, nextState){
     if ((nextProps.works.newfiles != this.props.works.newfiles) || (nextProps.works.newimages != this.props.works.newimages)) {
       if (nextProps.works.newimages.length > 0 ){
+        this.setState({
+          status: 'loading'
+        });
         this.setNewWorks(nextProps);
       } else {
         this.setState({
@@ -141,6 +131,7 @@ class BulkEditContainer extends Component {
 
     return(
       <div>
+        {this.state.status=='loading'?'Loading images...':''}
         {this.state.newWorks.map((work, i) => {
           const newWork = this.state.newWorks[i];
           return (

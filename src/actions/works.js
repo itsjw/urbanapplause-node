@@ -66,6 +66,7 @@ function uploadFiles(e){
 }
 
 function submitNewWork(values) {
+  console.log(values);
   let qs = "";
   qs = Object.keys(values).map(key => {
     let value = values[key];

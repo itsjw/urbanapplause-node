@@ -15,8 +15,8 @@ let express = require('express'),
   multer = require('multer'),
   app = express();
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
 app.set('port', process.env.PORT || 3000);
 
 //Express Session
