@@ -1,11 +1,10 @@
 "use strict";
 
 const productionConfigs = {
-  url: process.env.DATABASE_URL,
-  user: 'btkzzyyrfiixgb',
-  host: 'ec2-50-16-228-232.compute-1.amazonaws.com',
-  database: 'd9a4q27eod4akk',
-  password: '28500bf3f9c17432dc4ab4284aa9baee02ab07a560209b5a78a71b2074a91c87',
+  user: 'flannerykj',
+  host: 'localhost',
+  database: 'urbanapplause',
+  password: 'cheesecake',
   port: 5432,
   ssl: true
 }
@@ -26,7 +25,7 @@ const { Pool, Client } = require('pg')
 
 exports.query = function (sql, values, singleItem, dontLog) {
 
-  const pool = new Client(devConfigs);
+  const pool = new Client(productionConfigs);
   if (!dontLog) {
     //console.log(sql, values);
   }
