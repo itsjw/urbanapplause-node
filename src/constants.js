@@ -1,8 +1,8 @@
 module.exports = {
   //SERVER URLS
-  SERVER_URL: "http://localhost:3000",
+  SERVER_URL0: "http://localhost:3000",
   UPLOADS_SUBPATH: "api/uploads",
-  SERVER_URL0: "https://urbanapplause.flannerykj.com",
+  SERVER_URL: "https://urbanapplause.flannerykj.com",
 
   // AUTH ACTIONS
   REGISTER_REQUEST: "REGISTER_REQUEST",
