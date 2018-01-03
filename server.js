@@ -41,8 +41,8 @@ app.all('*', function (req, res, next) {
     }
 });
 
-  var bpjson = bodyParser.json({limit: '50mb'});
-  var bpurl = bodyParser.urlencoded({ extended: true, limit: '50mb' });
+  app.use(bodyParser.json({limit: '50mb'}));
+  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 //Express Validator
 app.use(expressValidator({
@@ -87,7 +87,7 @@ var Storage = multer.diskStorage({
  }).array("photos", 20); //Field name and max count
 
 //Server-side routes
-app.post("/api/upload", [jwtauth, bpurl], function(req, res) {
+app.post("/api/upload", [jwtauth], function(req, res) {
   upload(req, res, function(err) {
     if (err) {
       console.log(err);
@@ -103,7 +103,7 @@ app.post('/api/login', auth.login);
 
 app.get('/api/works', works.findAll);
 app.get('/api/works/:id', works.findById);
-app.post('/api/newwork', [jwtauth, bpjson], works.submitNew);
+app.post('/api/newwork', [jwtauth], works.submitNew);
 app.delete('/api/deletework/:id', [jwtauth], works.deleteWork);
 
 app.get('/api/comments/:work_id', comments.findByWorkId);

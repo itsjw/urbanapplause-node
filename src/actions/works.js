@@ -78,7 +78,7 @@ function submitNewWork(values) {
 
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_WORK_RESPONSE});
-    return request({url: baseURL + "/api/newwork", method: "POST", data: qs, headers: {'Content-Type': 'application/json'}})
+    return request({url: baseURL + "/api/newwork", method: "POST", data: qs, headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
       .then((resString) => JSON.parse(resString))
       .then((res) =>
         {
