@@ -2,7 +2,7 @@ export default opts => {
   return new Promise((resolve, reject) => {
     let xhr = new XMLHttpRequest();
     xhr.open(opts.method || "GET", opts.url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve(xhr.response);
@@ -24,6 +24,7 @@ export default opts => {
         xhr.setRequestHeader(key, opts.headers[key]);
       });
     }
+    console.log(xhr);
     xhr.send(opts.data);
   });
 }
