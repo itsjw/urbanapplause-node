@@ -33,8 +33,7 @@ class RegisterContainer extends Component {
       password2: this.state.password2,
     }
 
-    this.props.onRegister(form)
-      .then((res)=> {console.log(res)});
+    this.props.onRegister(form);
   }
   render() {
     const errors = this.props.auth.registrationErrors;

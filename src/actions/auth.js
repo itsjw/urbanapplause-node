@@ -40,6 +40,7 @@ const onLogin = (values) => {
 }
 
 const onRegister = (values) => {
+  console.log('onRegister ', values);
   let qs = "";
   qs = Object.keys(values).map(key => {
     let value = values[key];

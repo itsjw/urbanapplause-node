@@ -56,19 +56,14 @@ let register = (req, res, next) => {
   console.log(email);
 
   //Validations
-  req.checkBody('email', 'Email is not valid').isEmail();
+  /*req.checkBody('email', 'Email is not valid').isEmail();
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('username', 'Username is required').notEmpty();
   req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('password2', 'Passwords do not match').equals(password);
+  req.checkBody('password2', 'Passwords do not match').equals(password);*/
 
   var errors = req.validationErrors();
 
-  if(errors) {
-    console.log('yes, there are errors');
-
-    res.json({sucessful: false, errors: errors});
-  } else {
     var salt = bcrypt.genSaltSync(10);
     bcrypt.hash(password, salt, null, function(err, hash){
       let sql = "INSERT INTO users (email, username, hash_pass) VALUES ('" + email + "', '" + username + "', '" + hash + "');";
@@ -76,7 +71,6 @@ let register = (req, res, next) => {
         .then(item => res.json({sucessful: true}))
         .catch(next);
     });
-  }
 };
 
 

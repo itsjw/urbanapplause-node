@@ -23,7 +23,7 @@ class HeaderContainer extends Component {
 
   toggleHamburger = () => {
     this.setState({
-     isHamburgerActive: !this.state.isHamburgerActive,isHamburgerActive
+     isHamburgerActive: !this.state.isHamburgerActive
     });
   }
   handleLogout = () => {
