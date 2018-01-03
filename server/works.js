@@ -52,7 +52,7 @@ let findById = (req, res, next) => {
 };
 
 const submitNew = (req, res, next) => {
-  console.log(req.body);
+  console.log(req);
   var artist_id = req.body.artist_id||null;
   const new_artist_name = req.body.new_artist_name;
   if (artist_id==null||'null') {
