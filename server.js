@@ -123,8 +123,3 @@ app.put('/api/updateuser/:id', [jwtauth], users.updateById);
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
-
-
-app.get("/*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-}
