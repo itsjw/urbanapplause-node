@@ -24,8 +24,8 @@ let findAll = (req, res, next) => {
   }
   let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
   let countSql = "SELECT COUNT(*) from works INNER JOIN artists on works.artist_id = artists.id " + where;
-  let sql = "SELECT works.id, works.image, date_posted, description, artist_id, artists.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
-    "FROM (((works INNER JOIN artists ON works.artist_id = artists.id) INNER JOIN location ON works.location_id = location.id) INNER JOIN users ON works.user_id = users.id) " + where +
+  let sql = "SELECT works.id, works.image, date_posted, description, artist_id, artists.name as artist, locations.city as city, locations.formatted_address as formatted_address, locations.lng as lng, locations.lat as lat, user_id, users.username as username " +
+    "FROM (((works INNER JOIN artists ON works.artist_id = artists.id) INNER JOIN locations ON works.location_id = locations.id) INNER JOIN users ON works.user_id = users.id) " + where +
     " ORDER BY works.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
 
   db.query(countSql, values)
@@ -42,8 +42,8 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
   let id = req.params.id;
-  let sql = "SELECT works.id, works.image, date_posted, description, artist_id, artists.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
-    "FROM (((works INNER JOIN artists ON works.artist_id = artists.id) INNER JOIN location ON works.location_id = location.id) INNER JOIN users ON works.user_id = users.id) " +
+  let sql = "SELECT works.id, works.image, date_posted, description, artist_id, artists.name as artist, locations.city as city, locations.formatted_address as formatted_address, locations.lng as lng, locations.lat as lat, user_id, users.username as username " +
+    "FROM (((works INNER JOIN artists ON works.artist_id = artists.id) INNER JOIN locations ON works.location_id = locations.id) INNER JOIN users ON works.user_id = users.id) " +
     "WHERE works.id = $1";
 
   db.query(sql, [id])
@@ -71,7 +71,7 @@ const submitNew = (req, res, next) => {
   let formatted_address = place.formatted_address;
   let city = place.city||utils.getAddressComponents(place).City.short_name;
 
-  let locationSql = "INSERT INTO location (lng, lat, formatted_address, city) VALUES (" + lng + ", " + lat + ", '" + formatted_address + "', '" + city + "') RETURNING id;";
+  let locationSql = "INSERT INTO locations (lng, lat, formatted_address, city) VALUES (" + lng + ", " + lat + ", '" + formatted_address + "', '" + city + "') RETURNING id;";
 
   db.query(locationSql)
     .then((id) => {
