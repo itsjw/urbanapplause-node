@@ -44,33 +44,12 @@ app.all('*', function (req, res, next) {
   app.use(bodyParser.json({limit: '50mb'}));
   app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
-//Express Validator
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-    var namespace = param.split('.')
-    , root = namespace.shift()
-      , formParam = root;
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param: formParam,
-      msg: msg,
-      value: value
-    };
-  }
-}));
-
 app.use(compression());
 app.use('/api/uploads', express.static(__dirname + '/server/uploads'));
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send("Urban Applause API");
 })
-
-app.get('/api/dummy', artists.findAllDummy);
-
-
 
 //Photo Uploads via Multer
 var Storage = multer.diskStorage({

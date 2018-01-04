@@ -6,6 +6,7 @@ let db = require('./pghelper');
 
 
 let login = (req, res, next) => {
+  console.log('BODY: ', req.body);
   var username = req.body.username;
   var password = req.body.password;
 
@@ -48,12 +49,12 @@ let login = (req, res, next) => {
 
 
 let register = (req, res, next) => {
+
+  console.log('BODY: ', req.body);
   var email = req.body.email;
   var username = req.body.username;
   var password = req.body.password;
   var password2 = req.body.password2;
-
-  console.log(email);
 
   //Validations
   /*req.checkBody('email', 'Email is not valid').isEmail();
