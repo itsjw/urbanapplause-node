@@ -13,9 +13,12 @@ let express = require('express'),
   jwtauth = require('./server/jwtauth'),
   validation = require('./server/formValidation'),
   multer = require('multer'),
+  fileUpload = require('express-fileupload'),
   app = express();
 
 app.set('port', 4000);
+
+app.use(fileUpload());
 
 
 //Express Session
@@ -51,11 +54,29 @@ app.use('/api/uploads', express.static(__dirname + '/server/uploads'));
 app.get('/api', (req, res) => {
   res.send("Urban Applause API");
 })
+app.post('/uploads', function(req, res) {
+  if (!req.files)
+    return res.status(400).send('No files were uploaded.');
 
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  let files = req.files.photos;
+
+  // Use the mv() method to place the file somewhere on your servera
+  Array.from(files).forEach(file => {
+    file.mv(`/var/lib/urbanapplause/uploads/${Date.now()}_${file.filename}`, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send('File uploaded!');
+  });
+
+    });
+
+  });
 //Photo Uploads via Multer
 var Storage = multer.diskStorage({
   destination: function(req, file, callback) {
-    callback(null, "/var/lib/urbanapplause/uploads");
+    callback(null, "./server/uploads");
   },
     filename: function(req, file, callback) {
     callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
@@ -67,7 +88,7 @@ var Storage = multer.diskStorage({
  }).array("photos", 20); //Field name and max count
 
 //Server-side routes
-app.post("/uploads", function(req, res) {
+app.post("/api/uploads", function(req, res) {
   upload(req, res, function(err) {
     if (err) {
       console.log(err);
