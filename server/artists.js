@@ -6,7 +6,7 @@ let escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
 let findAllDummy = (req, res, next) => {
 
-  let sql = "SELECT * FROM artist;";
+  let sql = "SELECT * FROM artists;";
   return db.query(sql, [])
     .then(result => {
       console.log(result);
@@ -26,15 +26,15 @@ let findAll = (req, res, next) => {
 
     if (search) {
         values.push(escape(search));
-        whereParts.push("artist.name ~* $" + values.length);
+        whereParts.push("artists.name ~* $" + values.length);
     }
 
     let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
 
-  let countSql = "SELECT COUNT(*) from artist " + where;
+  let countSql = "SELECT COUNT(*) from artists " + where;
   let sql = "SELECT * " +
-    "FROM artist  " + where +
-    " ORDER BY artist.name LIMIT $" + (values.length + 1) +
+    "FROM artists  " + where +
+    " ORDER BY artists.name LIMIT $" + (values.length + 1) +
     " OFFSET $" + + (values.length + 2);
   console.log('sql is: ', sql);
     db.query(countSql, values)
@@ -53,7 +53,7 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
   let id = req.params.id;
-  let sql = "select *, ( select array(SELECT w.id FROM work w WHERE w.artist_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from artist a WHERE a.id = $1 ;";
+  let sql = "select *, ( select array(SELECT w.id FROM work w WHERE w.artist_id = $1 ORDER BY w.date_posted DESC LIMIT 3 )) as works from artists a WHERE a.id = $1 ;";
 
     db.query(sql, [id])
         .then(item => res.json(item[0]))
@@ -67,7 +67,7 @@ let updateById = (req, res, next) => {
   let bio = req.body.bio;
   let website = req.body.website;
   let email = req.body.email;
-  let sql = "UPDATE artist SET name='" + name + "', bio='" + bio + "', website='" + website + "', email='" + email + "' WHERE id=" + id + " RETURNING id; "
+  let sql = "UPDATE artists SET name='" + name + "', bio='" + bio + "', website='" + website + "', email='" + email + "' WHERE id=" + id + " RETURNING id; "
 
   db.query(sql)
     .then((error) => console.log(error));
@@ -75,7 +75,7 @@ let updateById = (req, res, next) => {
 
 let submitNew = (req, res, next) => {
   let name = req.body.name;
-  let sql = "INSERT INTO artist (name) VALUES ('" + name + "');"
+  let sql = "INSERT INTO artists (name) VALUES ('" + name + "');"
 
   db.query(sql)
     .then(item => res.json())

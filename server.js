@@ -15,7 +15,7 @@ let express = require('express'),
   multer = require('multer'),
   app = express();
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', 4000);
 
 
 //Express Session

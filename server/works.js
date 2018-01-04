@@ -16,17 +16,17 @@ let findAll = (req, res, next) => {
 
   if (search) {
         values.push(escape(search));
-        whereParts.push("work.description || artist.name ~* $" + values.length);
+        whereParts.push("works.description || artists.name ~* $" + values.length);
   }
   if (artist_id) {
     values.push(escape(artist_id));
     whereParts.push("artist_id = $1");
   }
   let where = whereParts.length > 0 ? ("WHERE " + whereParts.join(" AND ")) : "";
-  let countSql = "SELECT COUNT(*) from work INNER JOIN artist on work.artist_id = artist.id " + where;
-  let sql = "SELECT work.id, work.image, date_posted, description, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
-    "FROM (((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN location ON work.location_id = location.id) INNER JOIN users ON work.user_id = users.id) " + where +
-    " ORDER BY work.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
+  let countSql = "SELECT COUNT(*) from works INNER JOIN artists on works.artist_id = artists.id " + where;
+  let sql = "SELECT works.id, works.image, date_posted, description, artist_id, artists.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
+    "FROM (((works INNER JOIN artists ON works.artist_id = artists.id) INNER JOIN location ON works.location_id = location.id) INNER JOIN users ON works.user_id = users.id) " + where +
+    " ORDER BY works.date_posted DESC LIMIT $" + (values.length + 1) + " OFFSET $" +  + (values.length + 2);
 
   db.query(countSql, values)
     .then(result => {
@@ -42,9 +42,9 @@ let findAll = (req, res, next) => {
 
 let findById = (req, res, next) => {
   let id = req.params.id;
-  let sql = "SELECT work.id, work.image, date_posted, description, artist_id, artist.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
-    "FROM (((work INNER JOIN artist ON work.artist_id = artist.id) INNER JOIN location ON work.location_id = location.id) INNER JOIN users ON work.user_id = users.id) " +
-    "WHERE work.id = $1";
+  let sql = "SELECT works.id, works.image, date_posted, description, artist_id, artists.name as artist, location.city as city, location.formatted_address as formatted_address, location.lng as lng, location.lat as lat, user_id, users.username as username " +
+    "FROM (((works INNER JOIN artists ON works.artist_id = artists.id) INNER JOIN location ON works.location_id = location.id) INNER JOIN users ON works.user_id = users.id) " +
+    "WHERE works.id = $1";
 
   db.query(sql, [id])
     .then(item => res.json(item[0]))
@@ -57,7 +57,7 @@ const submitNew = (req, res, next) => {
   if (artist_id==null||'null') {
     if(new_artist_name) {
       console.log('creating new artist ' + new_artist_name);
-      var newArtistSql = "INSERT INTO artist (name) VALUES ('" + new_artist_name + "') RETURNING artist.id;"
+      var newArtistSql = "INSERT INTO artists (name) VALUES ('" + new_artist_name + "') RETURNING artists.id;"
     } else {
       artist_id = 0;
     }
@@ -75,7 +75,7 @@ const submitNew = (req, res, next) => {
 
   db.query(locationSql)
     .then((id) => {
-      var sql = "INSERT INTO work (id, description, artist_id, image,  date_posted, location_id, user_id) VALUES (DEFAULT, '" + description + "', $1,  $$" + image + "$$, DEFAULT, " + id[0].id + ", '" + user_id + "') RETURNING work.id;";
+      var sql = "INSERT INTO works (id, description, artist_id, image,  date_posted, location_id, user_id) VALUES (DEFAULT, '" + description + "', $1,  $$" + image + "$$, DEFAULT, " + id[0].id + ", '" + user_id + "') RETURNING works.id;";
       if(newArtistSql) {
         db.query(newArtistSql)
           .then((item) => {
@@ -95,7 +95,7 @@ const submitNew = (req, res, next) => {
 
 let deleteWork = (req, res, next) => {
   let id = req.params.id;
-  let sql = "DELETE FROM work WHERE work.id = $1";
+  let sql = "DELETE FROM works WHERE works.id = $1";
   db.query(sql, [id])
     .then(item => res.json())
     .catch(next);
