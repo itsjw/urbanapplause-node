@@ -18,7 +18,7 @@ const onLogin = (values) => {
 
   return function(dispatch, getState){
     dispatch({type: C.LOGIN_REQUEST});
-    return request({url: baseURL + "/api/login", method: "POST", data: qs})
+    return request({url: baseURL + "/api/login", method: "POST", data: values})
       .then((res) =>
         {
           var data = JSON.parse(res);
@@ -53,7 +53,7 @@ const onRegister = (values) => {
 
   return function(dispatch, getState){
     dispatch({type: C.REGISTER_REQUEST});
-    return request({url: baseURL + "/api/register", method: "POST", data: qs})
+    return request({url: baseURL + "/api/register", method: "POST", data: values})
       .then((res) =>
         {
           var data = JSON.parse(res);

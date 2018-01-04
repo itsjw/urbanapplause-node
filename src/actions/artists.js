@@ -42,7 +42,7 @@ function submitNewArtist(values) {
         }).join('&');
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_ARTIST_RESPONSE});
-    return request({url: baseURL + "/api/newartist", method: "POST", data: qs})
+    return request({url: baseURL + "/api/newartist", method: "POST", data: values})
       .then((data) =>
         {
           dispatch({type:C.RECEIVE_NEW_ARTIST_RESPONSE, data: JSON.parse(data)})

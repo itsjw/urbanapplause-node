@@ -41,8 +41,8 @@ app.all('*', function (req, res, next) {
     }
 });
 
-  app.use(bodyParser.json({limit: '50mb'}));
-  app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use(compression());
 app.use('/api/uploads', express.static(__dirname + '/server/uploads'));

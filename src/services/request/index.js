@@ -26,7 +26,8 @@ export default opts => {
         xhr.setRequestHeader(key, opts.headers[key]);
       });
     }
-    console.log(xhr);
-    xhr.send(opts.data);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(opts.data));
   });
 }

@@ -38,7 +38,7 @@ function submitNewComment(values) {
 
   return function(dispatch, getState){
     dispatch({type: C.AWAIT_NEW_COMMENT_RESPONSE});
-    return request({url: baseURL + "/api/newcomment", method: "POST", data: qs})
+    return request({url: baseURL + "/api/newcomment", method: "POST", data: values})
       .then((resString) => JSON.parse(resString))
       .then((res) =>
         {
