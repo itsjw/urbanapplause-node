@@ -45,6 +45,7 @@ app.all('*', function (req, res, next) {
   app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use(compression());
+
 app.use('/api/uploads', express.static(__dirname + '/server/uploads'));
 
 app.get('/api', (req, res) => {
@@ -54,7 +55,7 @@ app.get('/api', (req, res) => {
 //Photo Uploads via Multer
 var Storage = multer.diskStorage({
   destination: function(req, file, callback) {
-    callback(null, "./server/uploads");
+    callback(null, "/var/lib/urbanapplause/uploads");
   },
     filename: function(req, file, callback) {
     callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
@@ -66,12 +67,13 @@ var Storage = multer.diskStorage({
  }).array("photos", 20); //Field name and max count
 
 //Server-side routes
-app.post("/api/upload", [jwtauth], function(req, res) {
+app.post("/api/upload", function(req, res) {
   upload(req, res, function(err) {
     if (err) {
       console.log(err);
       return res.end("Something went wrong!");
     }
+    console.log('uploaded file');
     res.send(req.files);
     return res.end('success');
   });

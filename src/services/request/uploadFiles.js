@@ -27,7 +27,6 @@ export function AJAXSubmit (oFormElement, url) {
 for (let [key, value] of formData.entries()) {
   console.log(key, value);
 }
-
       oReq.send(formData);
     } else {
       console.log('not post');
