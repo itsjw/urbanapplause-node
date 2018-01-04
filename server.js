@@ -67,7 +67,7 @@ var Storage = multer.diskStorage({
  }).array("photos", 20); //Field name and max count
 
 //Server-side routes
-app.post("/api/upload", function(req, res) {
+app.post("/uploads", function(req, res) {
   upload(req, res, function(err) {
     if (err) {
       console.log(err);

@@ -1,7 +1,7 @@
 module.exports = {
   //SERVER URLS
   SERVER_URL0: "http://localhost:3000",
-  UPLOADS_SUBPATH: "api/uploads",
+  UPLOADS_SUBPATH: "uploads",
   SERVER_URL: "https://urbanapplause.com",
 
   // AUTH ACTIONS
