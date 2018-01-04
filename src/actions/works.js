@@ -57,7 +57,7 @@ function setNewFiles(files){
 function uploadFiles(e){
   return function(dispatch) {
     dispatch({type: C.AWAIT_IMAGE_UPLOAD_RESPONSE});
-    return AJAXSubmit(e, baseURL + '/' + C.UPLOADS_SUBPATH)
+    return AJAXSubmit(e, baseURL + '/api/uploads')
       .then((res) => {
         console.log('RES', res);
         dispatch({type: C.IMAGE_UPLOAD_SUCCESS, files: JSON.parse(res)});
